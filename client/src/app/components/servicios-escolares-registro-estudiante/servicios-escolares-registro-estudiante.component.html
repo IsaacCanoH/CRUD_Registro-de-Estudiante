@@ -1,0 +1,403 @@
+<div class="container">
+  <div class="header">
+    <h1>Registro de Nuevo Alumno</h1>
+    <p>Complete el formulario paso a paso</p>
+  </div>
+
+  <!-- Barra de Progreso -->
+  <div class="progress-container">
+    <div class="steps-container">
+      <div
+        class="step"
+        [ngClass]="{ active: isStepActive(1), completed: isStepCompleted(1) }"
+      >
+        <div class="step-number">
+          <span *ngIf="!isStepCompleted(1)">1</span>
+          <span *ngIf="isStepCompleted(1)">1</span>
+        </div>
+        <span class="step-text">Datos Generales</span>
+      </div>
+      <div
+        class="step"
+        [ngClass]="{ active: isStepActive(2), completed: isStepCompleted(2) }"
+      >
+        <div class="step-number">
+          <span *ngIf="!isStepCompleted(2)">2</span>
+          <span *ngIf="isStepCompleted(2)">2</span>
+        </div>
+        <span class="step-text">Domicilio</span>
+      </div>
+      <div
+        class="step"
+        [ngClass]="{ active: isStepActive(3), completed: isStepCompleted(3) }"
+      >
+        <div class="step-number">
+          <span *ngIf="!isStepCompleted(3)">3</span>
+          <span *ngIf="isStepCompleted(3)">3</span>
+        </div>
+        <span class="step-text">Datos Académicos</span>
+      </div>
+      <div
+        class="step"
+        [ngClass]="{ active: isStepActive(4), completed: isStepCompleted(4) }"
+      >
+        <div class="step-number">
+          <span *ngIf="!isStepCompleted(4)">4</span>
+          <span *ngIf="isStepCompleted(4)">4</span>
+        </div>
+        <span class="step-text">Datos del Tutor</span>
+      </div>
+      <div
+        class="step"
+        [ngClass]="{ active: isStepActive(5), completed: isStepCompleted(5) }"
+      >
+        <div class="step-number">
+          <span *ngIf="!isStepCompleted(5)">5</span>
+          <span *ngIf="isStepCompleted(5)">5</span>
+        </div>
+        <span class="step-text">Datos de la Carrera</span>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-container">
+    <form #registroForm="ngForm" (ngSubmit)="submitForm()">
+      <!-- Paso 1: Datos Generales -->
+      <div class="form-step" [ngClass]="{ active: currentStep === 1 }">
+        <h2>Datos Generales del Alumno</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="matricula">Matrícula</label>
+            <input
+              type="text"
+              id="matricula"
+              name="matricula"
+              [(ngModel)]="formData.matricula"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              [(ngModel)]="formData.nombre"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="apellidoPaterno">Apellido Paterno</label>
+            <input
+              type="text"
+              id="apellidoPaterno"
+              name="apellidoPaterno"
+              [(ngModel)]="formData.apellidoPaterno"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="apellidoMaterno">Apellido Materno</label>
+            <input
+              type="text"
+              id="apellidoMaterno"
+              name="apellidoMaterno"
+              [(ngModel)]="formData.apellidoMaterno"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            <input
+              type="date"
+              id="fechaNacimiento"
+              name="fechaNacimiento"
+              [(ngModel)]="formData.fechaNacimiento"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <select id="sexo" name="sexo" [(ngModel)]="formData.sexo" required>
+              <option value="">Seleccione...</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              [(ngModel)]="formData.telefono"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="correo">Correo Electrónico</label>
+            <input
+              type="email"
+              id="correo"
+              name="correo"
+              [(ngModel)]="formData.correo"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="rfc">RFC</label>
+            <input
+              type="text"
+              id="rfc"
+              name="rfc"
+              [(ngModel)]="formData.rfc"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="foto">Fotografía</label>
+            <input
+              type="file"
+              id="foto"
+              (change)="onFileChange($event, 'foto')"
+              accept="image/*"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2: Domicilio -->
+      <div class="form-step" [ngClass]="{ active: currentStep === 2 }">
+        <h2>Domicilio del Alumno</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="calle">Calle</label>
+            <input
+              type="text"
+              id="calle"
+              name="calle"
+              [(ngModel)]="formData.calle"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="numeroExterior">Número Exterior</label>
+            <input
+              type="number"
+              id="numeroExterior"
+              name="numeroExterior"
+              [(ngModel)]="formData.numeroExterior"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="numeroInterior">Número Interior</label>
+            <input
+              type="number"
+              id="numeroInterior"
+              name="numeroInterior"
+              [(ngModel)]="formData.numeroInterior"
+            />
+          </div>
+          <div class="form-group">
+            <label for="colonia">Colonia</label>
+            <input
+              type="text"
+              id="colonia"
+              name="colonia"
+              [(ngModel)]="formData.colonia"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="codigoPostal">Código Postal</label>
+            <input
+              type="text"
+              id="codigoPostal"
+              name="codigoPostal"
+              [(ngModel)]="formData.codigoPostal"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="ciudad">Ciudad</label>
+            <input
+              type="text"
+              id="ciudad"
+              name="ciudad"
+              [(ngModel)]="formData.ciudad"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 3: Datos Académicos -->
+      <div class="form-step" [ngClass]="{ active: currentStep === 3 }">
+        <h2>Datos Académicos</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="promedio">Promedio de Bachillerato</label>
+            <input
+              type="number"
+              id="promedio"
+              name="promedio"
+              step="0.01"
+              [(ngModel)]="formData.promedio"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="certificadoBachillerato"
+              >Certificado de Bachillerato</label
+            >
+            <select
+              id="certificadoBachillerato"
+              name="certificadoBachillerato"
+              [(ngModel)]="formData.certificado"
+              required
+            >
+              <option value="">Seleccione...</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 4: Datos del Tutor -->
+      <div class="form-step" [ngClass]="{ active: currentStep === 4 }">
+        <h2>Datos del Tutor</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nombreTutor">Nombre del Tutor</label>
+            <input
+              type="text"
+              id="nombreTutor"
+              name="nombreTutor"
+              [(ngModel)]="formData.nombreTutor"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="apellidoPaternoTutor">Apellido Paterno del Tutor</label>
+            <input
+              type="text"
+              id="apellidoPaternoTutor"
+              name="apellidoPaternoTutor"
+              [(ngModel)]="formData.apellidoPaternoTutor"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="apellidoMaternoTutor">Apellido Materno del Tutor</label>
+            <input
+              type="text"
+              id="apellidoMaternoTutor"
+              name="apellidoMaternoTutor"
+              [(ngModel)]="formData.apellidoMaternoTutor"
+              required
+            />
+          </div>
+
+          <div class="form-group full-width">
+            <h3>Domicilio del Tutor</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="calleTutor">Calle</label>
+            <input
+              type="text"
+              id="calleTutor"
+              name="calleTutor"
+              [(ngModel)]="formData.calleTutor"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="numeroExteriorTutor">Número Exterior</label>
+            <input
+              type="number"
+              id="numeroExteriorTutor"
+              name="numeroExteriorTutor"
+              [(ngModel)]="formData.numeroExteriorTutor"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="coloniaTutor">Colonia</label>
+            <input
+              type="text"
+              id="coloniaTutor"
+              name="coloniaTutor"
+              [(ngModel)]="formData.coloniaTutor"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="ciudadTutor">Ciudad</label>
+            <input
+              type="text"
+              id="ciudadTutor"
+              name="ciudadTutor"
+              [(ngModel)]="formData.ciudadTutor"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-step" [ngClass]="{ active: currentStep === 5 }">
+        <h2>Datos de la Carrera</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nombreCarrera">Nombre Carrera</label>
+            <select
+              id="nombreCarrera"
+              name="nombreCarrera"
+              [(ngModel)]="formData.nombreCarrera"
+              required
+            >
+              <option value="">Seleccione...</option>
+              <option value="Carrera1">Carrera 1</option>
+              <option value="Carrera2">Carrera 2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="especialidad">Especialidad</label>
+            <select
+              id="especialidad"
+              name="especialidad"
+              [(ngModel)]="formData.especialidad"
+              required
+            >
+              <option value="">Seleccione...</option>
+              <option value="Especialidad1">Especialidad 1</option>
+              <option value="Especialidad2">Especialidad 2</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación -->
+      <div class="form-buttons">
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="previousStep()"
+          [disabled]="currentStep === 1"
+        >
+          Anterior
+        </button>
+        <button type="button" class="btn btn-primary" (click)="nextStep()">
+          {{ currentStep === totalSteps ? "Finalizar Registro" : "Continuar" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

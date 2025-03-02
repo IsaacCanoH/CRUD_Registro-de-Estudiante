@@ -1,0 +1,424 @@
+:host {
+  display: block;
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --background-color: #ffffff;
+  --text-color: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --border-radius: 0.5rem;
+  --transition: all 0.3s ease;
+  font-family: "Arial", "Helvetica", sans-serif;
+}
+
+
+:host .container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column; 
+}
+
+:host .register-button-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+:host .register-button-container .btn {
+    width: 200px;
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border-radius: var(--border-radius);
+    background-color: var(--primary-color);
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+}
+
+:host .register-button-container .btn:hover {
+    background-color: var(--primary-hover); 
+}
+
+:host .search-container,
+:host .list-container {
+  width: 100%; /* Ajusta el ancho de los contenedores */
+  margin-bottom: 2rem;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+:host .header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+:host .header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+:host .header p {
+  color: var(--text-muted);
+}
+
+:host .search-box {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+:host .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+:host input {
+  width: 95%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+:host .card {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+:host .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+:host .student-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+:host .avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+:host .avatar-fallback {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+:host .student-details {
+  display: flex;
+  flex-direction: column;
+}
+
+:host .student-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+}
+
+:host .badges {
+  display: flex;
+  gap: 8px;
+}
+
+:host .badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+:host .badge-secondary {
+  background-color: #f8f9fa;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+:host .action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+:host .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+}
+
+:host .btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+:host .btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+:host .card-content {
+  padding: 16px;
+}
+
+:host .tabs-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+:host .tab-trigger {
+  padding: 8px 16px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+}
+
+:host .tab-trigger.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+:host .tab-content {
+  margin-top: 16px;
+}
+
+:host .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+:host .info-item h3 {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+:host .info-item p {
+  color: var(--text-muted);
+}
+
+:host .contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+:host .contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+:host .icon {
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+:host .address p {
+  margin: 0;
+}
+
+:host .muted {
+  color: var(--text-muted);
+}
+
+:host .academic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+:host .academic-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:host .academic-item h3 {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+:host .no-results {
+  text-align: center;
+  padding: 24px;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  margin-top: 24px;
+}
+
+:host .header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+:host .actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+:host .table-container {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: #f9fafb;
+}
+
+.actions-cell {
+  text-align: right;
+}
+
+.actions-cell .btn {
+  margin-left: 0.25rem;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.filter-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  :host .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  :host .action-buttons {
+    margin-top: 16px;
+    align-self: flex-end;
+  }
+
+  :host .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .table-container {
+    margin-top: 1rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    margin: 1rem;
+  }
+}

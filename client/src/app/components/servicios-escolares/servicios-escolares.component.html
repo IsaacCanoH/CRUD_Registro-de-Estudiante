@@ -1,0 +1,237 @@
+<div class="container">
+  <div class="register-button-container">
+    <button class="btn btn-primary">Registrar Alumno</button>
+  </div>
+
+  <div class="search-container">
+    <div class="header">
+      <h1>Búsqueda de Alumno</h1>
+      <p>Encuentra a un alumno por matrícula o nombre</p>
+    </div>
+
+    <div class="search-box">
+      <i class="search-icon">
+        <i class="fas fa-search"></i>
+      </i>
+      <input
+        type="text"
+        placeholder="Buscar alumno por matrícula o nombre..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+      />
+    </div>
+
+    <div class="card" *ngIf="selectedStudent">
+      <div class="card-header">
+        <div class="student-info">
+          <div class="avatar">
+            <img
+              *ngIf="selectedStudent.Foto"
+              [src]="getPhotoUrl(selectedStudent.Foto)"
+              alt="Foto de perfil"
+            />
+            <div *ngIf="!selectedStudent.Foto" class="avatar-fallback">
+              {{
+                getInitials(
+                  selectedStudent.Nombre,
+                  selectedStudent.ApellidoPaterno
+                )
+              }}
+            </div>
+          </div>
+          <div class="student-details">
+            <h2 class="student-name">
+              {{ selectedStudent.Nombre }}
+              {{ selectedStudent.ApellidoPaterno }}
+              {{ selectedStudent.ApellidoMaterno }}
+            </h2>
+            <div class="badges">
+              <span class="badge badge-secondary"
+                >Matrícula: {{ selectedStudent.Matricula }}</span
+              >
+              <span class="badge">{{ selectedStudent.Sexo }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-outline" (click)="handleEdit()">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger" (click)="handleDelete()">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="tabs">
+          <div class="tabs-list">
+            <button
+              class="tab-trigger"
+              [class.active]="activeTab === 'personal'"
+              (click)="setActiveTab('personal')"
+            >
+              Información Personal
+            </button>
+            <button
+              class="tab-trigger"
+              [class.active]="activeTab === 'contact'"
+              (click)="setActiveTab('contact')"
+            >
+              Contacto
+            </button>
+            <button
+              class="tab-trigger"
+              [class.active]="activeTab === 'academic'"
+              (click)="setActiveTab('academic')"
+            >
+              Información Académica
+            </button>
+          </div>
+
+          <div class="tab-content" *ngIf="activeTab === 'personal'">
+            <div class="info-grid">
+              <div class="info-item">
+                <h3>RFC</h3>
+                <p>{{ selectedStudent.RFC }}</p>
+              </div>
+              <div class="info-item">
+                <h3>Fecha de Nacimiento</h3>
+                <p>{{ formatDate(selectedStudent.FechaNacimiento) }}</p>
+              </div>
+              <div class="info-item">
+                <h3>Fecha de Alta</h3>
+                <p>{{ formatDate(selectedStudent.FechaAlta) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" *ngIf="activeTab === 'contact'">
+            <div class="contact-info">
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>{{ selectedStudent.Telefono }}</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>{{ selectedStudent.CorreoElectronico[0] }}</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="address">
+                  <p>
+                    {{ selectedStudent.Domicilio.Calle }}
+                    {{ selectedStudent.Domicilio.NumeroExterior }}
+                    <span *ngIf="selectedStudent.Domicilio.NumeroInterior">
+                      Int. {{ selectedStudent.Domicilio.NumeroInterior }}</span
+                    >
+                  </p>
+                  <p class="muted">
+                    {{ selectedStudent.Domicilio.Colonia }},
+                    {{ selectedStudent.Domicilio.Ciudad }}
+                  </p>
+                  <p class="muted">
+                    CP: {{ selectedStudent.Domicilio.CodigoPostal }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" *ngIf="activeTab === 'academic'">
+            <div class="academic-info">
+              <div class="academic-item">
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                  <h3>Promedio Bachillerato</h3>
+                  <p>{{ selectedStudent.PromedioBachillerato }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results" *ngIf="searchPerformed && !selectedStudent">
+      <p>No se encontraron resultados para la búsqueda.</p>
+    </div>
+  </div>
+
+  <div class="list-container">
+    <div class="header-container">
+      <h2>Lista de Estudiantes</h2>
+      <div class="actions">
+        <button class="btn" (click)="toggleFilters()">
+          <i class="fas fa-filter"></i>
+          Filtros
+        </button>
+        <button class="btn">
+          <i class="fas fa-file-excel"></i>
+          Excel
+        </button>
+        <button class="btn">
+          <i class="fas fa-file-pdf"></i>
+          PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal de Filtros -->
+    <div id="filterModal" class="modal" *ngIf="filtersVisible">
+      <div class="modal-content">
+        <h3>Filtrar estudiantes</h3>
+        <div class="filter-form">
+          <div class="form-group">
+            <label for="grupo">Grupo</label>
+            <input
+              [(ngModel)]="filter.grupo"
+              [ngModelOptions]="{ standalone: true }"
+              type="text"
+              id="grupo"
+              placeholder="Buscar por grupo"
+            />
+          </div>
+          <div class="form-group">
+            <label for="carrera">Carrera</label>
+            <input
+              [(ngModel)]="filter.carrera"
+              [ngModelOptions]="{ standalone: true }"
+              type="text"
+              id="carrera"
+              placeholder="Buscar por carrera"
+            />
+          </div>
+          <button class="btn btn-primary" (click)="aplicarFiltros()">
+            Aplicar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Nombre Completo</th>
+            <th>Grupo</th>
+            <th>Carrera</th>
+            <th>Fecha de Alta</th>
+            <th>Contacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let estudiante of estudiantes">
+            <td>{{ estudiante.matricula }}</td>
+            <td>{{ estudiante.nombre }}</td>
+            <td>{{ estudiante.grupo }}</td>
+            <td>{{ estudiante.carrera }}</td>
+            <td>{{ estudiante.fechaAlta }}</td>
+            <td>{{ estudiante.contacto }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

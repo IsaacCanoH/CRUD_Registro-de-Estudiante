@@ -1,0 +1,70 @@
+
+    <div class="container">
+        <div class="header">
+            <h1>Registro de Observaciones de Alumnos</h1>
+            <p>Complete el formulario para registrar una nueva observación</p>
+        </div>
+        <div class="form-container">
+            <form id="observation-form" class="form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="matricula">Matrícula</label>
+                        <input type="text" id="matricula" name="matricula" placeholder="Ej. A12345" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreAlumno">Nombre completo del alumno</label>
+                        <input type="text" id="nombreAlumno" name="nombreAlumno" placeholder="Nombre y apellidos" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="docente">Nombre del docente</label>
+                        <select id="docente" name="docente" required>
+                            <option value="" disabled selected>Seleccione un docente</option>
+                            <option value="1">Dr. Juan Pérez</option>
+                            <option value="2">Mtra. María González</option>
+                            <option value="3">Lic. Carlos Rodríguez</option>
+                            <option value="4">Ing. Ana Martínez</option>
+                            <option value="5">Dr. Roberto Sánchez</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="asignatura">Asignatura</label>
+                        <select id="asignatura" name="asignatura" required>
+                            <option value="" disabled selected>Seleccione una asignatura</option>
+                            <option value="MAT101">Matemáticas I</option>
+                            <option value="FIS102">Física Básica</option>
+                            <option value="QUI103">Química General</option>
+                            <option value="PROG104">Programación</option>
+                            <option value="EST105">Estadística</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="semestre">Semestre</label>
+                        <select id="semestre" name="semestre" required>
+                            <option value="" disabled selected>Seleccione un semestre</option>
+                            <option value="1">Primer Semestre</option>
+                            <option value="2">Segundo Semestre</option>
+                            <option value="3">Tercer Semestre</option>
+                            <option value="4">Cuarto Semestre</option>
+                            <option value="5">Quinto Semestre</option>
+                            <option value="6">Sexto Semestre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción de la observación</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Describa detalladamente la observación realizada al alumno..." required></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Registrar Observación</button>
+                </div>
+            </form>
+        </div>
+    </div>
