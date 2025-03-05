@@ -6,13 +6,17 @@ import { ServiciosEscolaresRegistroEstudianteComponent } from './components/serv
 import { DocenteExtracurricularComponent } from './components/docente-extracurricular/docente-extracurricular.component';
 import { ObservacionDocenteComponent } from './components/observacion-docente/observacion-docente.component';
 import { InicioComponent } from './components/inicio/inicio.component';
+import { EstudianteComponent } from './components/estudiante/estudiante.component';
+import { EstudianteEditarDatosComponent } from './components/estudiante-editar-datos/estudiante-editar-datos.component';
 
 const routes: Routes = [
-  { path: '', component: ServiciosEscolaresComponent},
-  { path: 'inicio', component: InicioComponent},
+  { path: 'se', component: ServiciosEscolaresComponent},
+  { path: '', component: InicioComponent},
   { path: 'se-reg-est', component: ServiciosEscolaresRegistroEstudianteComponent},
   { path: 'de-reg-act-ext', component: DocenteExtracurricularComponent},
-  { path: 'ob-de', component: ObservacionDocenteComponent}
+  { path: 'ob-de', component: ObservacionDocenteComponent},
+  { path: 'ed', component: EstudianteComponent},
+  { path: 'ed-ed-dt', component: EstudianteEditarDatosComponent}
 ];
 
 @NgModule({

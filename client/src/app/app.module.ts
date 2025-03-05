@@ -12,6 +12,8 @@ import { ServiciosEscolaresComponent } from './components/servicios-escolares/se
 import { ObservacionDocenteComponent } from './components/observacion-docente/observacion-docente.component';
 import { DocenteExtracurricularComponent } from './components/docente-extracurricular/docente-extracurricular.component';
 import { ServiciosEscolaresRegistroEstudianteComponent } from './components/servicios-escolares-registro-estudiante/servicios-escolares-registro-estudiante.component';
+import { EstudianteComponent } from './components/estudiante/estudiante.component';
+import { EstudianteEditarDatosComponent } from './components/estudiante-editar-datos/estudiante-editar-datos.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { ServiciosEscolaresRegistroEstudianteComponent } from './components/serv
     ObservacionDocenteComponent,
     DocenteExtracurricularComponent,
     ServiciosEscolaresRegistroEstudianteComponent,
+    EstudianteComponent,
+    EstudianteEditarDatosComponent,
   ],
   imports: [
     BrowserModule,
