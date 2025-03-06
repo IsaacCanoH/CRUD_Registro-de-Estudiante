@@ -1,97 +1,109 @@
 <div class="container">
-    <div class="card">
-      <div class="card-header">
-        <h1 class="card-title">Editar Datos del Estudiante</h1>
-        <p class="card-description">Complete el formulario para editar los datos del estudiante.</p>
-      </div>
-      <div class="card-content">
-        <form id="edit-student-form" class="form">
-          <h3>Información Personal</h3>
-          <div class="form-grid">
-            <div class="form-item">
-              <label for="domicilio" class="form-label">Domicilio</label>
-              <input type="text" id="domicilio" name="domicilio" class="input" placeholder="Domicilio" required />
-            </div>
-            <div class="form-item">
-              <label for="codigoPostal" class="form-label">Código Postal</label>
-              <input type="text" id="codigoPostal" name="codigoPostal" class="input" placeholder="Código Postal" required />
-            </div>
-            <div class="form-item">
-              <label for="numeroInterior" class="form-label">Número Interior</label>
-              <input type="text" id="numeroInterior" name="numeroInterior" class="input" placeholder="Número Interior" />
-            </div>
-            <div class="form-item">
-              <label for="numeroExterior" class="form-label">Número Exterior</label>
-              <input type="text" id="numeroExterior" name="numeroExterior" class="input" placeholder="Número Exterior" />
-            </div>
-            <div class="form-item">
-              <label for="calle" class="form-label">Calle</label>
-              <input type="text" id="calle" name="calle" class="input" placeholder="Calle" required />
-            </div>
-            <div class="form-item">
-              <label for="colonia" class="form-label">Colonia</label>
-              <input type="text" id="colonia" name="colonia" class="input" placeholder="Colonia" required />
-            </div>
-            <div class="form-item">
-              <label for="ciudad" class="form-label">Ciudad</label>
-              <input type="text" id="ciudad" name="ciudad" class="input" placeholder="Ciudad" required />
-            </div>
-            <div class="form-item">
-              <label for="fotografia" class="form-label">Fotografía</label>
-              <input type="file" id="fotografia" name="fotografia" class="input" accept="image/*" />
-            </div>
-            <div class="form-item">
-              <label for="correo" class="form-label">Correo</label>
-              <input type="email" id="correo" name="correo" class="input" placeholder="Correo" required />
-            </div>
-            <div class="form-item">
-              <label for="telefono" class="form-label">Teléfono</label>
-              <input type="tel" id="telefono" name="telefono" class="input" placeholder="Teléfono" required />
-            </div>
-          </div>
-  
-          <h3>Información Tutor</h3>
-          <div class="form-grid">
-            <div class="form-item">
-              <label for="domicilioTutor" class="form-label">Domicilio</label>
-              <input type="text" id="domicilioTutor" name="domicilioTutor" class="input" placeholder="Domicilio" required />
-            </div>
-            <div class="form-item">
-              <label for="codigoPostalTutor" class="form-label">Código Postal</label>
-              <input type="text" id="codigoPostalTutor" name="codigoPostalTutor" class="input" placeholder="Código Postal" required />
-            </div>
-            <div class="form-item">
-              <label for="numeroInteriorTutor" class="form-label">Número Interior</label>
-              <input type="text" id="numeroInteriorTutor" name="numeroInteriorTutor" class="input" placeholder="Número Interior" />
-            </div>
-            <div class="form-item">
-              <label for="numeroExteriorTutor" class="form-label">Número Exterior</label>
-              <input type="text" id="numeroExteriorTutor" name="numeroExteriorTutor" class="input" placeholder="Número Exterior" />
-            </div>
-            <div class="form-item">
-              <label for="calleTutor" class="form-label">Calle</label>
-              <input type="text" id="calleTutor" name="calleTutor" class="input" placeholder="Calle" required />
-            </div>
-            <div class="form-item">
-              <label for="coloniaTutor" class="form-label">Colonia</label>
-              <input type="text" id="coloniaTutor" name="coloniaTutor" class="input" placeholder="Colonia" required />
-            </div>
-            <div class="form-item">
-              <label for="ciudadTutor" class="form-label">Ciudad</label>
-              <input type="text" id="ciudadTutor" name="ciudadTutor" class="input" placeholder="Ciudad" required />
-            </div>
-            <div class="form-item">
-              <label for="correoTutor" class="form-label">Correo</label>
-              <input type="email" id="correoTutor" name="correoTutor" class="input" placeholder="Correo" required />
-            </div>
-            <div class="form-item">
-              <label for="telefonoTutor" class="form-label">Teléfono</label>
-              <input type="tel" id="telefonoTutor" name="telefonoTutor" class="input" placeholder="Teléfono" required />
-            </div>
-          </div>
-  
-          <button type="submit" class="button button-primary button-submit">Guardar Cambios</button>
-        </form>
-      </div>
-    </div>
+  <div class="header">
+      <h1>Editar Datos</h1>
+      <p>Complete el formulario para editar los datos</p>
   </div>
+
+  <div class="form-container">
+      <form id="registro-form">
+          <!-- Información Personal -->
+          <h2>Información Personal</h2>
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="codigoPostal">Código Postal</label>
+                  <input type="text" id="codigoPostal" placeholder="Ingrese código postal" />
+              </div>
+
+              <div class="form-group">
+                  <label for="ciudad">Ciudad</label>
+                  <input type="text" id="ciudad" placeholder="Ingrese ciudad" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="colonia">Colonia</label>
+                  <input type="text" id="colonia" placeholder="Ingrese colonia" />
+              </div>
+
+              <div class="form-group">
+                  <label for="numeroExterior">Número Exterior</label>
+                  <input type="text" id="numeroExterior" placeholder="Ingrese número exterior" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="numeroInterior">Número Interior</label>
+                  <input type="text" id="numeroInterior" placeholder="Ingrese número interior" />
+              </div>
+
+              <div class="form-group">
+                  <label for="correoElectronico">Correo Electrónico</label>
+                  <input type="email" id="correoElectronico" placeholder="Ingrese correo electrónico" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+                  <input type="tel" id="telefono" placeholder="Ingrese teléfono" />
+              </div>
+
+              <div class="form-group">
+                  <label for="foto">Foto</label>
+                  <input type="file" id="foto" accept="image/*" />
+              </div>
+          </div>
+
+          <!-- Información Tutor -->
+          <h2>Información Tutor</h2>
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="codigoPostalTutor">Código Postal</label>
+                  <input type="text" id="codigoPostalTutor" placeholder="Ingrese código postal" />
+              </div>
+
+              <div class="form-group">
+                  <label for="ciudadTutor">Ciudad</label>
+                  <input type="text" id="ciudadTutor" placeholder="Ingrese ciudad" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="coloniaTutor">Colonia</label>
+                  <input type="text" id="coloniaTutor" placeholder="Ingrese colonia" />
+              </div>
+
+              <div class="form-group">
+                  <label for="numeroExteriorTutor">Número Exterior</label>
+                  <input type="text" id="numeroExteriorTutor" placeholder="Ingrese número exterior" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="numeroInteriorTutor">Número Interior</label>
+                  <input type="text" id="numeroInteriorTutor" placeholder="Ingrese número interior" />
+              </div>
+
+              <div class="form-group">
+                  <label for="correoElectronicoTutor">Correo Electrónico</label>
+                  <input type="email" id="correoElectronicoTutor" placeholder="Ingrese correo electrónico" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="telefonoTutor">Teléfono</label>
+                  <input type="tel" id="telefonoTutor" placeholder="Ingrese teléfono" />
+              </div>
+          </div>
+
+          <div class="form-buttons">
+              <button type="submit" class="btn btn-primary">Actualizar Datos</button>
+          </div>
+      </form>
+  </div>
+</div>

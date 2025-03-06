@@ -4,27 +4,25 @@
     <p>Complete el formulario para registrar una nueva actividad</p>
   </div>
 
+  <div *ngIf="notificacionMensaje" class="notification">
+    {{ notificacionMensaje }} <i class="fas fa-check"></i>
+  </div>
+
   <div class="form-container">
-    <form id="registro-form">
+    <form (ngSubmit)="registrarActividad()" #registroForm="ngForm">
       <div class="form-row">
         <div class="form-group">
-          <label for="estudiante">Estudiante</label>
-          <select id="estudiante">
-            <option value="">Seleccione un estudiante</option>
-            <!-- Opciones de estudiantes -->
-            <option value="1">Juan Pérez</option>
-            <option value="2">María López</option>
-            <option value="3">Carlos García</option>
-          </select>
-        </div>
+          <label for="matricula">Matricula Estudiante</label>
+          <input type="text" id="matricula" placeholder="Ingrese la matricula del estudiante" [(ngModel)]="matricula" name="matricula"/>
+      </div>
 
         <div class="form-group">
           <label for="docente">Docente</label>
-          <select id="docente">
+          <select id="docente" [(ngModel)]="docente" name="docente">
             <option value="">Seleccione un docente</option>
-            <!-- Opciones de docentes -->
-            <option value="1">Prof. Ana Torres</option>
-            <option value="2">Prof. Luis Martínez</option>
+            <option *ngFor="let docenteItem of docentes" [value]="docenteItem.NombreCompletoDocente">
+              {{ docenteItem.NombreCompletoDocente }}
+            </option>
           </select>
         </div>
       </div>
@@ -32,40 +30,41 @@
       <div class="form-row">
         <div class="form-group">
           <label for="actividad">Actividad Extracurricular</label>
-          <select id="actividad">
+          <select id="actividad" [(ngModel)]="actividad" name="actividad">
             <option value="">Seleccione una actividad</option>
-            <!-- Opciones de actividades -->
-            <option value="1">Fútbol</option>
-            <option value="2">Teatro</option>
-            <option value="3">Música</option>
+            <option *ngFor="let actividadItem of actividades" [value]="actividadItem.NombreActividadExtracurricular">
+              {{ actividadItem.NombreActividadExtracurricular }}
+            </option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="fechaInicio">Fecha de inicio</label>
-          <input type="date" id="fechaInicio" />
+          <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio" name="fechaInicio"/>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label for="fechaFin">Fecha de fin</label>
-          <input type="date" id="fechaFin" />
+          <input type="date" id="fechaFin" [(ngModel)]="fechaFin" name="fechaFin"/>
         </div>
 
         <div class="form-group">
           <label for="resultado">Observaciones</label>
-          <select id="resultado">
+          <select id="resultado" [(ngModel)]="resultado" name="resultado">
             <option value="">Seleccione una observación</option>
-            <!-- Opciones de observaciones -->
-            <option value="1">Asistió</option>
-            <option value="2">No asistió</option>
+            <option value="Asistió">Asistió</option>
+            <option value="No asistió">No asistió</option>
           </select>
         </div>
       </div>
 
       <div class="form-buttons">
-        <button type="submit" class="btn btn-primary">Registrar Actividad</button>
+        <button type="submit" class="animated-button">
+          <span>Registrar Actividad</span>
+          <span></span>
+        </button>
       </div>
     </form>
   </div>
