@@ -66,8 +66,8 @@ export class DocenteExtracurricularComponent implements OnInit{
     };
 
     this.actividadService.registrarActividad(actividadData).subscribe(
-      (response) => {
-        console.log('Actividad registrada:', response);
+      (res) => {
+        console.log('Actividad registrada:', res);
         this.limpiarFormulario();
         this.notificacionService.showNotification('Actividad asignada correctamente');
       },

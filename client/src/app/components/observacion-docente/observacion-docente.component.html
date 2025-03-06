@@ -1,73 +1,116 @@
 <div class="container">
-    <div class="header">
-      <h1>Registro de Observaciones Docentes</h1>
-      <p>Complete el formulario para registrar una nueva observación</p>
-    </div>
-  
-    <div class="form-container">
-      <form id="registro-form">
-        <div class="form-row">
-          <div class="form-group" style="flex: 2;">
-            <label for="buscador">Buscar Estudiante</label>
-            <input type="text" id="buscador" placeholder="Buscar estudiante..." oninput="filtrarEstudiantes()" />
-          </div>
-        </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="matricula">Matrícula</label>
-            <input type="text" id="matricula" placeholder="Ingrese matrícula" />
-          </div>
-  
-          <div class="form-group">
-            <label for="nombreCompleto">Nombre Completo</label>
-            <input type="text" id="nombreCompleto" placeholder="Ingrese nombre completo" />
-          </div>
-        </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="docente">Docente</label>
-            <select id="docente">
-              <option value="">Seleccione un docente</option>
-              <option value="1">Prof. Ana Torres</option>
-              <option value="2">Prof. Luis Martínez</option>
-            </select>
-          </div>
-  
-          <div class="form-group">
-            <label for="asignatura">Asignatura</label>
-            <select id="asignatura">
-              <option value="">Seleccione una asignatura</option>
-              <option value="1">Matemáticas</option>
-              <option value="2">Historia</option>
-              <option value="3">Ciencias</option>
-            </select>
-          </div>
-        </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="anio">Año</label>
-            <input type="number" id="anio" placeholder="Año" />
-          </div>
-  
-          <div class="form-group">
-            <label for="semestre">Semestre</label>
-            <input type="number" id="semestre" placeholder="Semestre" />
-          </div>
-        </div>
-  
-        <div class="form-row">
-          <div class="form-group" style="flex: 2;">
-            <label for="observaciones">Observaciones</label>
-            <textarea id="observaciones" rows="4" placeholder="Ingrese observaciones..." style="resize: vertical;"></textarea>
-          </div>
-        </div>
-  
-        <div class="form-buttons">
-          <button type="submit" class="btn btn-primary">Registrar Actividad</button>
-        </div>
-      </form>
-    </div>
+  <div class="header">
+    <h1>Registro de Observaciones Docentes</h1>
+    <p>Complete el formulario para registrar una nueva observación</p>
   </div>
+
+  <div *ngIf="notificacionMensaje" class="notification">
+    {{ notificacionMensaje }} <i class="fas fa-check"></i>
+  </div>
+
+  <div class="form-container">
+    <form (ngSubmit)="registrarObservacion()" #registroForm="ngForm">
+      <div class="form-row">
+        <div class="form-group" style="flex: 2">
+          <label for="buscador">Buscar Estudiante</label>
+          <input
+            type="text"
+            id="buscador"
+            placeholder="Buscar estudiante..."
+            oninput="filtrarEstudiantes()"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="matricula">Matrícula</label>
+          <input
+            type="text"
+            id="matricula"
+            placeholder="Ingrese matrícula"
+            [(ngModel)]="matricula"
+            name="matricula"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="nombreCompleto">Nombre Completo</label>
+          <input
+            type="text"
+            id="nombreCompleto"
+            placeholder="Ingrese nombre completo"
+            [(ngModel)]="estudiante"
+            name="estudiante"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="docente">Docente</label>
+          <select id="docente" [(ngModel)]="docente" name="docente" (change)="actualizarAsignaturas()">
+            <option value="">Seleccione un docente</option>
+            <option *ngFor="let docenteItem of docentes" [value]="docenteItem.NombreCompletoDocente">
+              {{ docenteItem.NombreCompletoDocente }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="asignatura">Asignatura</label>
+          <select id="asignatura" [(ngModel)]="asignatura" name="asignatura">
+            <option value="">Seleccione una asignatura</option>
+            <option *ngFor="let asignatura of asignaturas" [value]="asignatura">
+              {{ asignatura }}
+            </option>
+          </select>
+        </div>        
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="anio">Año</label>
+          <input
+            type="number"
+            id="anio"
+            placeholder="Año"
+            [(ngModel)]="anio"
+            name="año"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="semestre">Semestre</label>
+          <input
+            type="number"
+            id="semestre"
+            placeholder="Semestre"
+            [(ngModel)]="semestre"
+            name="semestre"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex: 2">
+          <label for="observaciones">Observaciones</label>
+          <textarea
+            id="observaciones"
+            rows="4"
+            placeholder="Ingrese observaciones..."
+            style="resize: vertical"
+            [(ngModel)]="descripcion"
+            name="descripcion"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">
+          Registrar Actividad
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,134 +1,149 @@
 :host {
-    display: block;
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --background-color: #ffffff;
-    --text-color: #1f2937;
-    --text-muted: #6b7280;
-    --border-color: #e5e7eb;
-    --success-color: #10b981;
-    --error-color: #ef4444;
-    --border-radius: 0.5rem;
-    --transition: all 0.3s ease;
-    font-family: 'Arial', sans-serif; 
+  display: block;
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --background-color: #ffffff;
+  --text-color: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --border-radius: 0.5rem;
+  --transition: all 0.3s ease;
+  font-family: "Arial", sans-serif;
 }
 
 :host .container {
-    max-width: 1000px; 
-    margin: 2rem auto;
-    padding: 1rem;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
 }
 
 :host .header {
-    text-align: center;
-    margin-bottom: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 :host .header h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
 }
 
 :host .header p {
-    color: var(--text-muted);
+  color: var(--text-muted);
 }
 
 :host .form-container {
-    background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 2px solid var(--border-color); 
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--border-color);
 }
 
 :host .form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
 
 :host .form-group {
-    flex: 1;
-    margin-right: 1rem;
-    min-width: 200px;
+  flex: 1;
+  margin-right: 1rem;
+  min-width: 200px;
 }
 
 :host .form-group:last-child {
-    margin-right: 0; 
+  margin-right: 0;
 }
 
 :host label {
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--text-color);
-    display: block; 
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+  display: block;
 }
 
 :host input,
 :host select,
 :host textarea {
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    transition: var(--transition);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    width: 100%; 
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
 }
 
 :host input:focus,
 :host select:focus,
 :host textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 :host .btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
 }
 
 :host .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
 }
 
 :host .btn-primary:hover {
-    background-color: var(--primary-hover);
+  background-color: var(--primary-hover);
 }
 
 :host textarea {
-    font-family: 'Arial', sans-serif; /* Cambia 'Arial' por la fuente sans-serif que prefieras */
+  font-family: "Arial", sans-serif; /* Cambia 'Arial' por la fuente sans-serif que prefieras */
 }
 
 :host .form-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: none;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: none;
+}
+
+.notification {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  background-color: #3d9940dc;
+  color: white;
+  font-weight: 600;
+  font-family: sans-serif;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideInRight 0.5s forwards, slideOutRight 0.5s forwards 2.5s;
 }
 
 @media (max-width: 768px) {
-    :host .form-row {
-        flex-direction: column;
-    }
+  :host .form-row {
+    flex-direction: column;
+  }
 
-    :host .form-group {
-        margin-right: 0;
-        margin-bottom: 1rem; 
-    }
+  :host .form-group {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
 
-    :host .form-container {
-        padding: 1.5rem;
-    }
+  :host .form-container {
+    padding: 1.5rem;
+  }
 }

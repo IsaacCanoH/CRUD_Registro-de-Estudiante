@@ -1,4 +1,4 @@
-const { Schema, Model } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const ObservacioDocenteSchema = new Schema({
     MatriculaAlumno: { type: String, required: true },
@@ -10,4 +10,4 @@ const ObservacioDocenteSchema = new Schema({
     Descripcion: { type: String, required: true }
 })
 
-module.exports = model("ObservacionDocente", EstudianteSchema, "ObservacionDocente");
+module.exports = model("ObservacionDocente", ObservacioDocenteSchema, "ObservacionDocente");

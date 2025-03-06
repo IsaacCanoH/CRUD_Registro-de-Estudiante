@@ -11,9 +11,11 @@ app.use(express.json());
 
 const rutasEstudiante = require("./routes/estudianteRoute");
 const rutasActividad = require("./routes/actividadRoute");
+const rutasObservacion = require("./routes/observacionRoute");
 
 app.use("/api/estudiante", rutasEstudiante);
 app.use("/api/actividad", rutasActividad);
+app.use("/api/observacion", rutasObservacion);
 
 app.listen(puerto,() => {
     console.log("Servidor corriendo en el puerto", puerto)
