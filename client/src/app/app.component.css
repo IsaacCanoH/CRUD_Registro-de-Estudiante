@@ -1,61 +1,36 @@
-:root {
-    --primary: #2563eb;
-    --background: #ffffff;
-    --card-background: #ffffff;
-    --border: #e2e8f0;
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --spacing-2: 0.5rem;
-    --spacing-3: 1rem;
-    --spacing-4: 1.5rem;
-    --spacing-5: 2rem;
-    --radius: 0.5rem;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: sans-serif;
-    background-color: #f8fafc;
-    color: var(--text);
-    line-height: 1.5;
-}
-
-.header {
+.navbar {
+    width: 100%;
+    height: 70px;
     background-color: #8bacf3;
-    border: none; /* Sin borde */
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Ocupa el ancho completo */
-}
-
-.header-container {
-    height: 4rem;
+    padding: 0 1rem;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 var(--spacing-3); /* Espaciado lateral */
-}
-
-.logo {
+    position: fixed; /* Esto mantiene el navbar fijo */
+    top: 0; /* Colócalo en la parte superior de la pantalla */
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  }
+  
+  .navbar-content {
     display: flex;
     align-items: center;
-    color: #eff6ff;
-    gap: var(--spacing-2);
-}
-
-.logo i {
-    font-size: 2rem;
-    color: rgb(243, 238, 238);
-}
-
-.logo h1 {
+  }
+  
+  .navbar-title {
+    margin: 0 0 0 10px;
     font-size: 1.5rem;
-    font-weight: bold;
-}
+  }
+  
+  .navbar-icon {
+    font-size: 1.5rem;
+    margin-left: 50px;
+  }
+  
+  /* Asegúrate de que el contenido debajo del navbar no quede oculto */
+  main {
+    margin-top: 90px; /* El mismo tamaño que la altura de la navbar */
+  }
+  

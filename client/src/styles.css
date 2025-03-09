@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  color: var(--text, #333);
+  line-height: 1.5;
+  min-height: 100vh; /* Cambiado de height a min-height */
+  overflow: auto; /* Cambiado de hidden a auto */
+  background: linear-gradient(270deg, rgba(173, 216, 230, 0.5), rgba(135, 206, 250, 0.5), rgba(70, 130, 180, 0.5));
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}

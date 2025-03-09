@@ -3,6 +3,9 @@ const ActividadExtracurricular = require("../models/ActividadExtracurricular");
 const Docente = require("../models/Docente");
 const ActividadesExtracurriculares = require("../models/ActividadesExtracurriculares");
 
+const multer = require("multer");
+const xlsx = require("xlsx");
+
 const crearActividadExtracurricular = async(req,res) => {
     try {
         const actividad = new ActividadExtracurricular(req.body);
@@ -31,8 +34,46 @@ const obtenerActividadesExtracurriculares = async(req,res) => {
     }
 }
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage});
+
+const uploadExcel = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Por favor sube un archivo Excel" });
+        }
+
+        // Leer el archivo Excel
+        const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        // Convertir el contenido a JSON
+        const data = xlsx.utils.sheet_to_json(sheet);
+
+        // Mapear datos y almacenarlos en MongoDB
+        const actividades = data.map(row => ({
+            Matricula: row.Matricula,
+            NombreDocente: row.NombreDocente,
+            NombreActividadExtracurricular: row.NombreActividadExtracurricular,
+            FechaInicio: new Date(row.FechaInicio),
+            FechaTermino: new Date(row.FechaTermino),
+            Resultado: row.Resultado
+        }));
+
+        await ActividadExtracurricular.insertMany(actividades);
+        res.status(200).json({ message: "Datos importados correctamente" });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al procesar el archivo" });
+    }
+};
+
 module.exports = {
     crearActividadExtracurricular,
     obtenerDocentes, 
-    obtenerActividadesExtracurriculares
+    obtenerActividadesExtracurriculares,
+    uploadExcel,
+    upload
 }

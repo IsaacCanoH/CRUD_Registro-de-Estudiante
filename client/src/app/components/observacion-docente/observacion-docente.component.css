@@ -119,7 +119,7 @@
 }
 
 .notification {
-  position: absolute;
+  position: fixed;
   top: 100px;
   right: 20px;
   background-color: #3d9940dc;
