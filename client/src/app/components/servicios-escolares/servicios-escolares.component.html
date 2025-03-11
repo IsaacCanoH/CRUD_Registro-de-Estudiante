@@ -1,7 +1,12 @@
 <div class="container">
-  <div class="register-button-container">
-    <button class="btn btn-primary">Registrar Alumno</button>
-  </div>
+  <div class="register-button-container-new">
+    <button class="cssbuttons-io-button-new">
+      Registrar Estudiante
+      <div class="icon-new">
+        <span style="font-size: 1.5em; color: #7b52b9;">+</span>
+      </div>
+    </button>
+  </div>  
 
   <div class="search-container">
     <div class="header">
@@ -162,19 +167,31 @@
     <div class="header-container">
       <h2>Lista de Estudiantes</h2>
       <div class="actions">
-        <button class="btn" (click)="toggleFilters()">
-          <i class="fas fa-filter"></i>
-          Filtros
+        <button class="button button-filters" (click)="toggleFilters()">
+            <div class="button-wrapper">
+                <div class="text">Filtros</div>
+                <span class="icon">
+                    <i class="fas fa-filter"></i>
+                </span>
+            </div>
         </button>
-        <button class="btn">
-          <i class="fas fa-file-excel"></i>
-          Excel
+        <button class="button button-excel">
+            <div class="button-wrapper">
+                <div class="text">Excel</div>
+                <span class="icon">
+                    <i class="fas fa-download"></i>
+                </span>
+            </div>
         </button>
-        <button class="btn">
-          <i class="fas fa-file-pdf"></i>
-          PDF
+        <button class="button button-pdf">
+            <div class="button-wrapper">
+                <div class="text">PDF</div>
+                <span class="icon">
+                    <i class="fas fa-download"></i>
+                </span>
+            </div>
         </button>
-      </div>
+    </div>
     </div>
 
     <!-- Modal de Filtros -->

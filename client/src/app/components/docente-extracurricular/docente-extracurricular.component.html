@@ -90,4 +90,27 @@
       </div>
     </form>
   </div>
+
+  <div class="form-container second-container">
+    <h2>Cargar observaciones por documento</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" />
+      </div>
+      <div class="form-group">
+        <button class="animated-button" (click)="subirArchivo()">
+          <span>Cargar Datos</span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <button class="animated-button" (click)="descargarPalntilla()" >
+          <span>Obtener Plantilla</span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>  
 </div>

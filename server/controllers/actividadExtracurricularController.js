@@ -70,10 +70,39 @@ const uploadExcel = async (req, res) => {
     }
 };
 
+const generarExcelPlantilla = (req, res) => {
+    try {
+        // Definir los encabezados del archivo Excel
+        const encabezados = [
+            ["Matricula", "NombreDocente", "NombreActividadExtracurricular", "FechaInicio", "FechaTermino", "Resultado"]
+        ];
+
+        // Crear un nuevo libro de trabajo y una hoja
+        const workbook = xlsx.utils.book_new();
+        const worksheet = xlsx.utils.aoa_to_sheet(encabezados);
+
+        // Agregar la hoja al libro de trabajo
+        xlsx.utils.book_append_sheet(workbook, worksheet, "Plantilla");
+
+        // Escribir el archivo en un buffer
+        const buffer = xlsx.write(workbook, { type: "buffer", bookType: "xlsx" });
+
+        // Configurar la respuesta HTTP para enviar el archivo
+        res.setHeader("Content-Disposition", "attachment; filename=Plantilla_Actividades.xlsx");
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        res.send(buffer);
+    } catch (error) {
+        console.error("Error al generar la plantilla de Excel:", error);
+        res.status(500).json({ mensaje: "Error al generar la plantilla de Excel" });
+    }
+};
+
 module.exports = {
     crearActividadExtracurricular,
     obtenerDocentes, 
     obtenerActividadesExtracurriculares,
     uploadExcel,
-    upload
+    upload,
+    generarExcelPlantilla
 }

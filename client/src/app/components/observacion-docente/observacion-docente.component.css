@@ -5,7 +5,7 @@
   --background-color: #ffffff;
   --text-color: #1f2937;
   --text-muted: #6b7280;
-  --border-color: #e5e7eb;
+  --border-color: #0e0f0f48;
   --success-color: #10b981;
   --error-color: #ef4444;
   --border-radius: 0.5rem;
@@ -181,6 +181,10 @@
   width: 150px;
   height: 150px;
   opacity: 1;
+}
+
+:host .second-container {
+  margin-top: 2rem; 
 }
 
 @media (max-width: 768px) {
