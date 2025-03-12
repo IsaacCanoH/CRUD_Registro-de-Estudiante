@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const ActividadExtracurricularSchema = new Schema({
-    Matricula: { type: String, required: true },
+    MatriculaAlumno: { type: String, required: true },
     NombreDocente: { type: String, required: true },
     NombreActividadExtracurricular: { type: String, required: true },
     FechaInicio: { type: Date, required: true },

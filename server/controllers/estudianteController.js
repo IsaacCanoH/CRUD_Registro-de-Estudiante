@@ -1,5 +1,10 @@
 const { Model, model } = require("mongoose");
 const Estudiante = require("../models/Estudiante");
+const Actividades = require("../models/ActividadExtracurricular");
+const Observaciones = require("../models/ObservacionDocente");
+
+const multer = require("multer");
+const xlsx = require("xlsx");
 
 const quitarAcentos = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -24,69 +29,159 @@ const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) =
     return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${año}${mes}${dia}`;
 };
 
-// Metodo para crear estudiante
-exports.crearEstudiante = async (req, res) => {
-    try {
-        const {
-            Nombre,
-            ApellidoPaterno,
-            ApellidoMaterno,
-            FechaNacimiento,
-            Sexo,
-            Telefonos,
-            CorreosElectronicos,
-            Foto,
-            Semestre,
-            Año,
-            Domicilio,
-            PromedioBachillerato,
-            EspecialidadBachillerato,
-            CertificadoBachillerato,
-            NombreCarrera,
-            Especialidad,
-            Tutor
-        } = req.body;
+    // Metodo para crear estudiante
+    exports.crearEstudiante = async (req, res) => {
+        try {
+            const {
+                Nombre,
+                ApellidoPaterno,
+                ApellidoMaterno,
+                FechaNacimiento,
+                Sexo,
+                Telefonos,
+                CorreosElectronicos,
+                Foto,
+                Semestre,
+                Año,
+                Domicilio,
+                PromedioBachillerato,
+                EspecialidadBachillerato,
+                CertificadoBachillerato,
+                NombreCarrera,
+                Especialidad,
+                Tutor
+            } = req.body;
 
-        // Verificar si ya existe un estudiante con el mismo RFC
-        const rfcGenerado = generarRFC(Nombre, ApellidoPaterno, ApellidoMaterno, FechaNacimiento);
+            // Verificar si ya existe un estudiante con el mismo RFC
+            const rfcGenerado = generarRFC(Nombre, ApellidoPaterno, ApellidoMaterno, FechaNacimiento);
 
-        if (rfcGenerado) {
-            const existeRFC = await Estudiante.findOne({ RFC: rfcGenerado });
-            if (existeRFC) {
-                return res.status(400).json({ message: "El estudiante ya está registrado con este RFC." });
+            if (rfcGenerado) {
+                const existeRFC = await Estudiante.findOne({ RFC: rfcGenerado });
+                if (existeRFC) {
+                    return res.status(400).json({ message: "El estudiante ya está registrado con este RFC." });
+                }
             }
+
+            // Crear una nueva instancia del modelo Estudiante
+            const nuevoEstudiante = new Estudiante({
+                Nombre,
+                ApellidoPaterno,
+                ApellidoMaterno,
+                FechaNacimiento,
+                Sexo,
+                Telefonos,
+                CorreosElectronicos,
+                Foto,
+                Semestre,
+                Año,
+                Domicilio,
+                PromedioBachillerato,
+                EspecialidadBachillerato,
+                CertificadoBachillerato,
+                NombreCarrera,
+                Especialidad,
+                Tutor
+            });
+
+            // Guardar en la base de datos
+            await nuevoEstudiante.save();
+
+            return res.status(201).json({ message: "Estudiante registrado exitosamente", estudiante: nuevoEstudiante });
+        } catch (error) {
+            console.error("Error al registrar estudiante:", error);
+            return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+        }
+    };
+
+// Configuración de Multer para almacenar el archivo en memoria
+const storage = multer.memoryStorage();
+exports.upload = multer({ storage: storage });
+
+exports.uploadExcel = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Por favor sube un archivo Excel" });
         }
 
-        // Crear una nueva instancia del modelo Estudiante
-        const nuevoEstudiante = new Estudiante({
-            Nombre,
-            ApellidoPaterno,
-            ApellidoMaterno,
-            FechaNacimiento,
-            Sexo,
-            Telefonos,
-            CorreosElectronicos,
-            Foto,
-            Semestre,
-            Año,
-            Domicilio,
-            PromedioBachillerato,
-            EspecialidadBachillerato,
-            CertificadoBachillerato,
-            NombreCarrera,
-            Especialidad,
-            Tutor
-        });
+        console.log("Archivo recibido:", req.file.originalname);
 
-        // Guardar en la base de datos
-        await nuevoEstudiante.save();
+        console.log(req.file);
 
-        return res.status(201).json({ message: "Estudiante registrado exitosamente", estudiante: nuevoEstudiante });
+
+        // Leer el archivo Excel
+        const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        // Convertir el contenido a JSON
+        const data = xlsx.utils.sheet_to_json(sheet);
+        console.log("Datos procesados del Excel:", data);
+
+        // Validar que haya datos
+        if (data.length === 0) {
+            return res.status(400).json({ message: "El archivo Excel está vacío o tiene un formato incorrecto" });
+        }
+
+        // Mapear datos y almacenarlos en MongoDB
+        const estudiantes = data.map(row => ({
+            Matricula: row.Matrícula,
+            Nombre: row.Nombre,
+            ApellidoPaterno: row.ApellidoPaterno,
+            ApellidoMaterno: row.ApellidoMaterno,
+            FechaNacimiento: row.FechaNacimiento
+                ? new Date((row.FechaNacimiento - 25569) * 86400000)
+                : null,
+            Sexo: row.Sexo,
+            Telefonos: row.Teléfonos ? String(row.Teléfonos) : "",
+            CorreosElectronicos: row.CorreosElectrónicos
+                ? String(row.CorreosElectrónicos).split(",").map(email => email.trim())
+                : [],
+            RFC: row.RFC,
+            Semestre: row.Semestre,
+            Año: row["Año"],
+            Domicilio: {
+                Calle: row["Domicilio.Calle"],
+                NumeroInterior: row["Domicilio.NumeroInterior"],
+                NumeroExterior: row["Domicilio.NumeroExterior"],
+                Colonia: row["Domicilio.Colonia"],
+                CodigoPostal: row["Domicilio.CodigoPostal"],
+                Ciudad: row["Domicilio.Ciudad"]
+            },
+            PromedioBachillerato: row.PromedioBachillerato,
+            EspecialidadBachillerato: row.EspecialidadBachillerato,
+            CertificadoBachillerato: row.CertificadoBachillerato,
+            NombreCarrera: row.NombreCarrera,
+            Especialidad: row.Especialidad,
+            Tutor: {
+                Nombre: row["Tutor.Nombre"],
+                ApellidoPaterno: row["Tutor.ApellidoPaterno"],
+                ApellidoMaterno: row["Tutor.ApellidoMaterno"],
+                Telefonos: row["Tutor.Teléfonos"] ? String(row["Tutor.Teléfonos"]) : "",
+                CorreosElectronicos: row["Tutor.CorreosElectrónicos"]
+                    ? String(row["Tutor.CorreosElectrónicos"]).split(",").map(email => email.trim())
+                    : [],
+                Domicilio: {
+                    Calle: row["Tutor.Domicilio.Calle"],
+                    NumeroInterior: row["Tutor.Domicilio.NumeroInterior"],
+                    NumeroExterior: row["Tutor.Domicilio.NumeroExterior"],
+                    Colonia: row["Tutor.Domicilio.Colonia"],
+                    CodigoPostal: row["Tutor.Domicilio.CodigoPostal"],
+                    Ciudad: row["Tutor.Domicilio.Ciudad"]
+                }
+            }
+        }));        
+
+        // Insertar estudiantes en la base de datos
+        await Estudiante.insertMany(estudiantes);
+
+        return res.status(200).json({ message: "Datos importados correctamente" });
+
     } catch (error) {
-        console.error("Error al registrar estudiante:", error);
-        return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+        console.error("Error al procesar el archivo:", error);
+        return res.status(500).json({ message: "Error al procesar el archivo", error: error.message });
     }
 };
+
 
 // Metodo para visualizar todos los estudiantes
 exports.getAllEstudiantes = async (req, res) => {
@@ -251,7 +346,7 @@ exports.filtroPorSemestre= async (req, res) => {
         console.log("Error al filtrar por semestre")
         return res.status(500).json({ message: "Error al filtrar por semestre", error: error.message });
     }
-}
+};
 
 // Metodo para filtrar por año
 exports.filtroPorAnio = async (req, res) => {
@@ -273,7 +368,7 @@ exports.filtroPorAnio = async (req, res) => {
         console.log("Error al filtrar por año")
         return res.status(500).json({ message: "Error al filtrar por año", error: error.message });
     }
-}
+};
 
 // Metodo para filtrar por estatus
 exports.filtroPorEstatus = async (req, res) => {
@@ -293,11 +388,11 @@ exports.filtroPorEstatus = async (req, res) => {
     } catch (error){
         return res.status(500).json({message: "Error al filtrar por estatus",error: error.message});
     }
-}
+};
 
- exports.filtroPorCarrera = async (req, res) => {
+exports.filtroPorCarrera = async (req, res) => {
     try {
-        const { carrera } = req.params;
+        let { carrera } = req.params;
 
         if (!carrera) {
             return res.status(400).json({ mesage: "Proporcione una carrera para filtrar estudiantes" })
@@ -306,14 +401,65 @@ exports.filtroPorEstatus = async (req, res) => {
         // Decodificar espacios y caracteres especiales
         carrera = decodeURIComponent(carrera);
 
-        const estudiantes = await Estudiante.find({ Carrera: carrera });
+        const estudiantes = await Estudiante.find({ NombreCarrera: carrera });
 
         if (estudiantes.length == 0) {
             return res.status(404).json({ mesage: "No se encontraron estudiantes en esta carrera" })
         }
 
-        return res.estatus(200).json(estudiantes);
+        return res.status(200).json(estudiantes);
     } catch (error) {
         return res.status(500).json({ message: "Error al filtrar por carrera", error: error.message });
+    }    
+};
+
+exports.filtroPorEspecialidad = async (req, res) => {
+    try {
+        const { especialidad } = req.params;
+
+        if (!especialidad) {
+            return res.status(400).json({ mesage: "Proporcione una carrera para filtrar estudiantes" })
+        }
+
+        // Decodificar espacios y caracteres especiales
+        carrera = decodeURIComponent(especialidad);
+
+        const estudiantes = await Estudiante.find({ Especialidad: especialidad });
+
+        if (estudiantes.length == 0) {
+            return res.status(404).json({ mesage: "No se encontraron estudiantes en esta carrera" })
+        }
+
+        return res.status(200).json(estudiantes);
+    } catch (error) {
+        return res.status(500).json({ message: "Error al filtrar por carrera", error: error.message });
+    }    
+};
+
+exports.perfilPorMatricula = async (req, res) => {
+    try {
+        const { matricula } = req.params;
+        const estudiante = await Estudiante.findOne({ Matricula: matricula });
+        const actividades = await Actividades.find({ MatriculaAlumno: matricula });
+        const observaciones = await Observaciones.find({ MatriculaAlumno: matricula });
+
+
+        if (!estudiante) {
+            return res.status(404).json({ message: "Estudiante no encontrado" });
+        }
+
+        if (!actividades) {
+            res.status(404).json({ message: "No hay actividades extracurriculares" });
+        }
+
+        if (!observaciones) {
+            res.status(404).json({ message: "No hay observaciones docentes" });
+            console.log("No hay observaciones");
+        }
+
+        return res.status(200).json({estudiante, actividades, observaciones});
+    } catch (error) {
+        console.error("Error al buscar estudiante por matrícula:", error);
+        return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
-}
+};

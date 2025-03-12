@@ -1,7 +1,6 @@
 const { Model, model } = require("mongoose");
 const ActividadExtracurricular = require("../models/ActividadExtracurricular");
 const Docente = require("../models/Docente");
-const ActividadesExtracurriculares = require("../models/ActividadesExtracurriculares");
 
 const multer = require("multer");
 const xlsx = require("xlsx");
