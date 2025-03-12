@@ -122,7 +122,7 @@
     position: fixed;
     top: 100px;
     right: 20px;
-    background-color: #3d9940dc;
+    background-color: #3d99409a;
     color: white;
     font-weight: 600;
     font-family: sans-serif;
@@ -181,6 +181,10 @@
     width: 150px;
     height: 150px;
     opacity: 1;
+  }
+
+  :host .second-container {
+    margin-top: 2rem; 
   }
 
   @media (max-width: 768px) {

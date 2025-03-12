@@ -8,5 +8,6 @@ router.get("/obtener-docente", ActividadExtracurricular.obtenerDocentes);
 router.get("/obtener-actividades", ActividadExtracurricular.obtenerActividadesExtracurriculares);
 
 router.post("/upload", upload.single("file"), uploadExcel);
+router.get("/generar-plantilla", ActividadExtracurricular.generarExcelPlantilla);
 
 module.exports = router;

@@ -25,7 +25,22 @@ export class ActividadService {
   subirArchivo(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-
+  
     return this.http.post(`${this.apiUrl}/upload`, formData);
+  }  
+
+  descargarPlantilla(): void {
+    const url = `${this.apiUrl}/generar-plantilla`;
+  
+    this.http.get(url, { responseType: 'blob' }).subscribe((response) => {
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'Registro_Actividades.xlsx';
+      link.click();
+    }, error => {
+      console.error('Error al descargar la plantilla:', error);
+    });
   }
+  
 }

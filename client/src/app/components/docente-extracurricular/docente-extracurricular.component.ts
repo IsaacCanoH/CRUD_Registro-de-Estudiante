@@ -18,6 +18,7 @@ export class DocenteExtracurricularComponent implements OnInit{
   actividades: any[] = [];
   docentes: any[] = [];
   notificacionMensaje: string | null = null;
+  archivo: File | null = null;
 
   constructor(
     private actividadService: ActividadService,
@@ -80,5 +81,32 @@ export class DocenteExtracurricularComponent implements OnInit{
 
   limpiarFormulario() {
     this.matricula = this.docente = this.actividad = this.fechaInicio = this.fechaFin = this.resultado = '';
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.archivo = file;
+    }
+  }
+
+  subirArchivo(): void {
+    if (this.archivo) {  
+      this.actividadService.subirArchivo(this.archivo).subscribe(
+        (res) => {
+          console.log('Archivo subido con éxito:', res);
+          this.notificacionService.showNotification('Archivo subido correctamente.');
+          this.archivo = null;
+        },
+        (error) => {
+          console.error('Error al subir el archivo:', error);
+          this.notificacionService.showNotification('Error al subir el archivo.');
+        }
+      );
+    }
+  }
+  
+  descargarPalntilla(): void {
+    this.actividadService.descargarPlantilla();
   }
 }
