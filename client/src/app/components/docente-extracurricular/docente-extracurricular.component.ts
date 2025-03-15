@@ -1,6 +1,9 @@
 import { Component, OnInit  } from '@angular/core';
 import { ActividadService } from '../../services/actividad.service';
 import { NotificacionService } from '../../services/notificacion.service';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { EstudianteService } from '../../services/estudiante.service';
+import { BehaviorSubject, of } from 'rxjs'
 
 @Component({
   selector: 'app-docente-extracurricular',
@@ -9,6 +12,7 @@ import { NotificacionService } from '../../services/notificacion.service';
   styleUrl: './docente-extracurricular.component.css',
 })
 export class DocenteExtracurricularComponent implements OnInit{
+  busqueda: string = '';
   matricula: string = '';
   docente: string = '';
   actividad: string = '';
@@ -19,16 +23,28 @@ export class DocenteExtracurricularComponent implements OnInit{
   docentes: any[] = [];
   notificacionMensaje: string | null = null;
   archivo: File | null = null;
+  resultados: any[] = [];
+  estudiante: string = '';
+
+  private busquedaSubject = new BehaviorSubject<string>('');
 
   constructor(
     private actividadService: ActividadService,
-    private notificacionService: NotificacionService
+    private notificacionService: NotificacionService,
+    private estudianteService: EstudianteService
   ) {}
 
 
   ngOnInit(): void {
     this.cargarActividades();
     this.cargarDocentes();
+    this.busquedaSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((texto) => 
+        texto ? this.buscarEnServicio(texto).pipe(catchError(() => of([]))) : of([])
+      )
+    ).subscribe(resultados => this.resultados = resultados);
     this.notificacionService.notification.subscribe(message => {
       this.notificacionMensaje = message;  
     });
@@ -58,7 +74,7 @@ export class DocenteExtracurricularComponent implements OnInit{
 
   registrarActividad() {
     const actividadData = {
-      Matricula: this.matricula, 
+      MatriculaAlumno: this.matricula, 
       NombreDocente: this.docente, 
       NombreActividadExtracurricular: this.actividad, 
       FechaInicio: new Date(this.fechaInicio), 
@@ -108,5 +124,26 @@ export class DocenteExtracurricularComponent implements OnInit{
   
   descargarPalntilla(): void {
     this.actividadService.descargarPlantilla();
+  }
+
+  buscarEstudiante(): void {
+    if (this.busqueda.trim() !== '') {
+      this.busquedaSubject.next(this.busqueda);
+    } else {
+      this.resultados = [];
+    }
+  }
+
+  buscarEnServicio(texto: string) {
+    return texto.match(/^\d+$/)
+      ? this.estudianteService.buscarPorMatricula(texto)
+      : this.estudianteService.buscarPorNombre(texto);
+  }
+
+  seleccionarEstudiante(estudiante: any): void {
+    this.matricula = estudiante.Matricula;
+    this.estudiante = `${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}`;
+    this.busqueda = this.estudiante; // Muestra el nombre en el input
+    this.resultados = []; // Oculta la lista después de seleccionar
   }
 }

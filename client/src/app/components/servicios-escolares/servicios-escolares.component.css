@@ -15,7 +15,7 @@
 
 
 :host .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
   display: flex;
@@ -83,7 +83,7 @@
 }
 
 :host input {
-  width: 95%;
+  width: 100%;
   padding: 12px 12px 12px 40px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -94,7 +94,7 @@
 :host .card {
   background-color: var(--background-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.377);
   overflow: hidden;
   margin-bottom: 2rem;
 }
@@ -211,7 +211,9 @@
   border: none;
   border-bottom: 2px solid transparent;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: medium;
   text-align: center;
 }
 

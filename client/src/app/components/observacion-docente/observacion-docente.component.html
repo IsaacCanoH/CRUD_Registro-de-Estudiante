@@ -16,10 +16,19 @@
           <input
             type="text"
             id="buscador"
+            name="buscador"
             placeholder="Buscar estudiante..."
-            oninput="filtrarEstudiantes()"
+            [(ngModel)]="busqueda"
+            (input)="buscarEstudiante()"
           />
+          
+          <ul *ngIf="resultados.length > 0" class="dropdown">
+            <li *ngFor="let estudiante of resultados" (click)="seleccionarEstudiante(estudiante)">
+              {{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }} {{ estudiante.ApellidoMaterno }} - {{ estudiante.Matricula }} - {{ estudiante.Especialidad }}
+            </li>
+          </ul>
         </div>
+        
       </div>
 
       <div class="form-row">
@@ -31,6 +40,7 @@
             placeholder="Ingrese matrícula"
             [(ngModel)]="matricula"
             name="matricula"
+            disabled
           />
         </div>
 
@@ -42,6 +52,7 @@
             placeholder="Ingrese nombre completo"
             [(ngModel)]="estudiante"
             name="estudiante"
+            disabled
           />
         </div>
       </div>
@@ -77,6 +88,7 @@
             placeholder="Año"
             [(ngModel)]="anio"
             name="año"
+            disabled
           />
         </div>
 
@@ -88,6 +100,7 @@
             placeholder="Semestre"
             [(ngModel)]="semestre"
             name="semestre"
+            disabled
           />
         </div>
       </div>
@@ -119,11 +132,20 @@
     <h2>Cargar observaciones por documento</h2>
     <div class="form-row">
       <div class="form-group">
-        <input type="file" id="fileInput" />
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" #fileInputRef/>
       </div>
       <div class="form-group">
-        <button  class="animated-button">
+        <button  class="animated-button" (click)="subirArchivo()">
           <span>Cargar</span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <button  class="animated-button" (click)="descargarPlantilla()">
+          <span>Obtener Plantilla</span>
           <span></span>
         </button>
       </div>

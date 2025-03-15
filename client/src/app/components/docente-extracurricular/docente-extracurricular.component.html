@@ -10,6 +10,26 @@
 
   <div class="form-container">
     <form (ngSubmit)="registrarActividad()" #registroForm="ngForm">
+      <div class="form">
+        <div class="form-group" style="flex: 2">
+          <label for="buscador">Buscar Estudiante</label>
+          <input
+            type="text"
+            id="buscador"
+            name="buscador"
+            placeholder="Buscar estudiante..."
+            [(ngModel)]="busqueda"
+            (input)="buscarEstudiante()"
+          />
+          
+          <ul *ngIf="resultados.length > 0" class="dropdown">
+            <li *ngFor="let estudiante of resultados" (click)="seleccionarEstudiante(estudiante)">
+              {{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }} {{ estudiante.ApellidoMaterno }} - {{ estudiante.Matricula }} - {{ estudiante.Especialidad }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label for="matricula">Matricula Estudiante</label>
@@ -19,6 +39,7 @@
             placeholder="Ingrese la matricula del estudiante"
             [(ngModel)]="matricula"
             name="matricula"
+            disabled
           />
         </div>
 

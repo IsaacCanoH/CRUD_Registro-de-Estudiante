@@ -1,6 +1,7 @@
 const { Model, model } = require("mongoose");
 const ActividadExtracurricular = require("../models/ActividadExtracurricular");
 const Docente = require("../models/Docente");
+const ActividadesExtracurriculares = require("../models/ActividadesExtracurriculares");
 
 const multer = require("multer");
 const xlsx = require("xlsx");
@@ -30,6 +31,25 @@ const obtenerActividadesExtracurriculares = async(req,res) => {
         res.status(200).json(actividades);
     } catch (error) {
         res.status(500).json({ mensaje: "Error al obtener las actividades "});
+    }
+}
+
+const obtenerActividadExtracurricular = async(req, res) => {
+    try {
+        const actividad = await ActividadExtracurricular.find();
+        res.status(200).json(actividad);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al obtener actividades" });
+    }
+}
+
+const obtenerActividad = async(req, res) => {
+    try {
+        const { matricula } = req.params;
+        const actividad = await ActividadExtracurricular.findOne({ MatriculaAlumno: matricula });
+        res.status(200).json(actividad);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener activdad '});
     }
 }
 
@@ -103,5 +123,7 @@ module.exports = {
     obtenerActividadesExtracurriculares,
     uploadExcel,
     upload,
-    generarExcelPlantilla
+    generarExcelPlantilla,
+    obtenerActividadExtracurricular,
+    obtenerActividad
 }

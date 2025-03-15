@@ -2,6 +2,9 @@ const { Model, model} = require("mongoose");
 const ObservacionDocente = require("../models/ObservacionDocente");
 const Docente = require("../models/Docente");
 
+const multer = require("multer");
+const xlsx = require("xlsx")
+
 const crearObservacion = async(req,res) => {
     try {
         const observacion = new ObservacionDocente(req.body);
@@ -21,7 +24,76 @@ const obtenerDocentes = async(req,res) => {
     }
 }
 
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const uploadExcel = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Por favor sube un archivo Excel" });
+        }
+
+        // Leer el archivo Excel
+        const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        // Convertir el contenido a JSON
+        const data = xlsx.utils.sheet_to_json(sheet);
+
+        // Mapear datos y almacenarlos en MongoDB
+        const observaciones = data.map(row => ({
+            Matricula: row.Matricula,
+            NombreCompletoAlumno: row.NombreCompletoAlumno,
+            NombreCompletoDocente: row.NombreCompletoDocente,
+            NombreAsignatura: row.NombreAsignatura,
+            Semestre: row.Semestre,
+            Año: row.Año,
+            Descripcion: row.Descripcion
+        }));
+
+        await ObservacionDocente.insertMany(observaciones);
+        res.status(200).json({ message: "Datos importados correctamente" });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al procesar el archivo" });
+    }
+};
+
+const generarExcelPlantilla = (req, res) => {
+    try {
+        // Definir los encabezados del archivo Excel
+        const encabezados = [
+            ["Matricula", "NombreCompletoAlumno", "NombreCompletoDocente", "NombreAsignatura", "Semestre", "Año", "Descripcion"]
+        ];
+
+        // Crear un nuevo libro de trabajo y una hoja
+        const workbook = xlsx.utils.book_new();
+        const worksheet = xlsx.utils.aoa_to_sheet(encabezados);
+
+        // Agregar la hoja al libro de trabajo
+        xlsx.utils.book_append_sheet(workbook, worksheet, "Plantilla");
+
+        // Escribir el archivo en un buffer
+        const buffer = xlsx.write(workbook, { type: "buffer", bookType: "xlsx" });
+
+        // Configurar la respuesta HTTP para enviar el archivo
+        res.setHeader("Content-Disposition", "attachment; filename=Plantilla_Actividades.xlsx");
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        res.send(buffer);
+    } catch (error) {
+        console.error("Error al generar la plantilla de Excel:", error);
+        res.status(500).json({ mensaje: "Error al generar la plantilla de Excel" });
+    }
+};
+
 module.exports = {
     crearObservacion,
-    obtenerDocentes
+    obtenerDocentes,
+    upload,
+    uploadExcel,
+    generarExcelPlantilla,
 }
