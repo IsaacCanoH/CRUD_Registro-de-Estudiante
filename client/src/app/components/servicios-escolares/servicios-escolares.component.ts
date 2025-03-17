@@ -72,9 +72,12 @@ export class ServiciosEscolaresComponent implements OnInit {
     return new Date(timestamp).toLocaleDateString();
   }
 
-  getPhotoUrl(photoId: number): string {
-    return `/assets/images/student-${photoId}.jpg`;
-  }
+  getPhotoUrl(photoPath: string): string {
+    if (!photoPath) {
+      return '/assets/images/default-profile.jpg'; // Imagen por defecto si no hay foto
+    }
+    return `http://localhost:3900/${photoPath.replace(/\\/g, '/')}`;
+  }  
 
   obtenerEstudiantes(): void {
     this.estudianteService.obtenerEstudiantes().subscribe(

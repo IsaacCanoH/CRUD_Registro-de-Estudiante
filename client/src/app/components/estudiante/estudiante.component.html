@@ -1,5 +1,4 @@
 <div class="container">
-  <!-- Search Section -->
   <div class="card">
       <div class="card-header">
           <h2 class="card-title">Búsqueda de Alumno</h2>
@@ -24,7 +23,6 @@
       </div>
   </div>
 
-  <!-- Student Info Section -->
   <div class="card" *ngIf="estudiante">
       <div class="card-header">
           <div class="flex justify-between items-start">
@@ -39,7 +37,7 @@
           <div class="flex flex-col md-flex-row gap-6">
               <div class="flex flex-col items-center gap-2">
                   <div class="avatar">
-                      <img src="https://via.placeholder.com/128" alt="{{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }}">
+                    <img *ngIf="estudiante.Foto" [src]="getPhotoUrl(estudiante.Foto)" alt="Foto de perfil" />
                   </div>
                   <div class="text-center">
                       <p class="text-sm text-muted">Matrícula</p>
@@ -76,7 +74,6 @@
           </div>
       </div>
 
-      <!-- Extracurricular Activities -->
       <div class="md-grid-cols-2">
           <div class="card">
               <div class="card-header">
@@ -98,7 +95,6 @@
               </div>
           </div>
 
-          <!-- Teacher Observations -->
           <div class="card">
               <div class="card-header">
                   <h2 class="card-title">Observaciones Docentes</h2>

@@ -30,11 +30,7 @@
   <div class="card-header">
     <div class="student-info">
       <div class="avatar">
-        <img
-          *ngIf="selectedStudent.Foto"
-          [src]="getPhotoUrl(selectedStudent.Foto)"
-          alt="Foto de perfil"
-        />
+        <img *ngIf="selectedStudent.Foto" [src]="getPhotoUrl(selectedStudent.Foto)" alt="Foto de perfil" />
         <div *ngIf="!selectedStudent.Foto" class="avatar-fallback">
         </div>
       </div>
