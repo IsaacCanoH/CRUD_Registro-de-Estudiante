@@ -79,7 +79,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-const uploadImagen = multer({ storageImage, fileFilter });
+exports.uploadImagen = multer({ storage: storageImage, fileFilter: fileFilter });
 
 
 // Configuración de Multer para almacenar el archivo en memoria
@@ -454,5 +454,3 @@ exports.perfilPorMatricula = async (req, res) => {
         return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
-
-module.exports = { uploadImagen };

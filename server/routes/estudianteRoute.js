@@ -4,8 +4,7 @@ const estudianteController = require("../controllers/estudianteController");
 const { upload, uploadExcel } = require("../controllers/estudianteController");
 const { uploadImagen } = require("../controllers/estudianteController")
 
-router.post("/crearEstudiante",  upload.single("foto"),estudianteController.crearEstudiante);
-router.post("/crearEstudiante", uploadImagen.single("foto"), estudianteController.crearEstudiante);
+router.post("/crearEstudiante",  uploadImagen.single("foto"),estudianteController.crearEstudiante);
 router.post("/crearEstudianteMasiva", upload.single("file"), uploadExcel);
 router.get("/getAllEstudiantes", estudianteController.getAllEstudiantes);
 router.delete("/deleteEstudiante/:matricula", estudianteController.eliminarEstudiante);
