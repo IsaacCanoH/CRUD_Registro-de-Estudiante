@@ -23,6 +23,7 @@ export class ObservacionDocenteComponent implements OnInit{
   docentes: any[] = [];
   asignaturas: string[] = [];
   notificacionMensaje: string | null = null;
+  isError: boolean = false;
   archivo: File | null = null;
   resultados: any[] = [];
 
@@ -46,7 +47,7 @@ export class ObservacionDocenteComponent implements OnInit{
         texto ? this.buscarEnServicio(texto).pipe(catchError(() => of([]))) : of([])
       )
     ).subscribe(resultados => this.resultados = resultados);
-    this.notificacionService.notification.subscribe(message => {
+    this.notificacionService.notificacionMensaje$.subscribe(message => {
       this.notificacionMensaje = message;  
     });
   }
@@ -82,11 +83,13 @@ export class ObservacionDocenteComponent implements OnInit{
       (res) => {
         console.log('Observacion registrada:', res);
         this.limpiarFormulario();
+        this.isError = false; 
         this.notificacionService.showNotification('Observacion registrada correctamente');
       },
       (error) => {
         console.error('Error al registrar observacion', error);
-        this.notificacionService.showNotification('Erro al registrar observacion');
+        this.isError = true; 
+        this.notificacionService.showNotification('Error al registrar observacion');
       }
     );
   }
@@ -108,19 +111,25 @@ export class ObservacionDocenteComponent implements OnInit{
   }
 
   subirArchivo(): void {
-    if (this.archivo) {
-      this.observacionService.subirArchivo(this.archivo).subscribe(
-        (res) => {
-          console.log('Archivo subido con éxito', res);
-          this.notificacionService.showNotification('Archivo subido correctamente');
-          this.archivo = null;
-        },
-        (error) => {
-          console.error('Error al subir el archivo:', error);
-          this.notificacionService.showNotification('Error al subir el archivo');
-        }
-      );
+    if (!this.archivo) {
+      this.isError = true; 
+      this.notificacionService.showNotification('Error al cargar archivo'); 
+      return; 
     }
+  
+    this.observacionService.subirArchivo(this.archivo).subscribe(
+      (res) => {
+        console.log('Archivo subido con éxito', res);
+        this.isError = false; 
+        this.notificacionService.showNotification('Archivo subido correctamente');
+        this.archivo = null; // Limpia el archivo después de la carga
+      },
+      (error) => {
+        console.error('Error al subir el archivo:', error);
+        this.isError = true; 
+        this.notificacionService.showNotification('Error al subir el archivo');
+      }
+    );
   }
 
   descargarPlantilla(): void {

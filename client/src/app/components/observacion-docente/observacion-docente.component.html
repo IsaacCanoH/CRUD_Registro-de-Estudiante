@@ -4,8 +4,9 @@
     <p>Complete el formulario para registrar una nueva observación</p>
   </div>
 
-  <div *ngIf="notificacionMensaje" class="notification">
-    {{ notificacionMensaje }} <i class="fas fa-check"></i>
+  <div *ngIf="notificacionMensaje" class="notification" [ngClass]="{'error': isError, 'success': !isError}">
+    {{ notificacionMensaje }} 
+    <i class="fas" [ngClass]="{'fa-times': isError, 'fa-check': !isError}"></i>
   </div>
 
   <div class="form-container">

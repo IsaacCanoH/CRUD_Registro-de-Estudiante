@@ -225,49 +225,43 @@ exports.bajaTemporal = async (req, res) => {
 };
 
 // Metodo para actualizar datos de un estudiante
+const fs = require("fs");
+
 exports.updateEstudiante = async (req, res) => {
     try {
-        const { matricula } = req.params; // Obtener matrícula desde la URL
-        const {
-            Nombre,
-            ApellidoPaterno,
-            ApellidoMaterno,
-            Telefonos,
-            CorreosElectronicos,
-            Foto,
-            Domicilio,
-            CertificadoBachillerato,
-            Tutor
-        } = req.body; // Obtener datos del cuerpo de la solicitud
+        const { matricula } = req.params;
+        const datosActualizados = { ...req.body };
 
-        // Actualizar el estudiante en la base de datos
-        const estudianteActualizado = await Estudiante.findOneAndUpdate(
-            { Matricula: matricula }, // Buscar por matrícula
-            {
-                Nombre,
-                ApellidoPaterno,
-                ApellidoMaterno,
-                Telefonos,
-                CorreosElectronicos,
-                Foto, // Asegúrate de que el campo se llame "Foto" en el modelo
-                Domicilio,
-                CertificadoBachillerato,
-                Tutor
-            },
-            { new: true } // Retornar el documento actualizado
-        );
+        const estudiante = await Estudiante.findOne({ Matricula: matricula });
+        if (!estudiante) return res.status(404).json({ message: "Estudiante no encontrado" });
 
-        if (!estudianteActualizado) {
-            return res.status(404).json({ message: "Estudiante no encontrado" });
+        // Si hay un nuevo archivo de imagen, manejar la actualización de la foto
+        if (req.file) {
+            // Eliminar la foto anterior si existe
+            if (estudiante.Foto) {
+                fs.unlink(estudiante.Foto, (err) => {
+                    if (err) console.error("Error al eliminar imagen:", err);
+                });
+            }
+            // Guardar la nueva foto
+            datosActualizados.Foto = req.file.path;
         }
 
-        return res.status(200).json({ message: "Estudiante actualizado exitosamente", estudiante: estudianteActualizado });
+        // Actualizar los datos del estudiante
+        const estudianteActualizado = await Estudiante.findOneAndUpdate(
+            { Matricula: matricula },
+            datosActualizados,
+            { new: true }
+        );
+
+        return res.status(200).json({ message: "Estudiante actualizado", estudiante: estudianteActualizado });
 
     } catch (error) {
         console.error("Error al actualizar estudiante:", error);
         return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
+
 
 // Método para buscar un estudiante por matrícula
 exports.buscarPorMatricula = async (req, res) => {

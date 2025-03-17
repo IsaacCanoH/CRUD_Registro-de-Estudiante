@@ -30,7 +30,29 @@ export class EstudianteService {
     return this.http.get<any>(`${this.apiUrl}/perfil/${matricula}`);
   }
 
-  actualizarEstudiante(matricula: string, estudiante: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/updateEstudiante/${matricula}`, estudiante);
-  }  
+  actualizarEstudiante(matricula: string, estudiante: any, foto?: File): Observable<any> {
+    if (foto) {
+      const formData: FormData = new FormData();
+      formData.append('foto', foto, foto.name);
+      formData.append('estudiante', JSON.stringify(estudiante)); 
+  
+      return this.http.put(`${this.apiUrl}/updateEstudiante/${matricula}`, formData);
+    } else {
+      return this.http.put(`${this.apiUrl}/updateEstudiante/${matricula}`, estudiante);
+    }
+  }
+
+  filtroPorEstatus(estatus: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/getPorEstatus/${estatus}`);
+  }
+
+
+  filtroPorCarrera(carrera: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/getPorCarrera/${carrera}`);
+  }
+
+
+  filtroPorEspecialidad(especialidad: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/getPorEspecialidad/${especialidad}`);
+  }
 }

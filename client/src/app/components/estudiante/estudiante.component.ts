@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EstudianteService } from '../../services/estudiante.service';
 import { Router } from '@angular/router';
 
@@ -8,16 +8,20 @@ import { Router } from '@angular/router';
   templateUrl: './estudiante.component.html',
   styleUrl: './estudiante.component.css'
 })
-export class EstudianteComponent {
+export class EstudianteComponent implements OnInit{
   matricula: string = '';
   estudiante: any;
   actividades: any[] = [];
   observaciones: any[] = [];
+  notificacionMensaje: string | null = null;
 
   constructor(
     private estudianteService: EstudianteService,
-    private router: Router
+    private router: Router,
   ) {}
+
+  ngOnInit(): void {
+  }
 
   buscarEstudiante() {
     if (this.matricula) {

@@ -22,7 +22,7 @@
         type="text"
         placeholder="Buscar alumno por matrícula o nombre..."
         [(ngModel)]="searchQuery"
-        (input)="onSearchChange()"
+        (input)="busqueda()"
       />
     </div>
 
@@ -30,7 +30,7 @@
   <div class="card-header">
     <div class="student-info">
       <div class="avatar">
-        <img *ngIf="selectedStudent.Foto" [src]="getPhotoUrl(selectedStudent.Foto)" alt="Foto de perfil" />
+        <img *ngIf="selectedStudent.Foto" [src]="obtenerFotoUrl(selectedStudent.Foto)" alt="Foto de perfil" />
         <div *ngIf="!selectedStudent.Foto" class="avatar-fallback">
         </div>
       </div>
@@ -57,13 +57,13 @@
   <div class="card-content">
     <div class="tabs">
       <div class="tabs-list">
-        <button class="tab-trigger" [class.active]="activeTab === 'personal'" (click)="setActiveTab('personal')">
+        <button class="tab-trigger" [class.active]="activeTab === 'personal'" (click)="activaTab('personal')">
           Información Personal
         </button>
-        <button class="tab-trigger" [class.active]="activeTab === 'contact'" (click)="setActiveTab('contact')">
+        <button class="tab-trigger" [class.active]="activeTab === 'contact'" (click)="activaTab('contact')">
           Contacto
         </button>
-        <button class="tab-trigger" [class.active]="activeTab === 'academic'" (click)="setActiveTab('academic')">
+        <button class="tab-trigger" [class.active]="activeTab === 'academic'" (click)="activaTab('academic')">
           Información Académica
         </button>
       </div>
@@ -76,11 +76,11 @@
           </div>
           <div class="info-item">
             <h3>Fecha de Nacimiento</h3>
-            <p>{{ formatDate(selectedStudent.FechaNacimiento) }}</p>
+            <p>{{ formatoFecha(selectedStudent.FechaNacimiento) }}</p>
           </div>
           <div class="info-item">
             <h3>Fecha de Alta</h3>
-            <p>{{ formatDate(selectedStudent.FechaAlta) }}</p>
+            <p>{{ formatoFecha(selectedStudent.FechaAlta) }}</p>
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@
                 </span>
             </div>
         </button>
-        <button class="button button-excel">
+        <button class="button button-excel" >
             <div class="button-wrapper">
                 <div class="text">Excel</div>
                 <span class="icon">

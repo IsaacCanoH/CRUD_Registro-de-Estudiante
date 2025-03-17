@@ -4,10 +4,6 @@
     <p>Complete el formulario para editar los datos</p>
   </div>
 
-  <div *ngIf="notificacionMensaje" class="notification">
-    {{ notificacionMensaje }} <i class="fas fa-check"></i>
-  </div>
-
   <div class="form-container">
     <form id="registro-form" (ngSubmit)="actualizarEstudiante()">
       <!-- Información Personal -->
@@ -98,7 +94,7 @@
 
         <div class="form-group">
           <label for="foto">Foto</label>
-          <input type="file" id="foto" accept="image/*" />
+          <input type="file" id="foto" accept="image/*" (change)="onFileSelected($event)" /> <!-- Vincula el evento -->
         </div>
       </div>
 

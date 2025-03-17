@@ -9,7 +9,7 @@ router.post("/crearEstudianteMasiva", upload.single("file"), uploadExcel);
 router.get("/getAllEstudiantes", estudianteController.getAllEstudiantes);
 router.delete("/deleteEstudiante/:matricula", estudianteController.eliminarEstudiante);
 router.put("/bajaTemporal/:matricula", estudianteController.bajaTemporal);
-router.put("/updateEstudiante/:matricula", estudianteController.updateEstudiante);
+router.put("/updateEstudiante/:matricula", uploadImagen.single("foto"), estudianteController.updateEstudiante);
 router.get("/getPorMatricula/:matricula", estudianteController.buscarPorMatricula);
 router.get("/getPorNombre/:nombre", estudianteController.buscarPorNombre);
 router.get("/getPorSemestre/:semestre", estudianteController.filtroPorSemestre)

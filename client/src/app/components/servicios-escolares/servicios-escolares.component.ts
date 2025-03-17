@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewChild, ElementRef } from '@angular/core';
 import { EstudianteService } from '../../services/estudiante.service';
 
 @Component({
@@ -14,6 +13,7 @@ export class ServiciosEscolaresComponent implements OnInit {
   searchPerformed: boolean = false;
   selectedStudent: any = null;
   estudiantes: any[] = [];
+  
 
   constructor(private estudianteService: EstudianteService) {}
 
@@ -21,10 +21,15 @@ export class ServiciosEscolaresComponent implements OnInit {
     this.obtenerEstudiantes();
   }
 
-  onSearchChange(): void {
+  busqueda(): void {
     this.searchPerformed = true;
     if (this.searchQuery.trim()) {
-        if (!isNaN(Number(this.searchQuery))) {
+        const esSoloNumeros = /^[0-9]+$/.test(this.searchQuery); // Solo números
+        const esFormatoMatricula = /^[0-9A-Za-z]+$/.test(this.searchQuery) && /\d/.test(this.searchQuery);
+        const esNombre = /\s/.test(this.searchQuery) || /^[A-Za-zÁÉÍÓÚáéíóúñÑ]+$/.test(this.searchQuery); 
+
+
+        if (esSoloNumeros || esFormatoMatricula) {
             this.estudianteService.buscarPorMatricula(this.searchQuery).subscribe(
                 (data) => {
                     this.selectedStudent = data;
@@ -34,10 +39,9 @@ export class ServiciosEscolaresComponent implements OnInit {
                     this.selectedStudent = null; 
                 }
             );
-        } else {
+        } else if (esNombre) {
             this.estudianteService.buscarPorNombre(this.searchQuery).subscribe(
                 (data) => {
-                    // Asumiendo que data es un array, seleccionamos el primer estudiante
                     this.selectedStudent = data.length > 0 ? data[0] : null;
                 },
                 (error) => {
@@ -49,9 +53,11 @@ export class ServiciosEscolaresComponent implements OnInit {
     } else {
         this.selectedStudent = null;
     }
-}
+  }
 
-  setActiveTab(tab: string): void {
+
+
+  activaTab(tab: string): void {
     this.activeTab = tab;
   }
 
@@ -68,16 +74,16 @@ export class ServiciosEscolaresComponent implements OnInit {
     }
   }
 
-  formatDate(timestamp: number): string {
+  formatoFecha(timestamp: number): string {
     return new Date(timestamp).toLocaleDateString();
   }
 
-  getPhotoUrl(photoPath: string): string {
+  obtenerFotoUrl(photoPath: string): string {
     if (!photoPath) {
-      return '/assets/images/default-profile.jpg'; // Imagen por defecto si no hay foto
+      return '/assets/images/default-profile.jpg';
     }
     return `http://localhost:3900/${photoPath.replace(/\\/g, '/')}`;
-  }  
+  }
 
   obtenerEstudiantes(): void {
     this.estudianteService.obtenerEstudiantes().subscribe(
