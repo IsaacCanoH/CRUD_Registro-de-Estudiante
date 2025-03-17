@@ -25,4 +25,12 @@ export class EstudianteService {
   buscarPorNombre(nombre: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/getPorNombre/${nombre}`);
   }
+
+  obtenerPerfilPorMatricula(matricula: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/perfil/${matricula}`);
+  }
+
+  actualizarEstudiante(matricula: string, estudiante: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/updateEstudiante/${matricula}`, estudiante);
+  }  
 }

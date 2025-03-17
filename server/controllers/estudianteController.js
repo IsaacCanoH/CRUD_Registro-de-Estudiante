@@ -5,6 +5,7 @@ const Observaciones = require("../models/ObservacionDocente");
 
 const multer = require("multer");
 const xlsx = require("xlsx");
+const path = require("path");
 
 const quitarAcentos = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -20,7 +21,7 @@ const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) =
     const primeraLetraNombre = nombre.charAt(0).toUpperCase();
     const primerasDosApellidoPaterno = apellidoPaterno.substring(0, 2).toUpperCase();
     const primeraApellidoMaterno = apellidoMaterno.charAt(0).toUpperCase();
-    
+
     const fecha = new Date(fechaNacimiento);
     const año = fecha.getFullYear().toString().slice(-2);
     const mes = String(fecha.getMonth() + 1).padStart(2, "0");
@@ -29,69 +30,57 @@ const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) =
     return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${año}${mes}${dia}`;
 };
 
-    // Metodo para crear estudiante
-    exports.crearEstudiante = async (req, res) => {
-        try {
-            const {
-                Nombre,
-                ApellidoPaterno,
-                ApellidoMaterno,
-                FechaNacimiento,
-                Sexo,
-                Telefonos,
-                CorreosElectronicos,
-                Foto,
-                Semestre,
-                Año,
-                Domicilio,
-                PromedioBachillerato,
-                EspecialidadBachillerato,
-                CertificadoBachillerato,
-                NombreCarrera,
-                Especialidad,
-                Tutor
-            } = req.body;
-
-            // Verificar si ya existe un estudiante con el mismo RFC
-            const rfcGenerado = generarRFC(Nombre, ApellidoPaterno, ApellidoMaterno, FechaNacimiento);
-
-            if (rfcGenerado) {
-                const existeRFC = await Estudiante.findOne({ RFC: rfcGenerado });
-                if (existeRFC) {
-                    return res.status(400).json({ message: "El estudiante ya está registrado con este RFC." });
-                }
-            }
-
-            // Crear una nueva instancia del modelo Estudiante
-            const nuevoEstudiante = new Estudiante({
-                Nombre,
-                ApellidoPaterno,
-                ApellidoMaterno,
-                FechaNacimiento,
-                Sexo,
-                Telefonos,
-                CorreosElectronicos,
-                Foto,
-                Semestre,
-                Año,
-                Domicilio,
-                PromedioBachillerato,
-                EspecialidadBachillerato,
-                CertificadoBachillerato,
-                NombreCarrera,
-                Especialidad,
-                Tutor
-            });
-
-            // Guardar en la base de datos
-            await nuevoEstudiante.save();
-
-            return res.status(201).json({ message: "Estudiante registrado exitosamente", estudiante: nuevoEstudiante });
-        } catch (error) {
-            console.error("Error al registrar estudiante:", error);
-            return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+// Metodo para crear estudiante
+exports.crearEstudiante = async (req, res) => {
+    try {
+        const datosEstudiante = { ...req.body };
+        
+        // Generar y validar RFC
+        const rfcGenerado = generarRFC(datosEstudiante.Nombre, datosEstudiante.ApellidoPaterno, datosEstudiante.ApellidoMaterno, datosEstudiante.FechaNacimiento);
+        if (!rfcGenerado) {
+            return res.status(400).json({ message: "Error al generar el RFC." });
         }
-    };
+
+        const existeRFC = await Estudiante.findOne({ RFC: rfcGenerado });
+        if (existeRFC) {
+            return res.status(400).json({ message: "El estudiante ya está registrado con este RFC." });
+        }
+
+        const fotoRuta = req.file ? req.file.path : "";
+
+        // Crear y guardar estudiante
+        const nuevoEstudiante = new Estudiante({ ...datosEstudiante, RFC: rfcGenerado, Foto: fotoRuta });
+        await nuevoEstudiante.save();
+
+        return res.status(201).json({ message: "Estudiante registrado exitosamente", estudiante: nuevoEstudiante });
+
+    } catch (error) {
+        console.error("Error al registrar estudiante:", error);
+        return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+    }
+};
+
+const storageImage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "imagenes/"); 
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        const nombreArchivo = `${Date.now()}-${file.fieldname}${ext}`;
+        cb(null, nombreArchivo);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+        cb(null, true);
+    } else {
+        cb(new Error("Solo se permiten imágenes"), false);
+    }
+};
+
+const uploadImagen = multer({ storageImage, fileFilter });
+
 
 // Configuración de Multer para almacenar el archivo en memoria
 const storage = multer.memoryStorage();
@@ -169,7 +158,7 @@ exports.uploadExcel = async (req, res) => {
                     Ciudad: row["Tutor.Domicilio.Ciudad"]
                 }
             }
-        }));        
+        }));
 
         // Insertar estudiantes en la base de datos
         await Estudiante.insertMany(estudiantes);
@@ -188,9 +177,9 @@ exports.getAllEstudiantes = async (req, res) => {
     try {
         const estudiantes = await Estudiante.find();
         return res.status(200).json(estudiantes);
-    } catch (error){
+    } catch (error) {
         console.error("Error al obtener estudiantes:", error);
-        return res.status(500).json({message: "Error interno del servidor",error: error.message});
+        return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 }
 
@@ -201,7 +190,7 @@ exports.eliminarEstudiante = async (req, res) => {
 
         const estudianteEliminado = await Estudiante.deleteOne({ Matricula: matricula });
 
-        if(!estudianteEliminado){
+        if (!estudianteEliminado) {
             return res.status(404).json({ message: "Estudiante no encontrado" });
         }
 
@@ -238,7 +227,8 @@ exports.bajaTemporal = async (req, res) => {
 // Metodo para actualizar datos de un estudiante
 exports.updateEstudiante = async (req, res) => {
     try {
-        const {  
+        const { matricula } = req.params; // Obtener matrícula desde la URL
+        const {
             Nombre,
             ApellidoPaterno,
             ApellidoMaterno,
@@ -246,23 +236,24 @@ exports.updateEstudiante = async (req, res) => {
             CorreosElectronicos,
             Foto,
             Domicilio,
-            CertificadoBachillerato, 
-            Matricula,
-            Tutor } = req.params;
+            CertificadoBachillerato,
+            Tutor
+        } = req.body; // Obtener datos del cuerpo de la solicitud
 
+        // Actualizar el estudiante en la base de datos
         const estudianteActualizado = await Estudiante.findOneAndUpdate(
-            { Matricula: Matricula }, // Buscar por matrícula
-            { 
-                Nombre: Nombre,
-                ApellidoPaterno: ApellidoPaterno,
-                ApellidoMaterno: ApellidoMaterno,
-                Telefonos: Telefonos,
-                CorreosElectronicos: CorreosElectronicos,
-                Foro: Foto,
-                Domicilio: Domicilio,  
-                CartificadoBachillerato, CertificadoBachillerato,
-                Tutor: Tutor
-            }, 
+            { Matricula: matricula }, // Buscar por matrícula
+            {
+                Nombre,
+                ApellidoPaterno,
+                ApellidoMaterno,
+                Telefonos,
+                CorreosElectronicos,
+                Foto, // Asegúrate de que el campo se llame "Foto" en el modelo
+                Domicilio,
+                CertificadoBachillerato,
+                Tutor
+            },
             { new: true } // Retornar el documento actualizado
         );
 
@@ -270,10 +261,10 @@ exports.updateEstudiante = async (req, res) => {
             return res.status(404).json({ message: "Estudiante no encontrado" });
         }
 
-        return res.status(200).json({ message: "Estudiante dado de baja temporalmente", estudiante: estudianteActualizado });
+        return res.status(200).json({ message: "Estudiante actualizado exitosamente", estudiante: estudianteActualizado });
 
     } catch (error) {
-        console.error("Error al actualizar estudiante");
+        console.error("Error al actualizar estudiante:", error);
         return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
@@ -327,7 +318,7 @@ exports.buscarPorNombre = async (req, res) => {
 };
 
 // Metodo para filtrar por semestre
-exports.filtroPorSemestre= async (req, res) => {
+exports.filtroPorSemestre = async (req, res) => {
     try {
         const { semestre } = req.params;
 
@@ -335,14 +326,14 @@ exports.filtroPorSemestre= async (req, res) => {
             return res.status(400).json({ message: "Proporcione un semestre para filtrar estudiantes" });
         }
 
-        const estudiantes = await Estudiante.find({ Semestre: semestre});
+        const estudiantes = await Estudiante.find({ Semestre: semestre });
 
         if (estudiantes.length == 0) {
             return res.status(404).json({ message: "No se encontraron estudiates en este semestre" });
         }
 
         return res.status(200).json(estudiantes);
-    } catch (error){
+    } catch (error) {
         console.log("Error al filtrar por semestre")
         return res.status(500).json({ message: "Error al filtrar por semestre", error: error.message });
     }
@@ -364,7 +355,7 @@ exports.filtroPorAnio = async (req, res) => {
         }
 
         return res.status(200).json(estudiantes);
-    } catch (error){
+    } catch (error) {
         console.log("Error al filtrar por año")
         return res.status(500).json({ message: "Error al filtrar por año", error: error.message });
     }
@@ -385,8 +376,8 @@ exports.filtroPorEstatus = async (req, res) => {
             return res.status(404).json({ message: "No se encontraron estudiates con este estatus" });
         }
         return res.status(200).json(estudiantes);
-    } catch (error){
-        return res.status(500).json({message: "Error al filtrar por estatus",error: error.message});
+    } catch (error) {
+        return res.status(500).json({ message: "Error al filtrar por estatus", error: error.message });
     }
 };
 
@@ -410,7 +401,7 @@ exports.filtroPorCarrera = async (req, res) => {
         return res.status(200).json(estudiantes);
     } catch (error) {
         return res.status(500).json({ message: "Error al filtrar por carrera", error: error.message });
-    }    
+    }
 };
 
 exports.filtroPorEspecialidad = async (req, res) => {
@@ -433,7 +424,7 @@ exports.filtroPorEspecialidad = async (req, res) => {
         return res.status(200).json(estudiantes);
     } catch (error) {
         return res.status(500).json({ message: "Error al filtrar por carrera", error: error.message });
-    }    
+    }
 };
 
 exports.perfilPorMatricula = async (req, res) => {
@@ -457,9 +448,11 @@ exports.perfilPorMatricula = async (req, res) => {
             console.log("No hay observaciones");
         }
 
-        return res.status(200).json({estudiante, actividades, observaciones});
+        return res.status(200).json({ estudiante, actividades, observaciones });
     } catch (error) {
         console.error("Error al buscar estudiante por matrícula:", error);
         return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
+
+module.exports = { uploadImagen };

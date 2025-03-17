@@ -69,12 +69,12 @@ export class ObservacionDocenteComponent implements OnInit{
 
   registrarObservacion() {
     const observacionData = {
-      Matricula: this.matricula,
+      MatriculaAlumno: this.matricula,
       NombreCompletoAlumno: this.estudiante,
       NombreCompletoDocente: this.docente,
       NombreAsignatura: this.asignatura,
       Semestre: this.semestre,
-      Año: this.anio,
+      Anio: this.anio,
       Descripcion: this.descripcion,
     }
 

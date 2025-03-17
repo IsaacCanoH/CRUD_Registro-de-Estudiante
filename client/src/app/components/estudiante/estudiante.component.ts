@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { EstudianteService } from '../../services/estudiante.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-estudiante',
@@ -7,5 +9,36 @@ import { Component } from '@angular/core';
   styleUrl: './estudiante.component.css'
 })
 export class EstudianteComponent {
+  matricula: string = '';
+  estudiante: any;
+  actividades: any[] = [];
+  observaciones: any[] = [];
+
+  constructor(
+    private estudianteService: EstudianteService,
+    private router: Router
+  ) {}
+
+  buscarEstudiante() {
+    if (this.matricula) {
+      this.estudianteService.obtenerPerfilPorMatricula(this.matricula).subscribe(
+        (data) => {
+          this.estudiante = data.estudiante;
+          this.actividades = data.actividades;
+          this.observaciones = data.observaciones;
+        },
+        (error) => {
+          console.error('Error al obtener el perfil del estudiante:', error);
+          // Manejo de errores, puedes mostrar un mensaje al usuario
+        }
+      );
+    }
+  }
+
+  editarEstudiante() {
+    if (this.estudiante) {
+      this.router.navigate(['/ed-ed-dt', this.estudiante.Matricula]);
+    }
+  }
 
 }

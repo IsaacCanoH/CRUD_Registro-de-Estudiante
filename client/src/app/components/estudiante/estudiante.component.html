@@ -1,65 +1,122 @@
 <div class="container">
-  <div class="header">
-    <h1>Perfil del Estudiante</h1>
-  </div>
-
-  <div class="info-personal">
-    <div class="foto-nombre-matricula">
-      <img
-        src="ruta/a/la/foto.jpg"
-        alt="Foto del Estudiante"
-        class="foto-estudiante"
-      />
-      <div class="matricula-container">
-        <label for="matricula">Matrícula:</label>
-        <input
-          type="text"
-          id="matricula"
-          placeholder="Ingrese matrícula"
-          class="matricula-input"
-        />
+  <!-- Search Section -->
+  <div class="card">
+      <div class="card-header">
+          <h2 class="card-title">Búsqueda de Alumno</h2>
+          <p class="card-description">Introduce tu matrícula</p>
       </div>
-    </div>
-    <div class="nombre-completo">
-      <h2>Juan Pérez</h2>
-      <p>Carrera: Ingeniería en Sistemas</p>
-      <p>Especialidad: Desarrollo Web</p>
-      <p>Semestre: 5</p>
-    </div>
-    <button class="btn btn-primary editar-btn">Editar</button>
+      <div class="card-content">
+          <div class="flex flex-col md-flex-row gap-4">
+              <div style="flex: 1;">
+                  <label for="matricula" class="form-label">Matrícula</label>
+                  <div class="flex mt-1">
+                    <input type="text" id="matricula" class="form-control" placeholder="Introduzca la matrícula..." [(ngModel)]="matricula">
+                  </div>
+              </div>
+              <div style="display: flex; align-items: flex-end;">
+                
+                <button class="btn btn-primary" (click)="buscarEstudiante()">
+                  <i class="fas fa-search mr-2"></i>
+                  Buscar
+                </button>
+              </div>
+          </div>
+      </div>
   </div>
 
-  <div class="actividades-extracurriculares">
-    <h2>Actividades Extracurriculares</h2>
-    <div class="tarjeta">
-      <h3>Fútbol</h3>
-      <p>Docente: Prof. Ana Torres</p>
-      <p>Fecha Inicio: 01/02/2023</p>
-      <p>Fecha Término: 30/06/2023</p>
-      <p>Resultado: Asistió</p>
-    </div>
-    <div class="tarjeta">
-      <h3>Teatro</h3>
-      <p>Docente: Prof. Luis Martínez</p>
-      <p>Fecha Inicio: 15/03/2023</p>
-      <p>Fecha Término: 15/07/2023</p>
-      <p>Resultado: No asistió</p>
-    </div>
-  </div>
+  <!-- Student Info Section -->
+  <div class="card" *ngIf="estudiante">
+      <div class="card-header">
+          <div class="flex justify-between items-start">
+              <h2 class="card-title">Información del Alumno</h2>
+              <button class="btn btn-outline btn-sm" (click)="editarEstudiante()">
+                <i class="fas fa-edit mr-2"></i>
+                Editar
+            </button>
+          </div>
+      </div>
+      <div class="card-content">
+          <div class="flex flex-col md-flex-row gap-6">
+              <div class="flex flex-col items-center gap-2">
+                  <div class="avatar">
+                      <img src="https://via.placeholder.com/128" alt="{{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }}">
+                  </div>
+                  <div class="text-center">
+                      <p class="text-sm text-muted">Matrícula</p>
+                      <p class="font-medium">{{ estudiante.Matricula }}</p>
+                  </div>
+              </div>
+              <div style="flex: 1;" class="space-y-4">
+                  <div>
+                      <h3 class="text-lg font-semibold">{{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }} {{ estudiante.ApellidoMaterno }}</h3>
+                      <div class="flex items-center mt-1">
+                          <i class="fas fa-graduation-cap mr-2" style="color: #718096;"></i>
+                          <span>{{ estudiante.NombreCarrera }}</span>
+                      </div>
+                  </div>
+                  <div class="separator"></div>
+                  <div>
+                      <h4 class="font-medium mb-2">Datos Académicos</h4>
+                      <div class="grid grid-cols-2 gap-4">
+                          <div>
+                              <p class="text-sm text-muted">Semestre</p>
+                              <p>{{ estudiante.Semestre }}</p>
+                          </div>
+                          <div>
+                              <p class="text-sm text-muted">Especialidad</p>
+                              <p>{{ estudiante.Especialidad }}</p>
+                          </div>
+                          <div>
+                              <p class="text-sm text-muted">Estado</p>
+                              <p>{{ estudiante.Estatus }}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
 
-  <div class="observaciones-docente">
-    <h2>Observaciones Docente</h2>
-    <div class="tarjeta">
-      <h3>Matemáticas</h3>
-      <p>Docente: Prof. Ana Torres</p>
-      <p>Semestre - Año: 5 - 2023</p>
-      <p>Observación: Excelente desempeño en clase.</p>
-    </div>
-    <div class="tarjeta">
-      <h3>Historia</h3>
-      <p>Docente: Prof. Luis Martínez</p>
-      <p>Semestre - Año: 5 - 2023</p>
-      <p>Observación: Necesita mejorar en los exámenes.</p>
-    </div>
+      <!-- Extracurricular Activities -->
+      <div class="md-grid-cols-2">
+          <div class="card">
+              <div class="card-header">
+                  <h2 class="card-title flex items-center">
+                      <i class="fas fa-user-graduate mr-2"></i>
+                      Actividades Extracurriculares
+                  </h2>
+              </div>
+              <div class="card-content">
+                  <div class="space-y-4">
+                      <div class="border rounded p-4" *ngFor="let actividad of actividades">
+                          <div class="flex justify-between">
+                              <h4 class="font-medium">{{ actividad.NombreActividadExtracurricular }}</h4>
+                              <span class="badge badge-success">{{ actividad.Resultado }}</span>
+                          </div>
+                          <p class="text-sm text-muted mt-1">Docente: {{ actividad.NombreDocente }}</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Teacher Observations -->
+          <div class="card">
+              <div class="card-header">
+                  <h2 class="card-title">Observaciones Docentes</h2>
+              </div>
+              <div class="card-content">
+                  <div class="space-y-4">
+                      <div class="border rounded p-4" *ngFor="let observacion of observaciones">
+                          <div class="flex justify-between items-start">
+                              <h4 class="font-medium">{{ observacion.NombreAsignatura }}</h4>
+                              <span class="text-xs text-muted">{{ observacion.Fecha }}</span>
+                          </div>
+                          <p class="text-sm text-muted mt-1">Docente: {{ observacion.NombreCompletoDocente }}</p>
+                          <p class="mt-2 text-sm">{{ observacion.Descripcion }}</p>
+                          <p class="text-sm text-muted mt-1">Semestre: {{ observacion.Semestre }} - {{ observacion.Anio }}</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
 </div>

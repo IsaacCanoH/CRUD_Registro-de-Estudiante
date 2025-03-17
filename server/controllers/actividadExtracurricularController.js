@@ -43,16 +43,6 @@ const obtenerActividadExtracurricular = async(req, res) => {
     }
 }
 
-const obtenerActividad = async(req, res) => {
-    try {
-        const { matricula } = req.params;
-        const actividad = await ActividadExtracurricular.findOne({ MatriculaAlumno: matricula });
-        res.status(200).json(actividad);
-    } catch (error) {
-        res.status(500).json({ mensaje: 'Error al obtener activdad '});
-    }
-}
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage});
 
@@ -124,6 +114,5 @@ module.exports = {
     uploadExcel,
     upload,
     generarExcelPlantilla,
-    obtenerActividadExtracurricular,
-    obtenerActividad
+    obtenerActividadExtracurricular
 }

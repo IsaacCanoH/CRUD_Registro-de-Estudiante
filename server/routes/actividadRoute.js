@@ -10,6 +10,5 @@ router.get("/obtener-actividades", ActividadExtracurricular.obtenerActividadesEx
 router.post("/upload", upload.single("file"), uploadExcel);
 router.get("/generar-plantilla", ActividadExtracurricular.generarExcelPlantilla);
 router.get("/obtener-actividad", ActividadExtracurricular.obtenerActividadExtracurricular);
-router.get("/obtener-actividad-m/:matricula", ActividadExtracurricular.obtenerActividad);
 
 module.exports = router;

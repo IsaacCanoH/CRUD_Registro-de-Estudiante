@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'de-reg-act-ext', component: DocenteExtracurricularComponent},
   { path: 'ob-de', component: ObservacionDocenteComponent},
   { path: 'ed', component: EstudianteComponent},
-  { path: 'ed-ed-dt', component: EstudianteEditarDatosComponent}
+  { path: 'ed-ed-dt/:matricula', component: EstudianteEditarDatosComponent}
 ];
 
 @NgModule({
