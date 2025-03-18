@@ -140,7 +140,7 @@
     <div class="header-container">
       <h2>Lista de Estudiantes</h2>
       <div class="actions">
-        <button class="button button-filters" (click)="openModal()">
+        <button class="button button-filters" (click)="abrirModal()">
             <div class="button-wrapper">
                 <div class="text">Filtros</div>
                 <span class="icon">
@@ -170,7 +170,7 @@
     <div class="modal" *ngIf="isModalOpen">
       <div class="modal-content">
         <h3>Filtros</h3>
-        <form (ngSubmit)="applyFilters()">
+        <form (ngSubmit)="aplicarFiltros()">
           <div class="filter-form">
             <div class="form-group">
               <label for="filter1">Estatus</label>
@@ -186,7 +186,8 @@
             </div>
           </div>
           <button type="submit">Aplicar Filtros</button>
-          <button type="button" (click)="closeModal()">Cerrar</button>
+          <button type="button" (click)="restaurarDatos()">Recuperar Todos</button>
+          <button type="button" (click)="cerrarModal()">Cerrar</button>
         </form>
       </div>
     </div>
@@ -205,7 +206,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let estudiante of estudiantes">
+          <tr *ngFor="let estudiante of estudiantesFiltrados">
             <td>{{ estudiante.Matricula }}</td>
             <td>{{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }} {{ estudiante.ApellidoMaterno }}</td>
             <td>{{ estudiante.NombreCarrera }}</td>

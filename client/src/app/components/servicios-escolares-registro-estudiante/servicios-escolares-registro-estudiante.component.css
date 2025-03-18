@@ -13,8 +13,6 @@
     font-family: system-ui, -apple-system, sans-serif;
 }
 
-
-
 :host .container {
     max-width: 1000px;
     margin: 2rem auto;
@@ -36,95 +34,12 @@
     color: var(--text-muted);
 }
 
-/* Barra de Progreso */
-:host .progress-container {
-    margin-bottom: 2rem;
-}
-
-:host .steps-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    position: relative;
-}
-
-:host .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-}
-
-:host .step-number {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background-color: var(--background-color);
-    border: 2px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-:host .step.active .step-number {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
-:host .step.completed .step-number {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-    color: white;
-}
-
-:host .step-text {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-}
-
-:host .step.active .step-text {
-    color: var(--primary-color);
-    font-weight: 500;
-}
-
-:host .progress-bar {
-    height: 0.25rem;
-    background-color: var(--border-color);
-    border-radius: var(--border-radius);
-    margin-top: 1rem;
-    overflow: hidden;
-}
-
-:host .progress {
-    height: 100%;
-    background-color: var(--primary-color);
-    transition: var(--transition);
-}
-
 /* Formulario */
 :host .form-container {
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     padding: 2rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-:host .form-step {
-    display: none;
-}
-
-:host .form-step.active {
-    display: block;
-}
-
-:host .form-step h2 {
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: var(--text-color);
 }
 
 :host .form-grid {
@@ -169,7 +84,7 @@
 /* Botones */
 :host .form-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
@@ -194,16 +109,6 @@
     background-color: var(--primary-hover);
 }
 
-:host .btn-outline {
-    background-color: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-}
-
-:host .btn-outline:hover {
-    background-color: #f3f4f6;
-}
-
 :host .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -213,30 +118,5 @@
 @media (max-width: 768px) {
     :host .form-grid {
         grid-template-columns: 1fr;
-    }
-
-    :host .step-text {
-        font-size: 0.75rem;
-    }
-
-    :host .form-container {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    :host .steps-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    :host .step {
-        flex-direction: row;
-        gap: 1rem;
-    }
-
-    :host .step-number {
-        margin-bottom: 0;
     }
 }

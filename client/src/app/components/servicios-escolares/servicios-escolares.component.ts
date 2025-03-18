@@ -17,6 +17,7 @@ export class ServiciosEscolaresComponent implements OnInit {
   estatus: string = '';
   carrera: string = '';
   especialidad: string = '';
+  estudiantesFiltrados: any[] = [];
 
   constructor(private estudianteService: EstudianteService) {}
 
@@ -92,23 +93,52 @@ export class ServiciosEscolaresComponent implements OnInit {
     this.estudianteService.obtenerEstudiantes().subscribe(
       (data) => {
         this.estudiantes = data;
+        this.estudiantesFiltrados = data; 
       },
       (error) => {
         console.error('Error al obtener estudiantes', error);
       }
     );
-  }
+  }  
 
-  openModal(): void {
+  abrirModal(): void {
     this.isModalOpen = true;
   }
   
-  closeModal(): void {
+  cerrarModal(): void {
     this.isModalOpen = false;
   }
 
-  applyFilters(): void {
-    console.log('Aplicando filtros:', this.estatus, this.carrera, this.especialidad);
-    this.closeModal(); 
+  aplicarFiltros(): void {
+    let estudiantesFiltrados = this.estudiantes;
+  
+    if (this.estatus.trim()) {
+      estudiantesFiltrados = estudiantesFiltrados.filter(estudiante =>
+        estudiante.Estatus.toLowerCase().includes(this.estatus.toLowerCase())
+      );
+    }
+  
+    if (this.carrera.trim()) {
+      estudiantesFiltrados = estudiantesFiltrados.filter(estudiante =>
+        estudiante.NombreCarrera.toLowerCase().includes(this.carrera.toLowerCase())
+      );
+    }
+  
+    if (this.especialidad.trim()) {
+      estudiantesFiltrados = estudiantesFiltrados.filter(estudiante =>
+        estudiante.Especialidad.toLowerCase().includes(this.especialidad.toLowerCase())
+      );
+    }
+  
+    this.estudiantesFiltrados = estudiantesFiltrados; 
+    this.cerrarModal();
+  }
+
+  restaurarDatos(): void {
+    this.estatus = '';
+    this.carrera = '';
+    this.especialidad = '';
+    this.estudiantesFiltrados = [...this.estudiantes]; 
+    this.cerrarModal();
   }
 }

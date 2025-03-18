@@ -10,8 +10,12 @@ export class EstudianteService {
 
   constructor( private http: HttpClient ) { }
 
-  registrarEstudiante(estudiante: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/crearEstudiante`, estudiante);
+  registrarEstudiante(estudiante: any, foto: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('foto', foto, foto.name);
+    formData.append('estudiante', JSON.stringify(estudiante)); // Asegúrate de que el backend pueda manejar este formato
+
+    return this.http.post(`${this.apiUrl}/crearEstudiante`, formData);
   }
 
   obtenerEstudiantes(): Observable<any> {

@@ -8,8 +8,12 @@ const xlsx = require("xlsx");
 const path = require("path");
 
 const quitarAcentos = (str) => {
+    if (!str) {
+      return ''; 
+    }
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-};
+  };
+  
 
 // Función para generar RFC automáticamente
 const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) => {
