@@ -13,7 +13,10 @@ export class ServiciosEscolaresComponent implements OnInit {
   searchPerformed: boolean = false;
   selectedStudent: any = null;
   estudiantes: any[] = [];
-  
+  isModalOpen: boolean = false;
+  estatus: string = '';
+  carrera: string = '';
+  especialidad: string = '';
 
   constructor(private estudianteService: EstudianteService) {}
 
@@ -94,5 +97,18 @@ export class ServiciosEscolaresComponent implements OnInit {
         console.error('Error al obtener estudiantes', error);
       }
     );
+  }
+
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+  
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  applyFilters(): void {
+    console.log('Aplicando filtros:', this.estatus, this.carrera, this.especialidad);
+    this.closeModal(); 
   }
 }

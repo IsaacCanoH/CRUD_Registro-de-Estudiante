@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EstudianteService } from '../../services/estudiante.service';
 import { Router } from '@angular/router';
+import { NotificacionService } from '../../services/notificacion.service';
 
 @Component({
   selector: 'app-estudiante',
@@ -18,9 +19,13 @@ export class EstudianteComponent implements OnInit{
   constructor(
     private estudianteService: EstudianteService,
     private router: Router,
+    private notificacionService: NotificacionService
   ) {}
 
   ngOnInit(): void {
+    this.notificacionService.notificacionMensaje$.subscribe(mensaje => {
+      this.notificacionMensaje = mensaje;
+    });
   }
 
   buscarEstudiante() {

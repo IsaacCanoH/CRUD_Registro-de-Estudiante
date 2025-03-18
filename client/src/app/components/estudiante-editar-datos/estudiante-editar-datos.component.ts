@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EstudianteService } from '../../services/estudiante.service';
 import { Router } from '@angular/router';
+import { NotificacionService } from '../../services/notificacion.service';
 
 @Component({
   selector: 'app-estudiante-editar-datos',
@@ -12,13 +13,13 @@ import { Router } from '@angular/router';
 export class EstudianteEditarDatosComponent implements OnInit {
   matricula: string = '';
   estudiante: any = {};
-  notificacionMensaje: string | null = null;
   foto: File | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private estudianteService: EstudianteService,
-    private router: Router
+    private router: Router,
+    private notificacionService: NotificacionService
   ) {}
 
   ngOnInit() {
@@ -47,11 +48,16 @@ export class EstudianteEditarDatosComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Estudiante actualizado:', response);
+          this.notificacionService.showNotification('Datos actualizados correctamente'); 
           this.router.navigate(['/ed']);
         },
         (error) => {
           console.error('Error al actualizar el estudiante:', error);
         }
       );
+  }
+
+  cancelarEdicion(){
+    this.router.navigate(['/ed']);
   }
 }
