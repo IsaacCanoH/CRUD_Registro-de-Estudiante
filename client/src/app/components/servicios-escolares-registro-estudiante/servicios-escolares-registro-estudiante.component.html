@@ -31,7 +31,6 @@
               {{ carrera.NombreCarrera }}
             </option>
           </select>
-          <div *ngIf="nombreCarrera.touched && nombreCarrera.invalid" style="color:red;">Campo obligatorio</div>
         </div>
         <div class="form-group">
           <label for="especialidad">Especialidad</label>
@@ -41,7 +40,6 @@
               {{ especialidad }}
             </option>
           </select>
-          <div *ngIf="especialidad.touched && especialidad.invalid" style="color:red;">Campo obligatorio</div>
         </div>
         <div class="form-group">
           <label for="semestre">Semestre</label>
@@ -62,22 +60,18 @@
         <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" id="nombre" name="Nombre" [(ngModel)]="formData.Nombre" (keyup)="onInputChange()" required #nombre="ngModel" />
-          <div *ngIf="nombre.touched && nombre.invalid" style="color:red;">Nombre obligatorio</div>
         </div>
         <div class="form-group">
           <label for="apellidoPaterno">Apellido Paterno</label>
           <input type="text" id="apellidoPaterno" name="ApellidoPaterno" [(ngModel)]="formData.ApellidoPaterno" (keyup)="onInputChange()" required #apellidoPaterno="ngModel" />
-          <div *ngIf="apellidoPaterno.touched && apellidoPaterno.invalid" style="color:red;">Apellido Paterno obligatorio</div>
         </div>
         <div class="form-group">
           <label for="apellidoMaterno">Apellido Materno</label>
           <input type="text" id="apellidoMaterno" name="ApellidoMaterno" [(ngModel)]="formData.ApellidoMaterno" (keyup)="onInputChange()" required #apellidoMaterno="ngModel" />
-          <div *ngIf="apellidoMaterno.touched && apellidoMaterno.invalid" style="color:red;">Apellido Materno obligatorio</div>
         </div>
         <div class="form-group">
           <label for="fechaNacimiento">Fecha de Nacimiento</label>
           <input type="date" id="fechaNacimiento" name="FechaNacimiento" [(ngModel)]="formData.FechaNacimiento" (change)="onInputChange()" required #fechaNacimiento="ngModel" />
-          <div *ngIf="fechaNacimiento.touched && fechaNacimiento.invalid" style="color:red;">Fecha obligatoria</div>
         </div>
         <div class="form-group">
           <label for="sexo">Sexo</label>
@@ -91,7 +85,7 @@
           <label>Teléfonos</label>
           <div *ngFor="let tel of formData.Telefonos; let i = index; trackBy: trackByTelefonoId">
             <label for="telefono{{tel.id}}">Teléfono {{ i + 1 }}</label>
-            <div style="display: flex; align-items: center; gap: 2px;">
+            <div class="input-dynamic">
               <input
                 type="text"
                 [(ngModel)]="tel.numero"
@@ -99,18 +93,16 @@
                 id="telefono{{tel.id}}"
                 required
               />
-              <button type="button" (click)="eliminarTelefono(i)" class="btn btn-danger btn-sm" style="margin-left: 7em;">Eliminar</button>
+              <button type="button" (click)="eliminarTelefono(i)" class="btn btn-danger btn-sm margin-left-lg" >Eliminar</button>
             </div>
           </div>
-          <button type="button" (click)="agregarTelefono()" class="btn btn-primary btn-sm" style="margin-top: 2px;">
-            ➕ Agregar Teléfono
-          </button>
+          <button type="button" (click)="agregarTelefono()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Teléfono</button>
         </div>        
         <div class="form-group">
           <label>Correo Electronico</label>
           <div *ngFor="let correo of formData.CorreosElectronicos; let i = index; trackBy: trackByCorreoId">
             <label for="correo{{correo.id}}">Correo Electronico {{ i + 1 }}</label>
-            <div style="display: flex; align-items: center; gap: 2px;">
+            <div class="input-dynamic">
               <input
                 type="text"
                 [(ngModel)]="correo.correo"
@@ -118,12 +110,10 @@
                 id="correo{{correo.id}}"
                 required
               />
-              <button type="button" (click)="eliminarCorreo(i)" class="btn btn-danger btn-sm" style="margin-left: 7em;">Eliminar</button>
+              <button type="button" (click)="eliminarCorreo(i)" class="btn btn-danger btn-sm margin-left-lg">Eliminar</button>
             </div>
           </div>
-          <button type="button" (click)="agregarCorreo()" class="btn btn-primary btn-sm" style="margin-top: 2px;">
-            ➕ Agregar Correo
-          </button>
+          <button type="button" (click)="agregarCorreo()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Correo</button>
         </div>        
 
         <div class="form-group">
@@ -186,7 +176,7 @@
           <label>Teléfonos</label>
           <div *ngFor="let telT of formData.Tutor.Telefonos; let i = index; trackBy: trackByTelefonoId">
             <label for="telefono{{telT.id}}">Teléfono {{ i + 1 }}</label>
-            <div style="display: flex; align-items: center; gap: 2px;">
+            <div class="input-dynamic">
               <input
                 type="text"
                 [(ngModel)]="telT.numeroT"
@@ -194,18 +184,16 @@
                 id="telefonoTutor{{telT.id}}"
                 required
               />
-              <button type="button" (click)="eliminarTelefonoTutor(i)" class="btn btn-danger btn-sm" style="margin-left: 7em;">Eliminar</button>
+              <button type="button" (click)="eliminarTelefonoTutor(i)" class="btn btn-danger btn-sm margin-left-lg">Eliminar</button>
             </div>
           </div>
-          <button type="button" (click)="agregarTelefonoTutor()" class="btn btn-primary btn-sm" style="margin-top: 2px;">
-            ➕ Agregar Teléfono
-          </button>
+          <button type="button" (click)="agregarTelefonoTutor()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Teléfono</button>
         </div>        
         <div class="form-group">
           <label>Correo Electronico</label>
           <div *ngFor="let correoT of formData.Tutor.CorreosElectronicos; let i = index; trackBy: trackByCorreoTutorId">
             <label for="correo{{correoT.id}}">Correo Electronico {{ i + 1 }}</label>
-            <div style="display: flex; align-items: center; gap: 2px;">
+            <div class="input-dynamic">
               <input
                 type="text"
                 [(ngModel)]="correoT.correoT"
@@ -213,12 +201,10 @@
                 id="correoT{{correoT.id}}"
                 required
               />
-              <button type="button" (click)="eliminarCorreoTutor(i)" class="btn btn-danger btn-sm" style="margin-left: 7em;">Eliminar</button>
+              <button type="button" (click)="eliminarCorreoTutor(i)" class="btn btn-danger btn-sm margin-left-lg">Eliminar</button>
             </div>
           </div>
-          <button type="button" (click)="agregarCorreoTutor()" class="btn btn-primary btn-sm" style="margin-top: 2px;">
-            ➕ Agregar Correo
-          </button>
+          <button type="button" (click)="agregarCorreoTutor()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Correo</button>
         </div>        
       </div>
       <h2>Domicilio del Tutor</h2>
@@ -259,7 +245,7 @@
       </div>
     </form>
   </div>
-  <div class="form-container second-container" style="margin-top: 40px;">
+  <div class="form-container second-container">
     <h2>Cargar estudiantes por documento Excel</h2>
   
     <div class="form-row">
@@ -290,14 +276,14 @@
   
     <div class="form-row">
       <div class="form-group">
-        <button class="animated-button" (click)="descargarPlantilla()">
+        <button class="animated-button margin-top-md" (click)="descargarPlantilla()">
           <span>Obtener Plantilla</span>
           <span></span>
         </button>
       </div>
     </div>
   
-    <div class="success-message" *ngIf="successMessage" style="margin-top: 10px;">
+    <div class="success-message margin-top-md" *ngIf="successMessage">
       {{ successMessage }}
     </div>
   </div>

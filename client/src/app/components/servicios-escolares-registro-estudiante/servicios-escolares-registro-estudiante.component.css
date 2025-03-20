@@ -179,4 +179,59 @@
     font-weight: bold;
     font-size: 14px;
   }
+
+  /* ============================
+   ESTILOS COMPLEMENTARIOS
+============================ */
+
+/* Reemplazo para: style="display: flex; align-items: center; gap: 2px;" */
+.input-dynamic {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Reemplazo para: style="margin-top: 2px;" */
+  .margin-top-sm {
+    margin-top: 0.5rem;
+  }
+  
+  /* Reemplazo para: style="margin-top: 10px;" o similares */
+  .margin-top-md {
+    margin-top: 1rem;
+  }
+  
+  /* Reemplazo para: style="margin-left: 7em;" */
+  .margin-left-lg {
+    margin-left: 7em;
+  }
+  
+  /* Botones secundarios dentro de dinámicos */
+  .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .btn-danger {
+    background-color: var(--error-color);
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #dc2626;
+  }
+  
+  .btn-primary-sm {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary-sm:hover {
+    background-color: var(--primary-hover);
+  }
   
