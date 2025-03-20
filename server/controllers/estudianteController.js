@@ -2,6 +2,8 @@ const { Model, model } = require("mongoose");
 const Estudiante = require("../models/Estudiante");
 const Actividades = require("../models/ActividadExtracurricular");
 const Observaciones = require("../models/ObservacionDocente");
+const Carrera = require("../models/Carrera");
+const Ciudad = require("../models/Ciudad")
 
 const multer = require("multer");
 const xlsx = require("xlsx");
@@ -27,17 +29,17 @@ const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) =
     const primeraApellidoMaterno = apellidoMaterno.charAt(0).toUpperCase();
 
     const fecha = new Date(fechaNacimiento);
-    const año = fecha.getFullYear().toString().slice(-2);
+    const anio = fecha.getFullYear().toString().slice(-2);
     const mes = String(fecha.getMonth() + 1).padStart(2, "0");
     const dia = String(fecha.getDate()).padStart(2, "0");
 
-    return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${año}${mes}${dia}`;
+    return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${anio}${mes}${dia}`;
 };
 
 // Metodo para crear estudiante
 exports.crearEstudiante = async (req, res) => {
     try {
-        const datosEstudiante = { ...req.body };
+        const datosEstudiante = JSON.parse (req.body.estudiante);
         
         // Generar y validar RFC
         const rfcGenerado = generarRFC(datosEstudiante.Nombre, datosEstudiante.ApellidoPaterno, datosEstudiante.ApellidoMaterno, datosEstudiante.FechaNacimiento);
@@ -131,7 +133,7 @@ exports.uploadExcel = async (req, res) => {
                 : [],
             RFC: row.RFC,
             Semestre: row.Semestre,
-            Año: row["Año"],
+            Anio: row["Año"],
             Domicilio: {
                 Calle: row["Domicilio.Calle"],
                 NumeroInterior: row["Domicilio.NumeroInterior"],
@@ -346,7 +348,7 @@ exports.filtroPorAnio = async (req, res) => {
             return res.status(400).json({ message: "Proporcione un año para filtrar estudiantes" });
         }
 
-        const estudiantes = await Estudiante.find({ Año: anio });
+        const estudiantes = await Estudiante.find({ Anio: anio });
 
         if (estudiantes.length == 0) {
             return res.status(404).json({ message: "No se encontraron estudiates en este año" });
@@ -452,3 +454,21 @@ exports.perfilPorMatricula = async (req, res) => {
         return res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
+
+exports.getCatalogoCarreras = async (req, res) => {
+    try {
+      const catalogo = await Carrera.find();
+      res.status(200).json(catalogo);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener catálogo Carrera", error: error.message });
+    }
+  };
+
+exports.getCatalogoCiudad = async (req, res) => {
+    try {
+        const catalogo = await Ciudad.find();
+        res.status(200).json(catalogo);
+    } catch (error){
+        res.status(500).json({ message: "Error al obtener catálogo Ciudad", error: error.message });
+    }
+}

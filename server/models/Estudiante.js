@@ -7,17 +7,17 @@ const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) =
     const primeraApellidoMaterno = apellidoMaterno.charAt(0).toUpperCase();
     
     const fecha = new Date(fechaNacimiento);
-    const año = fecha.getFullYear().toString().slice(-2);
+    const anio = fecha.getFullYear().toString().slice(-2);
     const mes = String(fecha.getMonth() + 1).padStart(2, "0");
     const dia = String(fecha.getDate()).padStart(2, "0");
 
-    return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${año}${mes}${dia}`;
+    return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${anio}${mes}${dia}`;
 };
 
 
 // Función para generar matrícula automáticamente
 const generarMatricula = async function (apellidoPaterno, fechaAlta, semestre) {
-    const año = fechaAlta.getFullYear().toString().slice(-2);
+    const anio = fechaAlta.getFullYear().toString().slice(-2);
     const primeraLetraApellido = apellidoPaterno.charAt(0).toUpperCase();
     
     // Obtener el último estudiante registrado para generar el consecutivo
@@ -30,7 +30,7 @@ const generarMatricula = async function (apellidoPaterno, fechaAlta, semestre) {
         consecutivo = ultimoConsecutivo + 1;
     }
 
-    return `${año}${semestre}${primeraLetraApellido}${String(consecutivo).padStart(4, "0")}`;
+    return `${anio}${semestre}${primeraLetraApellido}${String(consecutivo).padStart(4, "0")}`;
 };
 
 // Esquema de domicilio
@@ -85,7 +85,7 @@ const EstudianteSchema = new Schema({
     Foto: { type: String, default: "" },
     RFC: { type: String, unique: true },
     Semestre: { type: Number, required: true },
-    Año: { type: Number, required: true },
+    Anio: { type: Number, required: true },
     Domicilio: DomicilioSchema,
     PromedioBachillerato: { type: Number, required: true },
     EspecialidadBachillerato: { type: String, required: true },

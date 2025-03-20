@@ -22,12 +22,12 @@ import { EstudianteEditarDatosComponent } from './components/estudiante-editar-d
     ServiciosEscolaresComponent,
     ObservacionDocenteComponent,
     DocenteExtracurricularComponent,
-    ServiciosEscolaresRegistroEstudianteComponent,
     EstudianteComponent,
     EstudianteEditarDatosComponent,
   ],
   imports: [
     BrowserModule,
+    ServiciosEscolaresRegistroEstudianteComponent,
     AppRoutingModule,
     RouterModule,
     FormsModule, 

@@ -18,5 +18,7 @@ router.get("/getPorEstatus/:estatus", estudianteController.filtroPorEstatus);
 router.get("/getPorCarrera/:carrera", estudianteController.filtroPorCarrera);
 router.get("/getPorEspecialidad/:especialidad", estudianteController.filtroPorEspecialidad);
 router.get("/perfil/:matricula", estudianteController.perfilPorMatricula);
+router.get("/catalogoCarreras", estudianteController.getCatalogoCarreras);
+router.get("/catalogoCiudades", estudianteController.getCatalogoCiudad);
 
 module.exports = router;

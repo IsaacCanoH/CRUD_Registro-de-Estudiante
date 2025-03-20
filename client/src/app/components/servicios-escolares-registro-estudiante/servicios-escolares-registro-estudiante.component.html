@@ -4,32 +4,37 @@
     <p>Complete el formulario</p>
   </div>
   <div class="form-container">
-    <form #registroForm="ngForm" (ngSubmit)="submitForm()" novalidate>
+    <form #registroForm="ngForm" (ngSubmit)="submitForm(registroForm)" novalidate>
+
       <h2>Datos Generales del Alumno</h2>
       <div class="form-grid">
         <div class="form-group">
           <label for="matricula">Matrícula</label>
-          <input type="text" id="matricula" name="matricula" [(ngModel)]="formData.matricula" required />
+          <input type="text" id="matricula" name="Matricula" [(ngModel)]="formData.Matricula" required />
         </div>
         <div class="form-group">
           <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" name="nombre" [(ngModel)]="formData.nombre" required />
+          <input type="text" id="nombre" name="Nombre" [(ngModel)]="formData.Nombre" (keyup)="onInputChange()" required #nombre="ngModel" />
+          <div *ngIf="nombre.touched && nombre.invalid" style="color:red;">Nombre obligatorio</div>
         </div>
         <div class="form-group">
           <label for="apellidoPaterno">Apellido Paterno</label>
-          <input type="text" id="apellidoPaterno" name="apellidoPaterno" [(ngModel)]="formData.apellidoPaterno" required />
+          <input type="text" id="apellidoPaterno" name="ApellidoPaterno" [(ngModel)]="formData.ApellidoPaterno" (keyup)="onInputChange()" required #apellidoPaterno="ngModel" />
+          <div *ngIf="apellidoPaterno.touched && apellidoPaterno.invalid" style="color:red;">Apellido Paterno obligatorio</div>
         </div>
         <div class="form-group">
           <label for="apellidoMaterno">Apellido Materno</label>
-          <input type="text" id="apellidoMaterno" name="apellidoMaterno" [(ngModel)]="formData.apellidoMaterno" required />
+          <input type="text" id="apellidoMaterno" name="ApellidoMaterno" [(ngModel)]="formData.ApellidoMaterno" (keyup)="onInputChange()" required #apellidoMaterno="ngModel" />
+          <div *ngIf="apellidoMaterno.touched && apellidoMaterno.invalid" style="color:red;">Apellido Materno obligatorio</div>
         </div>
         <div class="form-group">
           <label for="fechaNacimiento">Fecha de Nacimiento</label>
-          <input type="date" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="formData.fechaNacimiento" required />
+          <input type="date" id="fechaNacimiento" name="FechaNacimiento" [(ngModel)]="formData.FechaNacimiento" (change)="onInputChange()" required #fechaNacimiento="ngModel" />
+          <div *ngIf="fechaNacimiento.touched && fechaNacimiento.invalid" style="color:red;">Fecha obligatoria</div>
         </div>
         <div class="form-group">
           <label for="sexo">Sexo</label>
-          <select id="sexo" name="sexo" [(ngModel)]="formData.sexo" required>
+          <select id="sexo" name="Sexo" [(ngModel)]="formData.Sexo" required>
             <option value="">Seleccione...</option>
             <option value="M">Masculino</option>
             <option value="F">Femenino</option>
@@ -37,71 +42,51 @@
         </div>
         <div class="form-group">
           <label for="telefonos">Teléfonos</label>
-          <input type="text" id="telefonos" name="telefonos" [(ngModel)]="formData.telefonos" placeholder="Separar por comas" required />
+          <input type="text" id="telefonos" name="Telefonos" [(ngModel)]="formData.Telefonos" placeholder="Separar por comas" required />
         </div>
         <div class="form-group">
           <label for="correosElectronicos">Correos Electrónicos</label>
-          <input type="text" id="correosElectronicos" name="correosElectronicos" [(ngModel)]="formData.correosElectronicos" placeholder="Separar por comas" required />
+          <input type="text" id="correosElectronicos" name="CorreosElectronicos" [(ngModel)]="formData.CorreosElectronicos" placeholder="Separar por comas" required />
         </div>
         <div class="form-group">
           <label for="rfc">RFC</label>
-          <input type="text" id="rfc" name="rfc" [(ngModel)]="formData.rfc" required />
+          <input type="text" id="rfc" name="RFC" [(ngModel)]="formData.RFC" required />
         </div>
         <div class="form-group">
           <label for="foto">Fotografía</label>
-          <input type="file" id="foto" (change)="onFileChange($event, 'foto')" accept="image/*" required />
+          <input type="file" id="foto" (change)="onFileChange($event, 'Foto')" accept="image/*" required />
         </div>
       </div>
-
       <h2>Domicilio del Alumno</h2>
       <div class="form-grid">
         <div class="form-group">
-          <label for="calle">Calle</label>
-          <input type="text" id="calle" name="calle" [(ngModel)]="formData.calle" required />
-        </div>
-        <div class="form-group">
-          <label for="numeroExterior">Número Exterior</label>
-          <input type="number" id="numeroExterior" name="numeroExterior" [(ngModel)]="formData.numeroExterior" required />
-        </div>
-        <div class="form-group">
-          <label for="numeroInterior">Número Interior</label>
-          <input type="number" id="numeroInterior" name="numeroInterior" [(ngModel)]="formData.numeroInterior" />
-        </div>
-        <div class="form-group">
-          <label for="colonia">Colonia</label>
-          <input type="text" id="colonia" name="colonia" [(ngModel)]="formData.colonia" required />
-        </div>
-        <div class="form-group">
           <label for="codigoPostal">Código Postal</label>
-          <input type="text" id="codigoPostal" name="codigoPostal" [(ngModel)]="formData.codigoPostal" required />
+          <input type="text" id="codigoPostal" name="CodigoPostal" [(ngModel)]="formData.CodigoPostal" required />
         </div>
         <div class="form-group">
           <label for="ciudad">Ciudad</label>
-          <input type="text" id="ciudad" name="ciudad" [(ngModel)]="formData.ciudad" required />
-        </div>
-      </div>
-
-      <h2>Datos Académicos</h2>
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="promedio">Promedio de Bachillerato</label>
-          <input type="number" id="promedio" name="promedio" step="0.01" [(ngModel)]="formData.promedio" required />
-        </div>
-        <div class="form-group">
-          <label for="certificadoBachillerato">Certificado de Bachillerato</label>
-          <select id="certificadoBachillerato" name="certificadoBachillerato" [(ngModel)]="formData.certificado" required>
+          <select id="ciudad" name="Ciudad" [(ngModel)]="formData.Ciudad" required #ciudad="ngModel" >
             <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+            <option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.Ciudad">
+              {{ ciudad.Ciudad }}
+            </option>
           </select>
         </div>
         <div class="form-group">
-          <label for="semestre">Semestre</label>
-          <input type="number" id="semestre" name="semestre" [(ngModel)]="formData.semestre" required />
+          <label for="colonia">Colonia</label>
+          <input type="text" id="colonia" name="Colonia" [(ngModel)]="formData.Colonia" required />
         </div>
         <div class="form-group">
-          <label for="anio">Año</label>
-          <input type="number" id="anio" name="anio" [(ngModel)]="formData.anio" required />
+          <label for="calle">Calle</label>
+          <input type="text" id="calle" name="Calle" [(ngModel)]="formData.Calle" required />
+        </div>
+        <div class="form-group">
+          <label for="numeroExterior">Número Exterior</label>
+          <input type="number" id="numeroExterior" name="NumeroExterior" [(ngModel)]="formData.NumeroExterior" required />
+        </div>
+        <div class="form-group">
+          <label for="numeroInterior">Número Interior</label>
+          <input type="number" id="numeroInterior" name="NumeroInterior" [(ngModel)]="formData.NumeroInterior" />
         </div>
       </div>
 
@@ -109,54 +94,103 @@
       <div class="form-grid">
         <div class="form-group">
           <label for="nombreTutor">Nombre del Tutor</label>
-          <input type="text" id="nombreTutor" name="nombreTutor" [(ngModel)]="formData.nombreTutor" required />
+          <input type="text" id="nombreTutor" name="NombreTutor" [(ngModel)]="formData.NombreTutor" required />
         </div>
         <div class="form-group">
           <label for="apellidoPaternoTutor">Apellido Paterno del Tutor</label>
-          <input type="text" id="apellidoPaternoTutor" name="apellidoPaternoTutor" [(ngModel)]="formData.apellidoPaternoTutor" required />
+          <input type="text" id="apellidoPaternoTutor" name="ApellidoPaternoTutor" [(ngModel)]="formData.ApellidoPaternoTutor" required />
         </div>
         <div class="form-group">
           <label for="apellidoMaternoTutor">Apellido Materno del Tutor</label>
-          <input type="text" id="apellidoMaternoTutor" name="apellidoMaternoTutor" [(ngModel)]="formData.apellidoMaternoTutor" required />
-        </div>
-        <div class="form-group full-width">
-          <h3>Domicilio del Tutor</h3>
+          <input type="text" id="apellidoMaternoTutor" name="ApellidoMaternoTutor" [(ngModel)]="formData.ApellidoMaternoTutor" required />
         </div>
         <div class="form-group">
-          <label for="calleTutor">Calle</label>
-          <input type="text" id="calleTutor" name="calleTutor" [(ngModel)]="formData.calleTutor" required />
+          <label for="telefonosTutor">Teléfonos de Tutor</label>
+          <input type="text" id="telefonosTutor" name="TelefonosTutor" [(ngModel)]="formData.TelefonosTutor" placeholder="Separar por comas" required />
         </div>
         <div class="form-group">
-          <label for="numeroExteriorTutor">Número Exterior</label>
-          <input type="number" id="numeroExteriorTutor" name="numeroExteriorTutor" [(ngModel)]="formData.numeroExteriorTutor" required />
+          <label for="correosElectronicosTutor">Correos Electrónicos de Tutor</label>
+          <input type="text" id="correosElectronicosTutor" name="CorreosElectronicosTutor" [(ngModel)]="formData.CorreosElectronicosTutor" placeholder="Separar por comas" required />
         </div>
+      </div>
+      <h2>Domicilio del Tutor</h2>
+      <div class="form-grid">
         <div class="form-group">
-          <label for="coloniaTutor">Colonia</label>
-          <input type="text" id="coloniaTutor" name="coloniaTutor" [(ngModel)]="formData.coloniaTutor" required />
+          <label for="calleTutor">Codigo postal</label>
+          <input type="text" id="codigoPostalTutor" name="CodigoPostalTutor" [(ngModel)]="formData.CodigoPostalTutor" required />
         </div>
         <div class="form-group">
           <label for="ciudadTutor">Ciudad</label>
-          <input type="text" id="ciudadTutor" name="ciudadTutor" [(ngModel)]="formData.ciudadTutor" required />
+          <select id="ciudadTutor" name="CiudadTutor" [(ngModel)]="formData.CiudadTutor" required #ciudadTutor="ngModel" >
+            <option value="">Seleccione...</option>
+            <option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.Ciudad">
+              {{ ciudad.Ciudad }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="coloniaTutor">Colonia</label>
+          <input type="text" id="coloniaTutor" name="ColoniaTutor" [(ngModel)]="formData.ColoniaTutor" required />
+        </div>
+        <div class="form-group">
+          <label for="calleTutor">Calle</label>
+          <input type="text" id="calleTutor" name="CalleTutor" [(ngModel)]="formData.CalleTutor" required />
+        </div>
+        <div class="form-group">
+          <label for="numeroExteriorTutor">Número Exterior</label>
+          <input type="number" id="numeroExteriorTutor" name="NumeroExteriorTutor" [(ngModel)]="formData.NumeroExteriorTutor" required />
+        </div>
+        <div class="form-group">
+          <label for="numeroInteriorTutor">Número interior</label>
+          <input type="number" id="numeroInteriorTutor" name="NumeroInteriorTutor" [(ngModel)]="formData.NumeroInteriorTutor" required />
         </div>
       </div>
 
-      <h2>Datos de la Carrera</h2>
+      <h2>Datos Académicos</h2>
       <div class="form-grid">
         <div class="form-group">
-          <label for="nombreCarrera">Nombre Carrera</label>
-          <select id="nombreCarrera" name="nombreCarrera" [(ngModel)]="formData.nombreCarrera" required>
+          <label for="promedio">Promedio de Bachillerato</label>
+          <input type="number" id="promedio" name="PromedioBachillerato" step="0.01" [(ngModel)]="formData.PromedioBachillerato" required />
+        </div>
+        <div class="form-group">
+          <label for="certificadoBachillerato">Certificado de Bachillerato</label>
+          <select id="certificadoBachillerato" name="CertificadoBachillerato" [(ngModel)]="formData.CertificadoBachillerato" required>
             <option value="">Seleccione...</option>
-            <option value="Carrera1">Carrera 1</option>
-            <option value="Carrera2">Carrera 2</option>
+            <option value="1">Si</option>
+            <option value="0">No</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="especialidad">Especialidad</label>
-          <select id="especialidad" name="especialidad" [(ngModel)]="formData.especialidad" required>
+          <label for="especialidadBachillerato">Especialidad de Bachillerato</label>
+          <input type="text" id="especialidadBachillerato" name="EspecialidadBachillerato" step="0.01" [(ngModel)]="formData.EspecialidadBachillerato" required />
+        </div>
+        <div class="form-group">
+          <label for="nombreCarrera">Nombre Carrera</label>
+          <select id="nombreCarrera" name="NombreCarrera" [(ngModel)]="formData.NombreCarrera" (change)="onCarreraChange()" required #nombreCarrera="ngModel">
             <option value="">Seleccione...</option>
-            <option value="Especialidad1">Especialidad 1</option>
-            <option value="Especialidad2">Especialidad 2</option>
+            <option *ngFor="let carrera of catalogoCarreras" [value]="carrera.NombreCarrera">
+              {{ carrera.NombreCarrera }}
+            </option>
           </select>
+          <div *ngIf="nombreCarrera.touched && nombreCarrera.invalid" style="color:red;">Campo obligatorio</div>
+        </div>
+        <div class="form-group">
+          <label for="especialidad">Especialidad</label>
+          <select id="especialidad" name="Especialidad" [(ngModel)]="formData.Especialidad" required #especialidad="ngModel">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let especialidad of especialidadesDisponibles" [value]="especialidad">
+              {{ especialidad }}
+            </option>
+          </select>
+          <div *ngIf="especialidad.touched && especialidad.invalid" style="color:red;">Campo obligatorio</div>
+        </div>
+        <div class="form-group">
+          <label for="semestre">Semestre</label>
+          <input type="number" id="semestre" name="Semestre" [(ngModel)]="formData.Semestre" required />
+        </div>
+        <div class="form-group">
+          <label for="anio">Año</label>
+          <input type="number" id="anio" name="Anio" [(ngModel)]="formData.Anio" required />
         </div>
       </div>
 
