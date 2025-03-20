@@ -120,3 +120,63 @@
         grid-template-columns: 1fr;
     }
 }
+
+.form-container {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input[type="file"] {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .animated-button {
+    background: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  
+  .animated-button:hover {
+    background: #0056b3;
+  }
+  
+  .animated-button span:nth-child(2) {
+    display: none; /* Puedes usar esto para animaciones adicionales si deseas */
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  
+  .success-message {
+    color: green;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  

@@ -20,5 +20,7 @@ router.get("/getPorEspecialidad/:especialidad", estudianteController.filtroPorEs
 router.get("/perfil/:matricula", estudianteController.perfilPorMatricula);
 router.get("/catalogoCarreras", estudianteController.getCatalogoCarreras);
 router.get("/catalogoCiudades", estudianteController.getCatalogoCiudad);
+router.get('/descargarPlantilla', estudianteController.descargarPlantillaExcel);
+
 
 module.exports = router;

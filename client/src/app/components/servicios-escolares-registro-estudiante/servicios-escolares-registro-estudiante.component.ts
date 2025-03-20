@@ -3,6 +3,50 @@ import { NgForm, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EstudianteService } from '../../services/estudiante.service';
 
+interface EstudianteForm {
+  Matricula: string;
+  Nombre: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  FechaNacimiento: string;
+  Sexo: string;
+  Telefonos: { id: number, numero: string }[];
+  CorreosElectronicos: { id: number, correo: string }[];
+  Foto: File | null;
+  RFC: string;
+  Domicilio: {
+    Calle: string;
+    NumeroInterior: number;
+    NumeroExterior: number | null;
+    Colonia: string;
+    CodigoPostal: string;
+    Ciudad: string;
+  },
+  CertificadoBachillerato: number;
+  EspecialidadBachillerato: string | null;
+  PromedioBachillerato: number | null;
+  Anio: number | null;
+  Semestre: number | null;
+  Tutor: {
+    Nombre: string;
+    ApellidoPaterno: string;
+    ApellidoMaterno: string;
+    Domicilio: {
+      Calle: string;
+      NumeroInterior: number;
+      NumeroExterior: number | null;
+      Colonia: string;
+      CodigoPostal: string;
+      Ciudad: string;
+    }
+    Telefonos: { id: number, numeroT: string }[];
+    CorreosElectronicos: { id: number, correoT: string }[];
+  }
+  NombreCarrera: string;
+  Especialidad: string;
+  [key: string]: any;
+}
+
 @Component({
   selector: 'app-servicios-escolares-registro-estudiante',
   standalone: true,
@@ -11,57 +55,76 @@ import { EstudianteService } from '../../services/estudiante.service';
   imports: [CommonModule, FormsModule]
 })
 export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
-  formData = {
+
+  formData: EstudianteForm = {
     Matricula: '',
     Nombre: '',
     ApellidoPaterno: '',
     ApellidoMaterno: '',
     FechaNacimiento: '',
     Sexo: '',
-    Telefonos: [],
-    CorreosElectronicos: [],
+    Telefonos: [{ id: 1, numero: '' }],
+    CorreosElectronicos: [{ id: 1, correo: '' }],
     Foto: null,
     RFC: '',
-    Calle: '',
-    NumeroExterior: null,
-    NumeroInterior: 0,
-    Colonia: '',
-    CodigoPostal: '',
-    Ciudad: '',
+    Domicilio: {
+      Calle: '',
+      NumeroInterior: 0,
+      NumeroExterior: null,
+      Colonia: '',
+      CodigoPostal: '',
+      Ciudad: ''
+    },
     CertificadoBachillerato: 0,
     EspecialidadBachillerato: null,
     PromedioBachillerato: null,
     Anio: null,
     Semestre: null,
-    NombreTutor: '',
-    ApellidoPaternoTutor: '',
-    ApellidoMaternoTutor: '',
-    CalleTutor: '',
-    NumeroExteriorTutor: null,
-    NumeroInteriorTutor: 0,
-    ColoniaTutor: '',
-    CodigoPostalTutor: '',
-    CiudadTutor: '',
-    TelefonosTutor: [],
-    CorreosElectronicosTutor: [],
+    Tutor: {
+      Nombre: '',
+      ApellidoPaterno: '',
+      ApellidoMaterno: '',
+      Domicilio: {
+        Calle: '',
+        NumeroInterior: 0,
+        NumeroExterior: null,
+        Colonia: '',
+        CodigoPostal: '',
+        Ciudad: ''
+      },
+      Telefonos: [{ id: 1, numeroT: '' }],
+      CorreosElectronicos: [{ id: 1, correoT: '' }],
+    },
     NombreCarrera: '',
     Especialidad: '',
   };
-  consecutivo = 1; 
+  consecutivo = 1;
   successMessage = '';
   errorMessage = '';
-  catalogoCarreras: any[] = []; // Aquí guardamos carreras desde el backend
-  especialidadesDisponibles: string[] = []; // Aquí las especialidades filtradas por carrera seleccionada
-  catalogoCiudades: any[] = []; // Aquí guardamos ciudades desde el backend
-
+  catalogoCarreras: any[] = [];
+  especialidadesDisponibles: string[] = [];
+  catalogoCiudades: any[] = [];
+  selectedFile: File | null = null;
 
   constructor(private estudianteService: EstudianteService) {}
 
   ngOnInit() {
     this.obtenerCatalogoCarreras();
     this.obtenerCatalogoCiudades();
+    if (this.formData.Telefonos.length === 0) {
+      this.formData.Telefonos.push({id: this.telefonoIdCounter++, numero: '' });
+    }
+    if (this.formData.CorreosElectronicos.length === 0) {
+      this.formData.CorreosElectronicos.push({ id: this.correoIdCounter++, correo: '' });
+    }
+    if (this.formData.Tutor.Telefonos.length === 0) {
+      this.formData.Tutor.Telefonos.push({ id: this.telefonoTutorIdCounter++, numeroT: '' });
+    }
+    if (this.formData.Tutor.CorreosElectronicos.length === 0) {
+      this.formData.Tutor.CorreosElectronicos.push({ id: this.correoTIdCounter++, correoT: '' });
+    }
   }
-  
+
   obtenerCatalogoCiudades() {
     this.estudianteService.obtenerCatalogoCiudades().subscribe(
       (data) => {
@@ -69,7 +132,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
       },
       (error) => {
         console.error('Error al cargar catálogo:', error);
-        this.errorMessage = 'Error al cargar catálogo de carreras.';
+        this.errorMessage = 'Error al cargar catálogo de ciudades.';
       }
     );
   }
@@ -81,7 +144,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
       },
       (error) => {
         console.error('Error al cargar catálogo:', error);
-        this.errorMessage = 'Error al cargar catálogo de ciudades.';
+        this.errorMessage = 'Error al cargar catálogo de carreras.';
       }
     );
   }
@@ -97,7 +160,6 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
       this.especialidadesDisponibles = [];
     }
 
-    // Limpiar especialidad seleccionada si se cambia la carrera
     this.formData.Especialidad = '';
   }
 
@@ -164,37 +226,134 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     this.generarMatricula();
   }
 
-  validarNumeroInterior() {
-    if (this.formData.NumeroInterior == null) {
-      this.formData.NumeroInterior = 0;
-    }
-  }
-
   submitForm(form: NgForm) {
-    // limpiamos mensajes anteriores
     this.successMessage = '';
     this.errorMessage = '';
-
+  
     if (!form.valid) {
       Object.values(form.controls).forEach(control => control.markAsTouched());
       this.errorMessage = 'Por favor completa todos los campos obligatorios.';
       return;
     }
-
-    this.validarNumeroInterior();
-
+  
+  
     const foto = this.formData.Foto ? this.formData.Foto : new File([], '');
-
-    this.estudianteService.registrarEstudiante(this.formData, foto).subscribe(
+  
+    // 🔥 Este es el paso clave:
+    const payload = {
+      ...this.formData,
+      Telefonos: this.formData.Telefonos.map(t => t.numero),
+      CorreosElectronicos: this.formData.CorreosElectronicos.map(c => c.correo),
+      Tutor: {
+        ...this.formData.Tutor,
+        Telefonos: this.formData.Tutor.Telefonos.map(t => t.numeroT),
+        CorreosElectronicos: this.formData.Tutor.CorreosElectronicos.map(c => c.correoT),
+      }
+    };
+  
+    this.estudianteService.registrarEstudiante(payload, foto).subscribe(
       (response) => {
         console.log('Estudiante registrado exitosamente:', response);
         this.successMessage = '¡Estudiante registrado exitosamente!';
-        form.resetForm(); // Limpiar formulario
+        form.resetForm();
       },
       (error) => {
         console.error('Error al registrar estudiante:', error);
         this.errorMessage = 'Hubo un error al registrar al estudiante. Inténtalo de nuevo.';
       }
     );
+  }
+  
+
+  telefonoIdCounter = 2; // empezamos en 2 porque el primero ya es id 1
+
+  agregarTelefono() {
+    this.formData.Telefonos.push({ id: this.telefonoIdCounter++, numero: '' });
+  }
+
+  eliminarTelefono(index: number) {
+    this.formData.Telefonos.splice(index, 1);
+  }
+
+  trackByTelefonoId(index: number, tel: any): number {
+    return tel.id;
+  }
+
+correoIdCounter = 2;
+
+agregarCorreo() {
+  this.formData.CorreosElectronicos.push({ id: this.correoIdCounter++, correo: '' });
+}
+
+eliminarCorreo(index: number) {
+  this.formData.CorreosElectronicos.splice(index, 1);
+}
+
+trackByCorreoId(index: number, correo: any): number {
+  return correo.id;
+}
+
+correoTIdCounter = 2;
+
+agregarCorreoTutor() {
+  this.formData.Tutor.CorreosElectronicos.push({ id: this.correoIdCounter++, correoT: '' });
+}
+
+eliminarCorreoTutor(index: number) {
+  this.formData.Tutor.CorreosElectronicos.splice(index, 1);
+}
+
+trackByCorreoTutorId(index: number, correoT: any): number {
+  return correoT.id;
+}
+
+telefonoTutorIdCounter = 2; // empezamos en 2 porque el primero ya es id 1
+
+  agregarTelefonoTutor() {
+    this.formData.Tutor.Telefonos.push({ id: this.telefonoIdCounter++, numeroT: '' });
+  }
+
+  eliminarTelefonoTutor(index: number) {
+    this.formData.Tutor.Telefonos.splice(index, 1);
+  }
+
+  trackByTelefonoTutorId(index: number, telT: any): number {
+    return telT.id;
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+  
+  subirArchivoExcel() {
+    if (!this.selectedFile) {
+      this.errorMessage = 'Por favor selecciona un archivo Excel.';
+      return;
+    }
+  
+    this.estudianteService.subirEstudiantesExcel(this.selectedFile).subscribe({
+      next: (res) => {
+        this.successMessage = 'Estudiantes cargados correctamente desde el Excel.';
+        this.selectedFile = null;
+      },
+      error: (err) => {
+        console.error('Error al subir archivo:', err);
+        this.errorMessage = 'Ocurrió un error al procesar el archivo.';
+      }
+    });
+  }
+  
+  descargarPlantilla() {
+    this.estudianteService.descargarPlantillaExcel().subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Plantilla_Estudiantes.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error('Error al descargar plantilla', error);
+      this.errorMessage = 'No se pudo descargar la plantilla.';
+    });
   }
 }

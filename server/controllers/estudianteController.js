@@ -177,6 +177,64 @@ exports.uploadExcel = async (req, res) => {
     }
 };
 
+// Metodo para generar platilla de excel
+exports.descargarPlantillaExcel = (req, res) => {
+    try {
+      // Define las columnas y una fila de ejemplo vacía (opcional)
+      const headers = [{
+        Matrícula: '',
+        Nombre: '',
+        ApellidoPaterno: '',
+        ApellidoMaterno: '',
+        FechaNacimiento: 'dd/mm/yyyy',
+        Sexo: '',
+        Teléfonos: 'Ej: 4151234567, 4189876543',
+        CorreosElectrónicos: 'Ej: ejemplo@correo.com, otro@correo.com',
+        RFC: '',
+        Semestre: '',
+        Año: '',
+        'Domicilio.Calle': '',
+        'Domicilio.NumeroInterior': '',
+        'Domicilio.NumeroExterior': '',
+        'Domicilio.Colonia': '',
+        'Domicilio.CodigoPostal': '',
+        'Domicilio.Ciudad': '',
+        PromedioBachillerato: '',
+        EspecialidadBachillerato: '',
+        CertificadoBachillerato: '',
+        NombreCarrera: '',
+        Especialidad: '',
+        'Tutor.Nombre': '',
+        'Tutor.ApellidoPaterno': '',
+        'Tutor.ApellidoMaterno': '',
+        'Tutor.Teléfonos': 'Ej: 4151234567, 4189876543',
+        'Tutor.CorreosElectrónicos': 'Ej: tutor@correo.com, otro@correo.com',
+        'Tutor.Domicilio.Calle': '',
+        'Tutor.Domicilio.NumeroInterior': '',
+        'Tutor.Domicilio.NumeroExterior': '',
+        'Tutor.Domicilio.Colonia': '',
+        'Tutor.Domicilio.CodigoPostal': '',
+        'Tutor.Domicilio.Ciudad': ''
+      }];
+  
+      // Crea hoja y libro
+      const worksheet = xlsx.utils.json_to_sheet(headers);
+      const workbook = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(workbook, worksheet, 'Plantilla');
+  
+      // Envía el archivo como descarga
+      const buffer = xlsx.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+  
+      res.setHeader('Content-Disposition', 'attachment; filename=Plantilla_Estudiantes.xlsx');
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  
+      return res.send(buffer);
+    } catch (error) {
+      console.error('Error al generar plantilla:', error);
+      return res.status(500).json({ message: 'Error al generar la plantilla' });
+    }
+  };
+  
 
 // Metodo para visualizar todos los estudiantes
 exports.getAllEstudiantes = async (req, res) => {
