@@ -31,6 +31,7 @@ export class DocenteExtracurricularComponent implements OnInit {
   archivo: File | null = null;
   resultados: any[] = [];
   estudiante: string = '';
+  errorMensaje: { [key: string]: string } = {};
 
   private busquedaSubject = new BehaviorSubject<string>('');
 
@@ -82,30 +83,34 @@ export class DocenteExtracurricularComponent implements OnInit {
   }
 
   registrarActividad() {
-    const actividadData = {
-      MatriculaAlumno: this.matricula,
-      NombreDocente: this.docente,
-      NombreActividadExtracurricular: this.actividad,
-      FechaInicio: new Date(this.fechaInicio),
-      FechaTermino: new Date(this.fechaFin),
-      Resultado: this.resultado,
-    };
+    if (this.validarFormulario()) {
+      const actividadData = {
+        MatriculaAlumno: this.matricula,
+        NombreDocente: this.docente,
+        NombreActividadExtracurricular: this.actividad,
+        FechaInicio: new Date(this.fechaInicio),
+        FechaTermino: new Date(this.fechaFin),
+        Resultado: this.resultado,
+      };
 
-    this.actividadService.registrarActividad(actividadData).subscribe(
-      (res) => {
-        console.log('Actividad registrada:', res);
-        this.limpiarFormulario();
-        this.isError = false;
-        this.notificacionService.showNotification(
-          'Actividad asignada correctamente'
-        );
-      },
-      (error) => {
-        console.error('Error al registrar actividad:', error);
-        this.isError = true;
-        this.notificacionService.showNotification('Error al asignar actividad');
-      }
-    );
+      this.actividadService.registrarActividad(actividadData).subscribe(
+        (res) => {
+          console.log('Actividad registrada:', res);
+          this.limpiarFormulario();
+          this.isError = false;
+          this.notificacionService.showNotification(
+            'Actividad asignada correctamente'
+          );
+        },
+        (error) => {
+          console.error('Error al registrar actividad:', error);
+          this.isError = true;
+          this.notificacionService.showNotification(
+            'Error al asignar actividad'
+          );
+        }
+      );
+    }
   }
 
   limpiarFormulario() {
@@ -126,27 +131,25 @@ export class DocenteExtracurricularComponent implements OnInit {
   }
 
   subirArchivo(): void {
-    if (!this.archivo) {
-      this.isError = true;
-      this.notificacionService.showNotification('Error al cargar archivo');
-      return;
+    if (this.validarArchivo()) {
+      this.actividadService.subirArchivo(this.archivo!).subscribe(
+        (res) => {
+          console.log('Archivo subido con éxito', res);
+          this.isError = false;
+          this.notificacionService.showNotification(
+            'Archivo subido correctamente'
+          );
+          this.archivo = null; // Limpia el archivo después de la carga
+        },
+        (error) => {
+          console.error('Error al subir el archivo:', error);
+          this.isError = true;
+          this.notificacionService.showNotification(
+            'Error al subir el archivo'
+          );
+        }
+      );
     }
-
-    this.actividadService.subirArchivo(this.archivo).subscribe(
-      (res) => {
-        console.log('Archivo subido con éxito:', res);
-        this.isError = false;
-        this.notificacionService.showNotification(
-          'Archivo subido correctamente.'
-        );
-        this.archivo = null;
-      },
-      (error) => {
-        console.error('Error al subir el archivo:', error);
-        this.isError = true;
-        this.notificacionService.showNotification('Error al subir el archivo.');
-      }
-    );
   }
 
   descargarPalntilla(): void {
@@ -170,7 +173,52 @@ export class DocenteExtracurricularComponent implements OnInit {
   seleccionarEstudiante(estudiante: any): void {
     this.matricula = estudiante.Matricula;
     this.estudiante = `${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}`;
-    this.busqueda = this.estudiante; 
-    this.resultados = []; 
+    this.busqueda = this.estudiante;
+    this.resultados = [];
+  }
+
+  validarFormulario(): boolean {
+    this.errorMensaje = {};
+
+    if (!this.matricula) {
+      this.errorMensaje['matricula'] = 'Es obligatorio la matricula';
+    }
+    if (!this.docente) {
+      this.errorMensaje['docente'] = 'Es obligatorio el docente';
+    }
+    if (!this.actividad) {
+      this.errorMensaje['actividad'] = 'Es obligatoria la actividad';
+    }
+    if (!this.fechaInicio) {
+      this.errorMensaje['fechaInicio'] = 'Es obligatoria la fecha de inicio';
+    }
+    if (!this.fechaFin) {
+      this.errorMensaje['fechaFin'] = 'Es obligatoria la fecha de fin';
+    }
+
+    if (this.fechaInicio && this.fechaFin) {
+      const fechaInicio = new Date(this.fechaInicio);
+      const fechaFin = new Date(this.fechaFin);
+
+      if (fechaInicio > fechaFin) {
+        this.errorMensaje['fechaFin'] =
+          'La fecha de fin no puede ser menor a la fecha de inicio';
+      }
+    }
+    if (!this.resultado) {
+      this.errorMensaje['resultado'] = 'Es obligatorio el resultado';
+    }
+
+    return Object.keys(this.errorMensaje).length === 0;
+  }
+
+  validarArchivo(): boolean {
+    this.errorMensaje = {};
+
+    if (!this.archivo) {
+      this.errorMensaje['fileInput'] = 'Es obligatorio cargar el archivo';
+    }
+
+    return Object.keys(this.errorMensaje).length === 0;
   }
 }

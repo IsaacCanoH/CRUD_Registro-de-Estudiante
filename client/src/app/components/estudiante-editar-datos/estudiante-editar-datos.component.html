@@ -17,7 +17,11 @@
             [(ngModel)]="estudiante.Domicilio.CodigoPostal"
             name="codigoPostal"
             placeholder="Ingrese código postal"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['codigoPostal']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostal'] }}
+          </div>
         </div>
 
         <div class="form-group">

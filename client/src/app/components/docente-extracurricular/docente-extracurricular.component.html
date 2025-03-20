@@ -41,12 +41,16 @@
             [(ngModel)]="matricula"
             name="matricula"
             disabled
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['matricula']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['matricula'] }}
+          </div>
         </div>
 
         <div class="form-group">
           <label for="docente">Docente</label>
-          <select id="docente" [(ngModel)]="docente" name="docente">
+          <select id="docente" [(ngModel)]="docente" name="docente" required>
             <option value="">Seleccione un docente</option>
             <option
               *ngFor="let docenteItem of docentes"
@@ -55,13 +59,16 @@
               {{ docenteItem.NombreCompletoDocente }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['docente']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['docente'] }}
+          </div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label for="actividad">Actividad Extracurricular</label>
-          <select id="actividad" [(ngModel)]="actividad" name="actividad">
+          <select id="actividad" [(ngModel)]="actividad" name="actividad" required>
             <option value="">Seleccione una actividad</option>
             <option
               *ngFor="let actividadItem of actividades"
@@ -70,6 +77,9 @@
               {{ actividadItem.NombreActividadExtracurricular }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['actividad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['actividad'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -79,7 +89,11 @@
             id="fechaInicio"
             [(ngModel)]="fechaInicio"
             name="fechaInicio"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['fechaInicio']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fechaInicio'] }}
+          </div>
         </div>
       </div>
 
@@ -91,16 +105,23 @@
             id="fechaFin"
             [(ngModel)]="fechaFin"
             name="fechaFin"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['fechaFin']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fechaFin'] }}
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="resultado">Observaciones</label>
-          <select id="resultado" [(ngModel)]="resultado" name="resultado">
+          <label for="resultado">Resultado</label>
+          <select id="resultado" [(ngModel)]="resultado" name="resultado" required>
             <option value="">Seleccione una observación</option>
             <option value="Asistió">Asistió</option>
             <option value="No asistió">No asistió</option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['resultado']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['resultado'] }}
+          </div>
         </div>
       </div>
 
@@ -114,10 +135,13 @@
   </div>
 
   <div class="form-container second-container">
-    <h2>Cargar observaciones por documento</h2>
+    <h2>Cargar actividades por documento</h2>
     <div class="form-row">
       <div class="form-group">
-        <input type="file" id="fileInput" (change)="onFileSelected($event)" />
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" name="fileInput" required/>
+        <div class="error-message" *ngIf="errorMensaje['fileInput']">
+          <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fileInput'] }}
+        </div>
       </div>
       <div class="form-group">
         <button class="animated-button" (click)="subirArchivo()">

@@ -225,9 +225,15 @@
 }
 
 .error-message {
-  color: var(--error-color);
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  color: #af1919;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.error-message i {
+  margin-right: 5px;
 }
 
 input.ng-invalid.ng-touched,

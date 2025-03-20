@@ -43,6 +43,9 @@
             name="matricula"
             disabled
           />
+          <div class="error-message" *ngIf="errorMensaje['matricula']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['matricula'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -55,28 +58,37 @@
             name="estudiante"
             disabled
           />
+          <div class="error-message" *ngIf="errorMensaje['estudiante']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['estudiante'] }}
+          </div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label for="docente">Docente</label>
-          <select id="docente" [(ngModel)]="docente" name="docente" (change)="actualizarAsignaturas()">
+          <select id="docente" [(ngModel)]="docente" name="docente" (change)="actualizarAsignaturas()" required>
             <option value="">Seleccione un docente</option>
             <option *ngFor="let docenteItem of docentes" [value]="docenteItem.NombreCompletoDocente">
               {{ docenteItem.NombreCompletoDocente }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['docente']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['docente'] }} 
+          </div>
         </div>
         
         <div class="form-group">
           <label for="asignatura">Asignatura</label>
-          <select id="asignatura" [(ngModel)]="asignatura" name="asignatura">
+          <select id="asignatura" [(ngModel)]="asignatura" name="asignatura" required>
             <option value="">Seleccione una asignatura</option>
             <option *ngFor="let asignatura of asignaturas" [value]="asignatura">
               {{ asignatura }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['asignatura']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['asignatura'] }}
+          </div>
         </div>        
       </div>
 
@@ -90,7 +102,11 @@
             [(ngModel)]="anio"
             name="año"
             disabled
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['año']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['año'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -102,7 +118,11 @@
             [(ngModel)]="semestre"
             name="semestre"
             disabled
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['semestre']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['semestre'] }}
+          </div>
         </div>
       </div>
 
@@ -116,7 +136,11 @@
             style="resize: vertical"
             [(ngModel)]="descripcion"
             name="descripcion"
+            required
           ></textarea>
+          <div class="error-message" *ngIf="errorMensaje['descripcion']"> 
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['descripcion'] }}
+          </div>
         </div>
       </div>
 
@@ -133,7 +157,10 @@
     <h2>Cargar observaciones por documento</h2>
     <div class="form-row">
       <div class="form-group">
-        <input type="file" id="fileInput" (change)="onFileSelected($event)" #fileInputRef/>
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" name="fileInput" #fileInputRef required/>
+        <div class="error-message" *ngIf="errorMensaje['fileInput']">
+          <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fileInput'] }}  
+        </div>
       </div>
       <div class="form-group">
         <button  class="animated-button" (click)="subirArchivo()">

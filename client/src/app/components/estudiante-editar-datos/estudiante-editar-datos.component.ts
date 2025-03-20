@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EstudianteService } from '../../services/estudiante.service';
 import { Router } from '@angular/router';
 import { NotificacionService } from '../../services/notificacion.service';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-estudiante-editar-datos',
@@ -12,8 +13,31 @@ import { NotificacionService } from '../../services/notificacion.service';
 })
 export class EstudianteEditarDatosComponent implements OnInit {
   matricula: string = '';
-  estudiante: any = {};
+  estudiante = {
+    Domicilio: {
+      CodigoPostal: '',
+      Ciudad: '',
+      Colonia: '',
+      NumeroExterior: '',
+      NumeroInterior: '',
+    },
+    CorreosElectronicos: [''], // Se usa un array porque el correo está en la posición [0]
+    Telefonos: [''], // Se usa un array porque el teléfono está en la posición [0]
+    Foto: null, // Para almacenar la imagen seleccionada
+    Tutor: {
+      Domicilio: {
+        CodigoPostal: '',
+        Ciudad: '',
+        Colonia: '',
+        NumeroExterior: '',
+        NumeroInterior: '',
+      },
+      CorreosElectronicos: [''], // Se usa un array similar al del estudiante
+      Telefonos: [''], // Se usa un array similar al del estudiante
+    }
+  };  
   foto: File | undefined;
+  errorMensaje: { [key: string]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +67,7 @@ export class EstudianteEditarDatosComponent implements OnInit {
   }
 
   actualizarEstudiante() {
+    if(this.validarFormulario()) {
     this.estudianteService
       .actualizarEstudiante(this.matricula, this.estudiante, this.foto)
       .subscribe(
@@ -55,9 +80,29 @@ export class EstudianteEditarDatosComponent implements OnInit {
           console.error('Error al actualizar el estudiante:', error);
         }
       );
+    }
   }
 
   cancelarEdicion(){
     this.router.navigate(['/ed']);
+  }
+
+  validarFormulario(): boolean {
+    this.errorMensaje = {};
+
+    if(!this.estudiante.Domicilio.CodigoPostal) {
+      this.errorMensaje['codigoPostal'] = 'Porfavor, ingrese el codigo postal';
+    }
+    if(!this.estudiante.Domicilio.Ciudad) {
+      this.errorMensaje['ciudad'] = 'Porfavor, ingrese el ciudad';
+    }
+    if(!this.estudiante.Domicilio.Colonia) {
+      this.errorMensaje['colonia'] = 'Porfavor, ingrese la colonia'
+    }
+    if(!this.estudiante.Domicilio.NumeroExterior) {
+      this.errorMensaje['numeroExterior'] = 'Porfavor, ingrese el numero exterior'
+    }
+
+    return Object.keys(this.errorMensaje).length === 0;
   }
 }

@@ -62,7 +62,7 @@ const uploadExcel = async (req, res) => {
 
         // Mapear datos y almacenarlos en MongoDB
         const actividades = data.map(row => ({
-            Matricula: row.Matricula,
+            MatriculaAlumno: row.MatriculaAlumno,
             NombreDocente: row.NombreDocente,
             NombreActividadExtracurricular: row.NombreActividadExtracurricular,
             FechaInicio: new Date(row.FechaInicio),
@@ -83,7 +83,7 @@ const generarExcelPlantilla = (req, res) => {
     try {
         // Definir los encabezados del archivo Excel
         const encabezados = [
-            ["Matricula", "NombreDocente", "NombreActividadExtracurricular", "FechaInicio", "FechaTermino", "Resultado"]
+            ["MatriculaAlumno", "NombreDocente", "NombreActividadExtracurricular", "FechaInicio", "FechaTermino", "Resultado"]
         ];
 
         // Crear un nuevo libro de trabajo y una hoja

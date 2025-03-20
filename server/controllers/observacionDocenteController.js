@@ -44,12 +44,12 @@ const uploadExcel = async (req, res) => {
 
         // Mapear datos y almacenarlos en MongoDB
         const observaciones = data.map(row => ({
-            Matricula: row.Matricula,
+            MatriculaAlumno: row.MatriculaAlumno,
             NombreCompletoAlumno: row.NombreCompletoAlumno,
             NombreCompletoDocente: row.NombreCompletoDocente,
             NombreAsignatura: row.NombreAsignatura,
             Semestre: row.Semestre,
-            Año: row.Año,
+            Anio: row.Año,
             Descripcion: row.Descripcion
         }));
 
@@ -66,7 +66,7 @@ const generarExcelPlantilla = (req, res) => {
     try {
         // Definir los encabezados del archivo Excel
         const encabezados = [
-            ["Matricula", "NombreCompletoAlumno", "NombreCompletoDocente", "NombreAsignatura", "Semestre", "Año", "Descripcion"]
+            ["MatriculaAlumno", "NombreCompletoAlumno", "NombreCompletoDocente", "NombreAsignatura", "Semestre", "Año", "Descripcion"]
         ];
 
         // Crear un nuevo libro de trabajo y una hoja

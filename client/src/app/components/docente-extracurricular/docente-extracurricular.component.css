@@ -201,27 +201,38 @@
   background: white;
   border: 1px solid #ccc;
   max-height: 200px;
-  width: 1000px; /* Se ajusta al contenido */
-  min-width: 800px; /* Ancho mínimo para evitar que sea muy pequeño */
-  max-width: 1000px; /* Evita que se expanda demasiado */
+  width: 1000px;
+  min-width: 800px;
+  max-width: 1000px;
   overflow-y: auto;
   list-style: none;
   padding: 0;
   z-index: 1000;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para mejor visualización */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Ajusta los elementos dentro del dropdown */
 .dropdown li {
   padding: 8px 12px;
   cursor: pointer;
-  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es muy largo */
+  text-overflow: ellipsis;
 }
 
 .dropdown li:hover {
   background-color: #f2f2f2;
+}
+
+.error-message {
+  color: #af1919;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.error-message i {
+  margin-right: 5px;
 }
 
 @media (max-width: 768px) {
