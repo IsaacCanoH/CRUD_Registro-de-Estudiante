@@ -46,14 +46,15 @@
             id="matricula"
             placeholder="Ingrese la matricula del estudiante"
             [(ngModel)]="matricula"
-            name="matricula"
-            disabled
+            name="matricula" 
             required
+            disabled
           />
+          <!-- Codigo utilizado para las validaciones -->
           <div class="error-message" *ngIf="errorMensaje['matricula']">
             <i class="fas fa-exclamation-circle"></i>
             {{ errorMensaje["matricula"] }}
-          </div>
+          </div> 
         </div>
 
         <div class="form-group">

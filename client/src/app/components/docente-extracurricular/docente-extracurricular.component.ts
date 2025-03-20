@@ -25,7 +25,7 @@ export class DocenteExtracurricularComponent implements OnInit {
   archivo: File | null = null;
   resultados: any[] = [];
   estudiante: string = '';
-  errorMensaje: { [key: string]: string } = {};
+  errorMensaje: { [key: string]: string } = {}; // Codigo utilizado para las validaciones
 
   constructor(
     private actividadService: ActividadService,
@@ -149,7 +149,7 @@ export class DocenteExtracurricularComponent implements OnInit {
   }
 
   subirArchivo(): void {
-    if (this.validarArchivo()) {
+    if (this.validarArchivo()) { // Codigo utilizado para las validaciones
       this.actividadService.subirArchivo(this.archivo!).subscribe(
         (res) => {
           console.log('Archivo subido con éxito', res);
@@ -185,8 +185,8 @@ export class DocenteExtracurricularComponent implements OnInit {
     this.actividadService.descargarPlantilla();
   }
 
-
-  validarFormulario(): boolean {
+  // Codigo utilizado para las validaciones 
+  validarFormulario(): boolean {  
     this.errorMensaje = {};
 
     if (!this.matricula) {
