@@ -10,6 +10,6 @@ export class NotificacionService {
 
   showNotification(mensaje: string) {
     this.mensaje.next(mensaje);
-    setTimeout(() => this.mensaje.next(null), 3000); 
+    setTimeout(() => this.mensaje.next(null), 2000); 
   }
 }

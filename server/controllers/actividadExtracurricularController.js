@@ -1,12 +1,10 @@
-const { Model, model } = require("mongoose");
 const ActividadExtracurricular = require("../models/ActividadExtracurricular");
 const Docente = require("../models/Docente");
 const ActividadesExtracurriculares = require("../models/ActividadesExtracurriculares");
-
 const multer = require("multer");
 const xlsx = require("xlsx");
 
-const crearActividadExtracurricular = async(req,res) => {
+const crearActividadExtracurricular = async (req, res) => {
     try {
         const actividad = new ActividadExtracurricular(req.body);
         await actividad.save();
@@ -16,25 +14,25 @@ const crearActividadExtracurricular = async(req,res) => {
     }
 }
 
-const obtenerDocentes = async(req,res) => {
+const obtenerDocentes = async (req, res) => {
     try {
         const docentes = await Docente.find();
         res.status(200).json(docentes);
     } catch (error) {
-        res.status(500).json({ mensaje: "Error al obtener docentes", error});
+        res.status(500).json({ mensaje: "Error al obtener docentes", error });
     }
 }
 
-const obtenerActividadesExtracurriculares = async(req,res) => {
+const obtenerActividadesExtracurriculares = async (req, res) => {
     try {
         const actividades = await ActividadesExtracurriculares.find();
         res.status(200).json(actividades);
     } catch (error) {
-        res.status(500).json({ mensaje: "Error al obtener las actividades "});
+        res.status(500).json({ mensaje: "Error al obtener las actividades " });
     }
 }
 
-const obtenerActividadExtracurricular = async(req, res) => {
+const obtenerActividadExtracurricular = async (req, res) => {
     try {
         const actividad = await ActividadExtracurricular.find();
         res.status(200).json(actividad);
@@ -44,7 +42,7 @@ const obtenerActividadExtracurricular = async(req, res) => {
 }
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage});
+const upload = multer({ storage: storage });
 
 const uploadExcel = async (req, res) => {
     try {
@@ -65,8 +63,12 @@ const uploadExcel = async (req, res) => {
             MatriculaAlumno: row.MatriculaAlumno,
             NombreDocente: row.NombreDocente,
             NombreActividadExtracurricular: row.NombreActividadExtracurricular,
-            FechaInicio: new Date(row.FechaInicio),
-            FechaTermino: new Date(row.FechaTermino),
+            FechaInicio: row.FechaInicio
+                ? new Date((row.FechaInicio - 25569) * 86400000)
+                : null,
+            FechaTermino: row.FechaTermino
+                ? new Date((row.FechaTermino - 25569) * 86400000)
+                : null,
             Resultado: row.Resultado
         }));
 
@@ -109,7 +111,7 @@ const generarExcelPlantilla = (req, res) => {
 
 module.exports = {
     crearActividadExtracurricular,
-    obtenerDocentes, 
+    obtenerDocentes,
     obtenerActividadesExtracurriculares,
     uploadExcel,
     upload,

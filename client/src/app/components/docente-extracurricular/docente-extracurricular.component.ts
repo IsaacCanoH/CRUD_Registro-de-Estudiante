@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActividadService } from '../../services/actividad.service';
 import { NotificacionService } from '../../services/notificacion.service';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
-} from 'rxjs/operators';
 import { EstudianteService } from '../../services/estudiante.service';
-import { BehaviorSubject, of } from 'rxjs';
+
 
 @Component({
   selector: 'app-docente-extracurricular',
@@ -33,8 +27,6 @@ export class DocenteExtracurricularComponent implements OnInit {
   estudiante: string = '';
   errorMensaje: { [key: string]: string } = {};
 
-  private busquedaSubject = new BehaviorSubject<string>('');
-
   constructor(
     private actividadService: ActividadService,
     private notificacionService: NotificacionService,
@@ -44,17 +36,6 @@ export class DocenteExtracurricularComponent implements OnInit {
   ngOnInit(): void {
     this.cargarActividades();
     this.cargarDocentes();
-    this.busquedaSubject
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((texto) =>
-          texto
-            ? this.buscarEnServicio(texto).pipe(catchError(() => of([])))
-            : of([])
-        )
-      )
-      .subscribe((resultados) => (this.resultados = resultados));
     this.notificacionService.notificacionMensaje$.subscribe((message) => {
       this.notificacionMensaje = message;
     });
@@ -123,6 +104,43 @@ export class DocenteExtracurricularComponent implements OnInit {
         '';
   }
 
+  buscarEstudiante(): void {
+    if (this.busqueda.trim() === '') {
+      this.resultados = [];
+      return;
+    }
+  
+    if (/\d/.test(this.busqueda)) { 
+      this.estudianteService.buscarPorMatricula(this.busqueda).subscribe(
+        (res) => {
+          this.resultados = [res]; 
+        },
+        (error) => {
+          console.error('Error al buscar por matrícula:', error);
+          this.resultados = [];
+        }
+      );
+    } else {
+      this.estudianteService.buscarPorNombre(this.busqueda).subscribe(
+        (res) => {
+          this.resultados = res; 
+        },
+        (error) => {
+          console.error('Error al buscar por nombre:', error);
+          this.resultados = [];
+        }
+      );
+    }
+  }
+  
+  
+  seleccionarEstudiante(estudiante: any): void {
+    this.matricula = estudiante.Matricula;
+    this.busqueda = estudiante.nombre;
+    this.resultados = [];
+  }
+  
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -139,7 +157,11 @@ export class DocenteExtracurricularComponent implements OnInit {
           this.notificacionService.showNotification(
             'Archivo subido correctamente'
           );
-          this.archivo = null; // Limpia el archivo después de la carga
+          this.archivo = null; 
+          this.limpiarCampoArchivo();
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 2000);
         },
         (error) => {
           console.error('Error al subir el archivo:', error);
@@ -152,48 +174,35 @@ export class DocenteExtracurricularComponent implements OnInit {
     }
   }
 
+  limpiarCampoArchivo(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; 
+    }
+  }
+
   descargarPalntilla(): void {
     this.actividadService.descargarPlantilla();
   }
 
-  buscarEstudiante(): void {
-    if (this.busqueda.trim() !== '') {
-      this.busquedaSubject.next(this.busqueda);
-    } else {
-      this.resultados = [];
-    }
-  }
-
-  buscarEnServicio(texto: string) {
-    return texto.match(/^\d+$/)
-      ? this.estudianteService.buscarPorMatricula(texto)
-      : this.estudianteService.buscarPorNombre(texto);
-  }
-
-  seleccionarEstudiante(estudiante: any): void {
-    this.matricula = estudiante.Matricula;
-    this.estudiante = `${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}`;
-    this.busqueda = this.estudiante;
-    this.resultados = [];
-  }
 
   validarFormulario(): boolean {
     this.errorMensaje = {};
 
     if (!this.matricula) {
-      this.errorMensaje['matricula'] = 'Es obligatorio la matricula';
+      this.errorMensaje['matricula'] = 'Es obligatoria la matrícula.';
     }
     if (!this.docente) {
-      this.errorMensaje['docente'] = 'Es obligatorio el docente';
+      this.errorMensaje['docente'] = 'Por favor, seleccione el docente.';
     }
     if (!this.actividad) {
-      this.errorMensaje['actividad'] = 'Es obligatoria la actividad';
+      this.errorMensaje['actividad'] = 'Por favor, seleccione la actividad.';
     }
     if (!this.fechaInicio) {
-      this.errorMensaje['fechaInicio'] = 'Es obligatoria la fecha de inicio';
+      this.errorMensaje['fechaInicio'] = 'Por favor, seleccione la fecha de inicio.';
     }
     if (!this.fechaFin) {
-      this.errorMensaje['fechaFin'] = 'Es obligatoria la fecha de fin';
+      this.errorMensaje['fechaFin'] = 'Por favor, seleccione la fecha de fin.';
     }
 
     if (this.fechaInicio && this.fechaFin) {
@@ -202,11 +211,11 @@ export class DocenteExtracurricularComponent implements OnInit {
 
       if (fechaInicio > fechaFin) {
         this.errorMensaje['fechaFin'] =
-          'La fecha de fin no puede ser menor a la fecha de inicio';
+          'La fecha de fin no puede ser menor a la fecha de inicio.';
       }
     }
     if (!this.resultado) {
-      this.errorMensaje['resultado'] = 'Es obligatorio el resultado';
+      this.errorMensaje['resultado'] = 'Por favor, seleccione el resultado.';
     }
 
     return Object.keys(this.errorMensaje).length === 0;
@@ -216,7 +225,7 @@ export class DocenteExtracurricularComponent implements OnInit {
     this.errorMensaje = {};
 
     if (!this.archivo) {
-      this.errorMensaje['fileInput'] = 'Es obligatorio cargar el archivo';
+      this.errorMensaje['fileInput'] = 'Por favor, cargue el archivo.';
     }
 
     return Object.keys(this.errorMensaje).length === 0;

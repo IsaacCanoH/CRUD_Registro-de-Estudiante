@@ -195,6 +195,11 @@
   margin-right: 5px;
 }
 
+.input-error {
+  border: 2px solid var(--error-color);
+  box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+}
+
 @media (max-width: 768px) {
   :host .form-row {
     flex-direction: column;

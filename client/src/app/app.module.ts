@@ -5,6 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,7 @@ import { EstudianteEditarDatosComponent } from './components/estudiante-editar-d
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     FormsModule, 
     ReactiveFormsModule,
     CommonModule,

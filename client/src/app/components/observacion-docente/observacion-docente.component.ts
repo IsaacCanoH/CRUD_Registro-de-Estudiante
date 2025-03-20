@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ObservacionService } from '../../services/observacion.service';
 import { NotificacionService } from '../../services/notificacion.service';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
-} from 'rxjs/operators';
 import { EstudianteService } from '../../services/estudiante.service';
-import { BehaviorSubject, of } from 'rxjs';
+
 
 @Component({
   selector: 'app-observacion-docente',
@@ -33,8 +27,6 @@ export class ObservacionDocenteComponent implements OnInit {
   resultados: any[] = [];
   errorMensaje: { [key: string]: string } = {};
 
-  private busquedaSubject = new BehaviorSubject<string>('');
-
   constructor(
     private observacionService: ObservacionService,
     private notificacionService: NotificacionService,
@@ -46,17 +38,6 @@ export class ObservacionDocenteComponent implements OnInit {
     const fechaActual = new Date();
     this.anio = fechaActual.getFullYear();
     this.semestre = fechaActual.getMonth() < 6 ? 1 : 2;
-    this.busquedaSubject
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((texto) =>
-          texto
-            ? this.buscarEnServicio(texto).pipe(catchError(() => of([])))
-            : of([])
-        )
-      )
-      .subscribe((resultados) => (this.resultados = resultados));
     this.notificacionService.notificacionMensaje$.subscribe((message) => {
       this.notificacionMensaje = message;
     });
@@ -139,7 +120,8 @@ export class ObservacionDocenteComponent implements OnInit {
           this.notificacionService.showNotification(
             'Archivo subido correctamente'
           );
-          this.archivo = null; // Limpia el archivo después de la carga
+          this.archivo = null; 
+          this.limpiarCampoArchivo();
         },
         (error) => {
           console.error('Error al subir el archivo:', error);
@@ -152,55 +134,79 @@ export class ObservacionDocenteComponent implements OnInit {
     }
   }
 
+  limpiarCampoArchivo(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; 
+    }
+  }
+
   descargarPlantilla(): void {
     this.observacionService.descargarPlantilla();
   }
 
   buscarEstudiante(): void {
-    if (this.busqueda.trim() !== '') {
-      this.busquedaSubject.next(this.busqueda);
-    } else {
+    if (this.busqueda.trim() === '') {
       this.resultados = [];
+      return;
+    }
+  
+    if (/\d/.test(this.busqueda)) { 
+      this.estudianteService.buscarPorMatricula(this.busqueda).subscribe(
+        (res) => {
+          this.resultados = [res]; 
+        },
+        (error) => {
+          console.error('Error al buscar por matrícula:', error);
+          this.resultados = [];
+        }
+      );
+    } else {
+      this.estudianteService.buscarPorNombre(this.busqueda).subscribe(
+        (res) => {
+          this.resultados = res; 
+        },
+        (error) => {
+          console.error('Error al buscar por nombre:', error);
+          this.resultados = [];
+        }
+      );
     }
   }
-
-  buscarEnServicio(texto: string) {
-    return texto.match(/^\d+$/)
-      ? this.estudianteService.buscarPorMatricula(texto)
-      : this.estudianteService.buscarPorNombre(texto);
-  }
-
+  
+  
   seleccionarEstudiante(estudiante: any): void {
     this.matricula = estudiante.Matricula;
     this.estudiante = `${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}`;
-    this.busqueda = this.estudiante;
+    this.busqueda = estudiante.nombre;
     this.resultados = [];
   }
+
 
   validarFormulario(): boolean {
     this.errorMensaje = {};
 
     if (!this.matricula) {
-      this.errorMensaje['matricula'] = 'Es obligatoria la matricula';
+      this.errorMensaje['matricula'] = 'Es obligatoria la matrícula.';
     }
     if (!this.estudiante) {
       this.errorMensaje['estudiante'] =
-        'Es obligatorio el nombre del estudiante';
+        'Es obligatorio el nombre del estudiante.';
     }
     if (!this.docente) {
-      this.errorMensaje['docente'] = 'Es obligatorio el docente';
+      this.errorMensaje['docente'] = 'Por favor, seleccione el docente.';
     }
     if (!this.asignatura) {
-      this.errorMensaje['asignatura'] = 'Es obligatoria la asignauta';
+      this.errorMensaje['asignatura'] = 'Por favor, seleccione la asignatura.';
     }
     if (!this.anio) {
-      this.errorMensaje['año'] = 'Es obligatorio el año';
+      this.errorMensaje['año'] = 'Es obligatorio el año.';
     }
     if (!this.semestre) {
-      this.errorMensaje['semestre'] = 'Es obligatorio el semestre';
+      this.errorMensaje['semestre'] = 'Es obligatorio el semestre.';
     }
     if(!this.descripcion) {
-      this.errorMensaje['descripcion'] = 'Es obligatoria la descripcion'
+      this.errorMensaje['descripcion'] = 'Por favor, agregue la observación.'
     }
     
     return Object.keys(this.errorMensaje).length === 0;
@@ -210,7 +216,7 @@ export class ObservacionDocenteComponent implements OnInit {
     this.errorMensaje = {};
 
     if (!this.archivo) {
-      this.errorMensaje['fileInput'] = 'Es obligatorio cargar el archivo';
+      this.errorMensaje['fileInput'] = 'Porvafor, carge el archivo';
     }
 
     return Object.keys(this.errorMensaje).length === 0;

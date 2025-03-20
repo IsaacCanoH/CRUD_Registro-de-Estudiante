@@ -91,18 +91,42 @@ export class EstudianteEditarDatosComponent implements OnInit {
     this.errorMensaje = {};
 
     if(!this.estudiante.Domicilio.CodigoPostal) {
-      this.errorMensaje['codigoPostal'] = 'Porfavor, ingrese el codigo postal';
+      this.errorMensaje['codigoPostal'] = 'Por favor, ingrese el código postal.';
     }
     if(!this.estudiante.Domicilio.Ciudad) {
-      this.errorMensaje['ciudad'] = 'Porfavor, ingrese el ciudad';
+      this.errorMensaje['ciudad'] = 'Por favor, ingrese la ciudad.';
     }
     if(!this.estudiante.Domicilio.Colonia) {
-      this.errorMensaje['colonia'] = 'Porfavor, ingrese la colonia'
+      this.errorMensaje['colonia'] = 'Por favor, ingrese la colonia.'
     }
     if(!this.estudiante.Domicilio.NumeroExterior) {
-      this.errorMensaje['numeroExterior'] = 'Porfavor, ingrese el numero exterior'
+      this.errorMensaje['numeroExterior'] = 'Por favor, ingrese el número exterior.'
     }
-
+    if(!this.estudiante.CorreosElectronicos[0]) {
+      this.errorMensaje['correoElectronico'] = 'Por favor, ingrese un correo electrónico.'
+    }
+    if(!this.estudiante.Telefonos[0]) {
+      this.errorMensaje['telefono'] = 'Por favor, ingrese un teléfono.'
+    }
+    if(!this.estudiante.Tutor.Domicilio.CodigoPostal) {
+      this.errorMensaje['codigoPostalTutor'] = 'Por favor, ingrese el código postal.'
+    }
+    if (!this.estudiante.Tutor.Domicilio.Ciudad) {
+      this.errorMensaje['ciudadTutor'] = 'Por favor, ingrese la ciudad.'
+    }
+    if (!this.estudiante.Tutor.Domicilio.Colonia) {
+      this.errorMensaje['coloniaTutor'] = 'Por favor, ingrese la colonia.'
+    }
+    if (!this.estudiante.Tutor.Domicilio.NumeroExterior) {
+      this.errorMensaje['numeroExteriorTutor'] = 'Por favor, ingrese el número exterior.'
+    }
+    if (!this.estudiante.Tutor.CorreosElectronicos[0]) {
+      this.errorMensaje['correoElectronicoTutor'] = 'Por favor, ingrese un correo electrónico.'
+    }
+    if (!this.estudiante.Tutor.Telefonos[0]) {
+      this.errorMensaje['telefonoTutor'] = 'Por favor, ingrese un teléfono.'
+    }
+ 
     return Object.keys(this.errorMensaje).length === 0;
   }
 }

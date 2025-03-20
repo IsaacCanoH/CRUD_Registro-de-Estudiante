@@ -17,7 +17,7 @@
             [(ngModel)]="estudiante.Domicilio.CodigoPostal"
             name="codigoPostal"
             placeholder="Ingrese código postal"
-            required
+            required 
           />
           <div class="error-message" *ngIf="errorMensaje['codigoPostal']">
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostal'] }}
@@ -32,7 +32,11 @@
             [(ngModel)]="estudiante.Domicilio.Ciudad"
             name="ciudad"
             placeholder="Ingrese ciudad"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['ciudad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ciudad'] }}
+          </div>
         </div>
       </div>
 
@@ -45,7 +49,11 @@
             [(ngModel)]="estudiante.Domicilio.Colonia"
             name="colonia"
             placeholder="Ingrese colonia"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['colonia']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['colonia'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -56,7 +64,11 @@
             [(ngModel)]="estudiante.Domicilio.NumeroExterior"
             name="numeroExterior"
             placeholder="Ingrese número exterior"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['numeroExterior']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExterior']}}
+          </div>
         </div>
       </div>
 
@@ -80,7 +92,11 @@
             [(ngModel)]="estudiante.CorreosElectronicos[0]"
             name="correoElectronico"
             placeholder="Ingrese correo electrónico"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['correoElectronico']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronico'] }}
+          </div>
         </div>
       </div>
 
@@ -93,7 +109,11 @@
             [(ngModel)]="estudiante.Telefonos[0]"
             name="telefono"
             placeholder="Ingrese teléfono"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['telefono']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefono'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -113,7 +133,11 @@
             [(ngModel)]="estudiante.Tutor.Domicilio.CodigoPostal"
             name="codigoPostalTutor"
             placeholder="Ingrese código postal"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['codigoPostalTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostalTutor'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -124,7 +148,11 @@
             [(ngModel)]="estudiante.Tutor.Domicilio.Ciudad"
             name="ciudadTutor"
             placeholder="Ingrese ciudad"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['ciudadTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ciudadTutor'] }}
+          </div>
         </div>
       </div>
 
@@ -137,7 +165,11 @@
             [(ngModel)]="estudiante.Tutor.Domicilio.Colonia"
             name="coloniaTutor"
             placeholder="Ingrese colonia"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['coloniaTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['coloniaTutor'] }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -148,7 +180,11 @@
             [(ngModel)]="estudiante.Tutor.Domicilio.NumeroExterior"
             name="numeroExteriorTutor"
             placeholder="Ingrese número exterior"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['numeroExteriorTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExteriorTutor'] }}
+          </div>
         </div>
       </div>
 
@@ -172,7 +208,11 @@
             [(ngModel)]="estudiante.Tutor.CorreosElectronicos[0]"
             name="correoElectronicoTutor"
             placeholder="Ingrese correo electrónico"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['correoElectronicoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronicoTutor'] }}
+          </div>
         </div>
       </div>
 
@@ -185,7 +225,11 @@
             [(ngModel)]="estudiante.Tutor.Telefonos[0]"
             name="telefonoTutor"
             placeholder="Ingrese teléfono"
+            required
           />
+          <div class="error-message" *ngIf="errorMensaje['telefonoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefonoTutor'] }}
+          </div>
         </div>
       </div>
 

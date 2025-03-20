@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EstudianteService } from '../../services/estudiante.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-servicios-escolares',
@@ -141,4 +142,20 @@ export class ServiciosEscolaresComponent implements OnInit {
     this.estudiantesFiltrados = [...this.estudiantes]; 
     this.cerrarModal();
   }
+
+  exportarExcel() {
+    const datos = this.estudiantesFiltrados.map((estudiante) => ({
+      Matrícula: estudiante.Matricula,
+      Nombre: `${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}`,
+      Carrera: estudiante.NombreCarrera,
+      Especialidad: estudiante.Especialidad,
+      Estatus: estudiante.Estatus,
+    }));
+  
+    const hoja = XLSX.utils.json_to_sheet(datos);
+    const libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, 'Estudiantes');
+  
+    XLSX.writeFile(libro, 'Lista_Estudiantes.xlsx');
+  }  
 }

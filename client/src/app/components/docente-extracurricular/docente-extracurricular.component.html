@@ -4,9 +4,16 @@
     <p>Complete el formulario para registrar una nueva actividad</p>
   </div>
 
-  <div *ngIf="notificacionMensaje" class="notification" [ngClass]="{'error': isError, 'success': !isError}">
-    {{ notificacionMensaje }} 
-    <i class="fas" [ngClass]="{'fa-times': isError, 'fa-check': !isError}"></i>
+  <div
+    *ngIf="notificacionMensaje"
+    class="notification"
+    [ngClass]="{ error: isError, success: !isError }"
+  >
+    {{ notificacionMensaje }}
+    <i
+      class="fas"
+      [ngClass]="{ 'fa-times': isError, 'fa-check': !isError }"
+    ></i>
   </div>
 
   <div class="form-container">
@@ -44,7 +51,8 @@
             required
           />
           <div class="error-message" *ngIf="errorMensaje['matricula']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['matricula'] }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMensaje["matricula"] }}
           </div>
         </div>
 
@@ -60,7 +68,8 @@
             </option>
           </select>
           <div class="error-message" *ngIf="errorMensaje['docente']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['docente'] }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMensaje["docente"] }}
           </div>
         </div>
       </div>
@@ -68,7 +77,12 @@
       <div class="form-row">
         <div class="form-group">
           <label for="actividad">Actividad Extracurricular</label>
-          <select id="actividad" [(ngModel)]="actividad" name="actividad" required>
+          <select
+            id="actividad"
+            [(ngModel)]="actividad"
+            name="actividad"
+            required
+          >
             <option value="">Seleccione una actividad</option>
             <option
               *ngFor="let actividadItem of actividades"
@@ -78,7 +92,8 @@
             </option>
           </select>
           <div class="error-message" *ngIf="errorMensaje['actividad']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['actividad'] }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMensaje["actividad"] }}
           </div>
         </div>
 
@@ -92,7 +107,8 @@
             required
           />
           <div class="error-message" *ngIf="errorMensaje['fechaInicio']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fechaInicio'] }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMensaje["fechaInicio"] }}
           </div>
         </div>
       </div>
@@ -108,19 +124,26 @@
             required
           />
           <div class="error-message" *ngIf="errorMensaje['fechaFin']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fechaFin'] }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMensaje["fechaFin"] }}
           </div>
         </div>
 
         <div class="form-group">
           <label for="resultado">Resultado</label>
-          <select id="resultado" [(ngModel)]="resultado" name="resultado" required>
+          <select
+            id="resultado"
+            [(ngModel)]="resultado"
+            name="resultado"
+            required
+          >
             <option value="">Seleccione una observación</option>
             <option value="Asistió">Asistió</option>
             <option value="No asistió">No asistió</option>
           </select>
           <div class="error-message" *ngIf="errorMensaje['resultado']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['resultado'] }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMensaje["resultado"] }}
           </div>
         </div>
       </div>
@@ -138,9 +161,16 @@
     <h2>Cargar actividades por documento</h2>
     <div class="form-row">
       <div class="form-group">
-        <input type="file" id="fileInput" (change)="onFileSelected($event)" name="fileInput" required/>
+        <input
+          type="file"
+          id="fileInput"
+          (change)="onFileSelected($event)"
+          name="fileInput"
+          required
+        />
         <div class="error-message" *ngIf="errorMensaje['fileInput']">
-          <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fileInput'] }}
+          <i class="fas fa-exclamation-circle"></i>
+          {{ errorMensaje["fileInput"] }}
         </div>
       </div>
       <div class="form-group">
@@ -152,11 +182,11 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <button class="animated-button" (click)="descargarPalntilla()" >
+        <button class="animated-button" (click)="descargarPalntilla()">
           <span>Obtener Plantilla</span>
           <span></span>
         </button>
       </div>
     </div>
-  </div>  
+  </div>
 </div>
