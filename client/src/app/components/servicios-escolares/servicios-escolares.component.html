@@ -202,6 +202,7 @@
             <th>Nombre Completo</th>
             <th>Carrera</th>
             <th>Especialidad</th>
+            <th>Fecha Alta</th>
             <th>Estatus</th>
           </tr>
         </thead>
@@ -211,6 +212,7 @@
             <td>{{ estudiante.Nombre }} {{ estudiante.ApellidoPaterno }} {{ estudiante.ApellidoMaterno }}</td>
             <td>{{ estudiante.NombreCarrera }}</td>
             <td>{{ estudiante.Especialidad }}</td>
+            <td>{{ formatoFecha(estudiante.FechaAlta) }}</td>
             <td>{{ estudiante.Estatus }}</td>
           </tr>
         </tbody>

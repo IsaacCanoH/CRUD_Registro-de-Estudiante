@@ -149,7 +149,8 @@ export class ServiciosEscolaresComponent implements OnInit {
       Nombre: `${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}`,
       Carrera: estudiante.NombreCarrera,
       Especialidad: estudiante.Especialidad,
-      Estatus: estudiante.Estatus,
+      FechaAlta: estudiante.FechaAlta ? new Date(estudiante.FechaAlta).toLocaleDateString('es-MX') : '',
+      Estatus: estudiante.Estatus
     }));
   
     const hoja = XLSX.utils.json_to_sheet(datos);

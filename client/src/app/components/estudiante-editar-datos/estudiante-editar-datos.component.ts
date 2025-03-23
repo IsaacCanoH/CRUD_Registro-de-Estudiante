@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { EstudianteService } from '../../services/estudiante.service';
 import { Router } from '@angular/router';
 import { NotificacionService } from '../../services/notificacion.service';
-import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-estudiante-editar-datos',
@@ -21,9 +20,9 @@ export class EstudianteEditarDatosComponent implements OnInit {
       NumeroExterior: '',
       NumeroInterior: '',
     },
-    CorreosElectronicos: [''], // Se usa un array porque el correo está en la posición [0]
-    Telefonos: [''], // Se usa un array porque el teléfono está en la posición [0]
-    Foto: null, // Para almacenar la imagen seleccionada
+    CorreosElectronicos: [''], 
+    Telefonos: [''], 
+    Foto: null, 
     Tutor: {
       Domicilio: {
         CodigoPostal: '',
@@ -32,12 +31,13 @@ export class EstudianteEditarDatosComponent implements OnInit {
         NumeroExterior: '',
         NumeroInterior: '',
       },
-      CorreosElectronicos: [''], // Se usa un array similar al del estudiante
-      Telefonos: [''], // Se usa un array similar al del estudiante
+      CorreosElectronicos: [''], 
+      Telefonos: [''], 
     }
   };  
   foto: File | undefined;
   errorMensaje: { [key: string]: string } = {};
+  ciudades: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -49,6 +49,7 @@ export class EstudianteEditarDatosComponent implements OnInit {
   ngOnInit() {
     this.matricula = this.route.snapshot.paramMap.get('matricula') || '';
     this.obtenerEstudiante();
+    this.cargarCiudades();
   }
 
   obtenerEstudiante() {
@@ -128,5 +129,16 @@ export class EstudianteEditarDatosComponent implements OnInit {
     }
  
     return Object.keys(this.errorMensaje).length === 0;
+  }
+
+  cargarCiudades(): void {
+    this.estudianteService.obtenerCatalogoCiudades().subscribe(
+      (res) => {
+        this.ciudades = res;
+      },
+      (error) => {
+        console.log('Erroral obtener docentes', error);
+      }
+    )
   }
 }

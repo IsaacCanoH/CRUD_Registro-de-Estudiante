@@ -3,6 +3,19 @@
     <h1>Registro de Nuevo Alumno</h1>
     <p>Complete el formulario</p>
   </div>
+
+  <div
+    *ngIf="notificacionMensaje"
+    class="notification"
+    [ngClass]="{ error: isError, success: !isError }"
+  >
+    {{ notificacionMensaje }}
+    <i
+      class="fas"
+      [ngClass]="{ 'fa-times': isError, 'fa-check': !isError }"
+    ></i>
+  </div>
+  
   <div class="form-container">
     <form #registroForm="ngForm" (ngSubmit)="submitForm(registroForm)" novalidate>
       <h2>Datos Académicos</h2>
@@ -10,6 +23,9 @@
         <div class="form-group">
           <label for="promedio">Promedio de Bachillerato</label>
           <input type="number" id="promedio" name="PromedioBachillerato" step="0.01" [(ngModel)]="formData.PromedioBachillerato" required />
+          <div class="error-message" *ngIf="errorMensaje['PromedioBachillerato']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['PromedioBachillerato'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="certificadoBachillerato">Certificado de Bachillerato</label>
@@ -18,10 +34,16 @@
             <option value="1">Si</option>
             <option value="0">No</option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['CertificadoBachillerato']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CertificadoBachillerato'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="especialidadBachillerato">Especialidad de Bachillerato</label>
           <input type="text" id="especialidadBachillerato" name="EspecialidadBachillerato" step="0.01" [(ngModel)]="formData.EspecialidadBachillerato" required />
+          <div class="error-message" *ngIf="errorMensaje['EspecialidadBachillerato']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['EspecialidadBachillerato'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="nombreCarrera">Nombre Carrera</label>
@@ -31,6 +53,9 @@
               {{ carrera.NombreCarrera }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['NombreCarrera']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['NombreCarrera'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="especialidad">Especialidad</label>
@@ -40,14 +65,23 @@
               {{ especialidad }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['Especialidad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Especialidad'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="semestre">Semestre</label>
           <input type="number" id="semestre" name="Semestre" [(ngModel)]="formData.Semestre" required />
+          <div class="error-message" *ngIf="errorMensaje['Semestre']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Semestre'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="anio">Año</label>
           <input type="number" id="anio" name="Anio" [(ngModel)]="formData.Anio" required />
+          <div class="error-message" *ngIf="errorMensaje['Anio']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Anio'] }}
+          </div>
         </div>
       </div>
 
@@ -55,23 +89,38 @@
       <div class="form-grid">
         <div class="form-group">
           <label for="matricula">Matrícula</label>
-          <input type="text" id="matricula" name="Matricula" [(ngModel)]="formData.Matricula" required />
+          <input type="text" id="matricula" name="Matricula" [(ngModel)]="formData.Matricula" required disabled/>
+          <div class="error-message" *ngIf="errorMensaje['Matricula']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Matricula'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" id="nombre" name="Nombre" [(ngModel)]="formData.Nombre" (keyup)="onInputChange()" required #nombre="ngModel" />
+          <div class="error-message" *ngIf="errorMensaje['Nombre']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Nombre'] }}
+        </div>
         </div>
         <div class="form-group">
           <label for="apellidoPaterno">Apellido Paterno</label>
           <input type="text" id="apellidoPaterno" name="ApellidoPaterno" [(ngModel)]="formData.ApellidoPaterno" (keyup)="onInputChange()" required #apellidoPaterno="ngModel" />
+          <div class="error-message" *ngIf="errorMensaje['ApellidoPaterno']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ApellidoPaterno'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="apellidoMaterno">Apellido Materno</label>
           <input type="text" id="apellidoMaterno" name="ApellidoMaterno" [(ngModel)]="formData.ApellidoMaterno" (keyup)="onInputChange()" required #apellidoMaterno="ngModel" />
+          <div class="error-message" *ngIf="errorMensaje['ApellidoMaterno']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ApellidoMaterno'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="fechaNacimiento">Fecha de Nacimiento</label>
           <input type="date" id="fechaNacimiento" name="FechaNacimiento" [(ngModel)]="formData.FechaNacimiento" (change)="onInputChange()" required #fechaNacimiento="ngModel" />
+          <div class="error-message" *ngIf="errorMensaje['FechaNacimiento']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['FechaNacimiento'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="sexo">Sexo</label>
@@ -80,6 +129,9 @@
             <option value="M">Masculino</option>
             <option value="F">Femenino</option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['Sexo']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Sexo'] }}
+          </div>
         </div>
         <div class="form-group">
           <label>Teléfonos</label>
@@ -88,15 +140,25 @@
             <div class="input-dynamic">
               <input
                 type="text"
+                class="camp-input"
                 [(ngModel)]="tel.numero"
                 name="Telefono{{tel.id}}"
                 id="telefono{{tel.id}}"
                 required
               />
-              <button type="button" (click)="eliminarTelefono(i)" class="btn btn-danger btn-sm margin-left-lg" >Eliminar</button>
+              <button type="button" (click)="eliminarTelefono(i)" class="animated-button">
+                <span><i class="fa fa-trash"></i></span>
+                <span></span>
+              </button>
             </div>
           </div>
-          <button type="button" (click)="agregarTelefono()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Teléfono</button>
+          <div class="error-message" *ngIf="errorMensaje['Telefono']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Telefono'] }}
+          </div>
+          <button type="button" (click)="agregarTelefono()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus-circle"></i></span>
+            <span></span>
+          </button>
         </div>        
         <div class="form-group">
           <label>Correo Electronico</label>
@@ -105,24 +167,40 @@
             <div class="input-dynamic">
               <input
                 type="text"
+                class="camp-input"
                 [(ngModel)]="correo.correo"
                 name="Correo{{correo.id}}"
                 id="correo{{correo.id}}"
                 required
               />
-              <button type="button" (click)="eliminarCorreo(i)" class="btn btn-danger btn-sm margin-left-lg">Eliminar</button>
+              <button type="button" (click)="eliminarCorreo(i)" class="animated-button">
+                <span><i class="fa fa-trash"></i></span>
+                <span></span>
+              </button>
             </div>
           </div>
-          <button type="button" (click)="agregarCorreo()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Correo</button>
+          <div class="error-message" *ngIf="errorMensaje['Correo']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Correo'] }}
+          </div>
+          <button type="button" (click)="agregarCorreo()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus-circle"></i></span>
+            <span></span>
+          </button>
         </div>        
 
         <div class="form-group">
           <label for="rfc">RFC</label>
-          <input type="text" id="rfc" name="RFC" [(ngModel)]="formData.RFC" required />
+          <input type="text" id="rfc" name="RFC" [(ngModel)]="formData.RFC" required disabled/>
+          <div class="error-message" *ngIf="errorMensaje['RFC']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['RFC'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="foto">Fotografía</label>
           <input type="file" id="foto" (change)="onFileChange($event, 'Foto')" accept="image/*" required />
+          <div class="error-message" *ngIf="errorMensaje['Foto']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Foto'] }}
+          </div>
         </div>
       </div>
       <h2>Domicilio del Alumno</h2>
@@ -130,6 +208,9 @@
         <div class="form-group">
           <label for="codigoPostal">Código Postal</label>
           <input type="text" id="codigoPostal" name="CodigoPostal" [(ngModel)]="formData.Domicilio.CodigoPostal" required />
+          <div class="error-message" *ngIf="errorMensaje['CodigoPostal']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CodigoPostal'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="ciudad">Ciudad</label>
@@ -139,18 +220,30 @@
               {{ ciudad.Ciudad }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['Ciudad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="colonia">Colonia</label>
           <input type="text" id="colonia" name="Colonia" [(ngModel)]="formData.Domicilio.Colonia" required />
+          <div class="error-message" *ngIf="errorMensaje['Colonia']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Colonia'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="calle">Calle</label>
           <input type="text" id="calle" name="Calle" [(ngModel)]="formData.Domicilio.Calle" required />
+          <div class="error-message" *ngIf="errorMensaje['Calle']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Calle'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="numeroExterior">Número Exterior</label>
           <input type="number" id="numeroExterior" name="NumeroExterior" [(ngModel)]="formData.Domicilio.NumeroExterior" required />
+          <div class="error-message" *ngIf="errorMensaje['NumeroExterior']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['NumeroExterior'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="numeroInterior">Número Interior</label>
@@ -163,14 +256,23 @@
         <div class="form-group">
           <label for="nombreTutor">Nombre del Tutor</label>
           <input type="text" id="nombreTutor" name="NombreTutor" [(ngModel)]="formData.Tutor.Nombre" required />
+          <div class="error-message" *ngIf="errorMensaje['NombreTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['NombreTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="apellidoPaternoTutor">Apellido Paterno del Tutor</label>
           <input type="text" id="apellidoPaternoTutor" name="ApellidoPaternoTutor" [(ngModel)]="formData.Tutor.ApellidoPaterno" required />
+          <div class="error-message" *ngIf="errorMensaje['ApellidoPaternoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ApellidoPaternoTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="apellidoMaternoTutor">Apellido Materno del Tutor</label>
           <input type="text" id="apellidoMaternoTutor" name="ApellidoMaternoTutor" [(ngModel)]="formData.Tutor.ApellidoMaterno" required />
+          <div class="error-message" *ngIf="errorMensaje['ApellidoMaternoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ApellidoMaternoTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label>Teléfonos</label>
@@ -179,15 +281,25 @@
             <div class="input-dynamic">
               <input
                 type="text"
+                class="camp-input"
                 [(ngModel)]="telT.numeroT"
                 name="TelefonoTutor{{telT.id}}"
                 id="telefonoTutor{{telT.id}}"
                 required
               />
-              <button type="button" (click)="eliminarTelefonoTutor(i)" class="btn btn-danger btn-sm margin-left-lg">Eliminar</button>
+              <button type="button" (click)="eliminarTelefonoTutor(i)" class="animated-button">
+                <span><i class="fa fa-trash"></i></span>
+                <span></span>
+              </button>
             </div>
           </div>
-          <button type="button" (click)="agregarTelefonoTutor()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Teléfono</button>
+          <div class="error-message" *ngIf="errorMensaje['TelefonoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['TelefonoTutor'] }}
+          </div>
+          <button type="button" (click)="agregarTelefonoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus-circle"></i></span>
+            <span></span>
+          </button>
         </div>        
         <div class="form-group">
           <label>Correo Electronico</label>
@@ -196,15 +308,25 @@
             <div class="input-dynamic">
               <input
                 type="text"
+                class="camp-input"
                 [(ngModel)]="correoT.correoT"
                 name="CorreoT{{correoT.id}}"
                 id="correoT{{correoT.id}}"
                 required
               />
-              <button type="button" (click)="eliminarCorreoTutor(i)" class="btn btn-danger btn-sm margin-left-lg">Eliminar</button>
+              <button type="button" (click)="eliminarCorreoTutor(i)" class="animated-button">
+                <span><i class="fa fa-trash"></i></span>
+                <span></span>
+              </button>
             </div>
           </div>
-          <button type="button" (click)="agregarCorreoTutor()" class="btn btn-primary btn-sm margin-top-sm">➕ Agregar Correo</button>
+          <div class="error-message" *ngIf="errorMensaje['CorreoT']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CorreoT'] }}
+          </div>
+          <button type="button" (click)="agregarCorreoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus-circle"></i></span>
+            <span></span>
+          </button>
         </div>        
       </div>
       <h2>Domicilio del Tutor</h2>
@@ -212,6 +334,9 @@
         <div class="form-group">
           <label for="calleTutor">Codigo postal</label>
           <input type="text" id="codigoPostalTutor" name="CodigoPostalTutor" [(ngModel)]="formData.Tutor.Domicilio.CodigoPostal" required />
+          <div class="error-message" *ngIf="errorMensaje['CodigoPostalTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CodigoPostalTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="ciudadTutor">Ciudad</label>
@@ -221,27 +346,41 @@
               {{ ciudad.Ciudad }}
             </option>
           </select>
+          <div class="error-message" *ngIf="errorMensaje['CiudadTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CiudadTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="coloniaTutor">Colonia</label>
           <input type="text" id="coloniaTutor" name="ColoniaTutor" [(ngModel)]="formData.Tutor.Domicilio.Colonia" required />
+          <div class="error-message" *ngIf="errorMensaje['ColoniaTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ColoniaTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="calleTutor">Calle</label>
           <input type="text" id="calleTutor" name="CalleTutor" [(ngModel)]="formData.Tutor.Domicilio.Calle" required />
+          <div class="error-message" *ngIf="errorMensaje['CalleTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CalleTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="numeroExteriorTutor">Número Exterior</label>
           <input type="number" id="numeroExteriorTutor" name="NumeroExteriorTutor" [(ngModel)]="formData.Tutor.Domicilio.NumeroExterior" required />
+          <div class="error-message" *ngIf="errorMensaje['NumeroExteriorTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['NumeroExteriorTutor'] }}
+          </div>
         </div>
         <div class="form-group">
           <label for="numeroInteriorTutor">Número interior</label>
           <input type="number" id="numeroInteriorTutor" name="NumeroInteriorTutor" [(ngModel)]="formData.Tutor.Domicilio.NumeroInterior" required />
         </div>
       </div>
-      <!-- Botón de envío -->
       <div class="form-buttons">
-        <button type="submit" class="btn btn-primary" [disabled]="registroForm.invalid">Finalizar Registro</button>
+        <button type="submit" class="animated-button">
+          <span>Finalizar Registro</span>
+          <span></span>
+        </button>
       </div>
     </form>
   </div>
@@ -260,9 +399,8 @@
           class="form-control"
           required
         />
-        <div class="error-message" *ngIf="errorMessage">
-          <i class="fas fa-exclamation-circle"></i>
-          {{ errorMessage }}
+        <div class="error-message" *ngIf="errorMensaje['fileInput']">
+          <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['fileInput'] }}
         </div>
       </div>
   
@@ -276,16 +414,13 @@
   
     <div class="form-row">
       <div class="form-group">
-        <button class="animated-button margin-top-md" (click)="descargarPlantilla()">
+        <button class="animated-button get-button" (click)="descargarPlantilla()">
           <span>Obtener Plantilla</span>
           <span></span>
         </button>
       </div>
     </div>
-  
-    <div class="success-message margin-top-md" *ngIf="successMessage">
-      {{ successMessage }}
-    </div>
+
   </div>
   
 </div>
