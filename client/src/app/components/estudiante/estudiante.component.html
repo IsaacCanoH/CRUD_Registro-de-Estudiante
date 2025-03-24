@@ -3,9 +3,17 @@
         <h1>Perfil Estudiante</h1>
         <p>Utiliza la matricula para ver tus datos</p>
       </div>
-  <div *ngIf="notificacionMensaje" class="notification">
-    {{ notificacionMensaje }} <i class="fas fa-check"></i>
-  </div>
+      <div
+      *ngIf="notificacionMensaje"
+      class="notification"
+      [ngClass]="{ error: isError, success: !isError }"
+    >
+      {{ notificacionMensaje }}
+      <i
+        class="fas"
+        [ngClass]="{ 'fa-times': isError, 'fa-check': !isError }"
+      ></i>
+    </div>
   <div class="card">
       <div class="card-header">
           <h2 class="card-title">Búsqueda de Alumno</h2>

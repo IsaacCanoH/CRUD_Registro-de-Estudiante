@@ -4,6 +4,16 @@ const Actividades = require("../models/ActividadExtracurricular");
 const Observaciones = require("../models/ObservacionDocente");
 const Carrera = require("../models/Carrera");
 const Ciudad = require("../models/Ciudad")
+const nodemailer = require("nodemailer");
+
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail', 
+    auth: {
+        user: 'universidadindependencia@gmail.com', 
+        pass: 'aygy fuex fyky ttwa' 
+    }
+});
 
 const multer = require("multer");
 const xlsx = require("xlsx");
@@ -57,6 +67,38 @@ exports.crearEstudiante = async (req, res) => {
         // Crear y guardar estudiante
         const nuevoEstudiante = new Estudiante({ ...datosEstudiante, RFC: rfcGenerado, Foto: fotoRuta });
         await nuevoEstudiante.save();
+
+        const mailOptions = {
+            from: 'universidadindependencia@gmail.com',
+            to: datosEstudiante.CorreosElectronicos[0],
+            subject: 'Bienvenido Estudiante - Universidad Independencia',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                    <div style="background-color:rgb(6, 110, 214); color: white; text-align: center; padding: 15px; font-size: 20px; font-weight: bold;">
+                        Universidad Independencia
+                    </div>
+                    
+                    <div style="padding: 20px; text-align: center;">
+                        <p style="font-size: 18px; color: #003366;">Hola <strong>${datosEstudiante.Nombre} ${datosEstudiante.ApellidoPaterno} ${datosEstudiante.ApellidoMaterno}</strong></p>
+                        <p style="font-size: 16px; color: #333;">Tu alta como estudiante ha sido exitosa. Bienvenido a nuestra institución.</p>
+                        <p style="font-size: 14px; color: #555; font-style: italic;">"Formando líderes para el futuro"</p>
+                    </div>
+
+                    <div style="background-color: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; color: #666;">
+                        &copy; 2024 Universidad Independencia. Todos los derechos reservados.
+                    </div>
+                </div>
+            `
+        };
+        
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error("Error al enviar el correo:", error);
+            } else {
+                console.log("Correo enviado:", info.response);
+            }
+        });
 
         return res.status(201).json({ message: "Estudiante registrado exitosamente", estudiante: nuevoEstudiante });
 
@@ -168,6 +210,42 @@ exports.uploadExcel = async (req, res) => {
 
         // Insertar estudiantes en la base de datos
         await Estudiante.insertMany(estudiantes);
+
+        for (const estudiante of estudiantes) {
+            if (estudiante.CorreosElectronicos.length > 0) {
+                const mailOptions = {
+                    from: 'universidadindependencia@gmail.com',
+                    to: estudiante.CorreosElectronicos[0], 
+                    subject: 'Bienvenido a la Universidad Independencia',
+                    html: `
+                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                            <div style="background-color:rgb(6, 110, 214); color: white; text-align: center; padding: 15px; font-size: 20px; font-weight: bold;">
+                                Universidad Independencia
+                            </div>
+                            
+                            <div style="padding: 20px; text-align: center;">
+                                <p style="font-size: 18px; color: #003366;">Hola <strong>${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}</strong></p>
+                                <p style="font-size: 16px; color: #333;">Tu registro ha sido exitoso. Bienvenido a nuestra institución.</p>
+                                <p style="font-size: 14px; color: #555; font-style: italic;">"Formando líderes para el futuro"</p>
+                            </div>
+
+                            <div style="background-color: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; color: #666;">
+                                &copy; 2024 Universidad Independencia. Todos los derechos reservados.
+                            </div>
+                        </div>
+                    `
+                };
+
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.error(`Error al enviar correo a ${estudiante.Nombre}:`, error);
+                    } else {
+                        console.log(`Correo enviado a ${estudiante.Nombre}:`, info.response);
+                    }
+                });
+            }
+        }
+
 
         return res.status(200).json({ message: "Datos importados correctamente" });
 
@@ -495,6 +573,10 @@ exports.perfilPorMatricula = async (req, res) => {
 
         if (!estudiante) {
             return res.status(404).json({ message: "Estudiante no encontrado" });
+        }
+
+        if (estudiante.Estatus === 'Inactivo') {
+            return res.status(400).json({ message: "El estudiante está inactivo. No se pueden mostrar los datos." });
         }
 
         if (!actividades) {

@@ -30,9 +30,9 @@
         <div class="form-group">
           <label for="certificadoBachillerato">Certificado de Bachillerato</label>
           <select id="certificadoBachillerato" name="CertificadoBachillerato" [(ngModel)]="formData.CertificadoBachillerato" required>
-            <option value="">Seleccione...</option>
+            <option value="0">Seleccione...</option>
             <option value="1">Si</option>
-            <option value="0">No</option>
+            <option value="2">No</option>
           </select>
           <div class="error-message" *ngIf="errorMensaje['CertificadoBachillerato']">
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CertificadoBachillerato'] }}
@@ -71,14 +71,14 @@
         </div>
         <div class="form-group">
           <label for="semestre">Semestre</label>
-          <input type="number" id="semestre" name="Semestre" [(ngModel)]="formData.Semestre" required />
+          <input type="number" id="semestre" name="Semestre" [(ngModel)]="formData.Semestre" required disabled/>
           <div class="error-message" *ngIf="errorMensaje['Semestre']">
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Semestre'] }}
           </div>
         </div>
         <div class="form-group">
           <label for="anio">Año</label>
-          <input type="number" id="anio" name="Anio" [(ngModel)]="formData.Anio" required />
+          <input type="number" id="anio" name="Anio" [(ngModel)]="formData.Anio" required disabled/>
           <div class="error-message" *ngIf="errorMensaje['Anio']">
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Anio'] }}
           </div>
@@ -126,8 +126,8 @@
           <label for="sexo">Sexo</label>
           <select id="sexo" name="Sexo" [(ngModel)]="formData.Sexo" required>
             <option value="">Seleccione...</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
           </select>
           <div class="error-message" *ngIf="errorMensaje['Sexo']">
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Sexo'] }}

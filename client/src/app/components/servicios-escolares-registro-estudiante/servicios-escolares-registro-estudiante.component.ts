@@ -115,6 +115,10 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
   ngOnInit() {
     this.obtenerCatalogoCarreras();
     this.obtenerCatalogoCiudades();
+    const currentYear = new Date().getFullYear();
+    this.formData.Anio = currentYear;
+    const currentMonth = new Date().getMonth() + 1; 
+    this.formData.Semestre = currentMonth <= 6 ? 1 : 2;
     if (this.formData.Telefonos.length === 0) {
       this.formData.Telefonos.push({
         id: this.telefonoIdCounter++,
@@ -252,7 +256,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     if (this.validarFormulario()) {
       const foto = this.formData.Foto ? this.formData.Foto : new File([], '');
 
-      // 🔥 Este es el paso clave:
+      // Este es el paso clave:
       const payload = {
         ...this.formData,
         Telefonos: this.formData.Telefonos.map((t) => t.numero),
@@ -271,11 +275,16 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
       this.estudianteService.registrarEstudiante(payload, foto).subscribe(
         (response) => {
           console.log('Estudiante registrado exitosamente:', response);
+          const semestreActual = this.formData.Semestre;
+          const anioActual = this.formData.Anio;
           form.resetForm();
+          this.formData.Semestre = semestreActual;
+          this.formData.Anio = anioActual;
           this.isError = false;
           this.notificacionService.showNotification(
             'Estudiante registrado exitosamente'
           );
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         (error) => {
           console.error('Error al registrar estudiante:', error);
@@ -368,6 +377,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
             this.notificacionService.showNotification(
               'Archivo cargado correctamente'
             );
+            this.limpiarCampoArchivo();
           },
           error: (err) => {
             console.error('Error al subir archivo:', err);
@@ -377,6 +387,13 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
             );
           },
         });
+    }
+  }
+
+  limpiarCampoArchivo(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; 
     }
   }
 
@@ -416,6 +433,12 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     if (!this.formData.FechaNacimiento) {
       this.errorMensaje['FechaNacimiento'] =
         'Por favor, ingrese la fecha de nacimiento.';
+    } else if (
+      new Date().getFullYear() -
+        new Date(this.formData.FechaNacimiento).getFullYear() <
+      18
+    ) {
+      this.errorMensaje['FechaNacimiento'] = 'Debe ser mayor de 18 años.';
     }
     if (!this.formData.Sexo) {
       this.errorMensaje['Sexo'] = 'Por favor, seleccione un sexo.';
@@ -423,22 +446,20 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     if (
       !this.formData.Telefonos ||
       this.formData.Telefonos.length === 0 ||
-      !this.formData.Telefonos[0].numero
+      !this.formData.Telefonos[0].numero ||
+      this.formData.Telefonos[0].numero.length !== 10
     ) {
       this.errorMensaje['Telefono'] =
-        'Por favor, ingrese al menos un teléfono.';
+        'Por favor, ingrese un teléfono válido con 10 dígitos.';
     }
     if (
       !this.formData.CorreosElectronicos ||
       this.formData.CorreosElectronicos.length === 0 ||
-      !this.formData.CorreosElectronicos[0].correo
+      !this.formData.CorreosElectronicos[0].correo ||
+      !this.formData.CorreosElectronicos[0].correo.includes('@')
     ) {
       this.errorMensaje['Correo'] =
-        'Por favor, ingrese al menos un correo electrónico.';
-    }
-    if (!this.formData.CorreosElectronicos[0]) {
-      this.errorMensaje['Correo{{correo.id}}'] =
-        'Por favor, ingrese al menos un correo electronico.';
+        'Por favor, ingrese un correo electrónico válido.';
     }
     if (!this.formData.RFC) {
       this.errorMensaje['RFC'] = 'Es obligatorio el RFC.';
@@ -449,7 +470,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     if (!this.formData.Domicilio.Calle) {
       this.errorMensaje['Calle'] = 'Por favor, ingrese la calle.';
     }
-    if (!this.formData.Domicilio.NumeroInterior) {
+    if (!this.formData.Domicilio.NumeroExterior) {
       this.errorMensaje['NumeroExterior'] =
         'Por favor, ingrese el número exterior.';
     }
@@ -512,7 +533,8 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     if (
       !this.formData.Tutor.Telefonos ||
       this.formData.Tutor.Telefonos.length === 0 ||
-      !this.formData.Tutor.Telefonos[0].numeroT
+      !this.formData.Tutor.Telefonos[0].numeroT ||
+      this.formData.Telefonos[0].numero.length !== 10
     ) {
       this.errorMensaje['TelefonoTutor'] =
         'Por favor, ingrese al menos un teléfono.';
@@ -520,7 +542,8 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     if (
       !this.formData.Tutor.CorreosElectronicos ||
       this.formData.Tutor.CorreosElectronicos.length === 0 ||
-      !this.formData.Tutor.CorreosElectronicos[0].correoT
+      !this.formData.Tutor.CorreosElectronicos[0].correoT ||
+      !this.formData.CorreosElectronicos[0].correo.includes('@')
     ) {
       this.errorMensaje['CorreoT'] =
         'Por favor, ingrese al menos un correo electrónico.';

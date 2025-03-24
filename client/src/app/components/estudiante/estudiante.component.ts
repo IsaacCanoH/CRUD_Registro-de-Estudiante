@@ -15,6 +15,8 @@ export class EstudianteComponent implements OnInit{
   actividades: any[] = [];
   observaciones: any[] = [];
   notificacionMensaje: string | null = null;
+  isError: boolean = false;
+  
 
   constructor(
     private estudianteService: EstudianteService,
@@ -32,17 +34,30 @@ export class EstudianteComponent implements OnInit{
     if (this.matricula) {
       this.estudianteService.obtenerPerfilPorMatricula(this.matricula).subscribe(
         (data) => {
-          this.estudiante = data.estudiante;
-          this.actividades = data.actividades;
-          this.observaciones = data.observaciones;
+          if (data.message === 'El estudiante está inactivo. No se pueden mostrar los datos.') {
+            this.isError = false
+            this.notificacionService.showNotification('El estudiante está inactivo. No se pueden mostrar los datos.') ;
+            this.estudiante = null; // Limpiar los datos del estudiante
+            this.actividades = [];
+            this.observaciones = [];
+          } else {
+            this.estudiante = data.estudiante;
+            this.actividades = data.actividades;
+            this.observaciones = data.observaciones;
+          }
         },
         (error) => {
           console.error('Error al obtener el perfil del estudiante:', error);
-          // Manejo de errores, puedes mostrar un mensaje al usuario
+          this.isError = true
+          this.notificacionService.showNotification('El estudiante está inactivo. No se pueden mostrar los datos.');
+          this.estudiante = null;
+          this.actividades = [];
+          this.observaciones = [];
         }
       );
     }
   }
+  
 
   getPhotoUrl(photoPath: string): string {
     if (!photoPath) {
