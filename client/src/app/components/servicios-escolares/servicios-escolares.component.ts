@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EstudianteService } from '../../services/estudiante.service';
 import * as XLSX from 'xlsx';
 import { NotificacionService } from '../../services/notificacion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-servicios-escolares',
@@ -22,8 +23,13 @@ export class ServiciosEscolaresComponent implements OnInit {
   estudiantesFiltrados: any[] = [];
   notificacionMensaje: string | null = null;
   isError: boolean = false;
+  matricula: string = '';
 
-  constructor(private estudianteService: EstudianteService, private notificacionService: NotificacionService) {}
+  constructor(
+    private estudianteService: EstudianteService, 
+    private notificacionService: NotificacionService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.notificacionService.notificacionMensaje$.subscribe(mensaje => {
@@ -40,11 +46,11 @@ export class ServiciosEscolaresComponent implements OnInit {
         const esFormatoMatricula = /^[0-9A-Za-z]+$/.test(this.searchQuery) && /\d/.test(this.searchQuery);
         const esNombre = /\s/.test(this.searchQuery) || /^[A-Za-zÁÉÍÓÚáéíóúñÑ]+$/.test(this.searchQuery); 
 
-
         if (esSoloNumeros || esFormatoMatricula) {
             this.estudianteService.buscarPorMatricula(this.searchQuery).subscribe(
                 (data) => {
                     this.selectedStudent = data;
+                    this.matricula = this.selectedStudent.Matricula;
                 },
                 (error) => {
                     console.error('Error al buscar por matrícula', error);
@@ -55,6 +61,7 @@ export class ServiciosEscolaresComponent implements OnInit {
             this.estudianteService.buscarPorNombre(this.searchQuery).subscribe(
                 (data) => {
                     this.selectedStudent = data.length > 0 ? data[0] : null;
+                    this.matricula = this.selectedStudent.Matricula;
                 },
                 (error) => {
                     console.error('Error al buscar por nombre', error);
@@ -68,14 +75,16 @@ export class ServiciosEscolaresComponent implements OnInit {
   }
 
 
-
   activaTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  handleEdit(): void {
-    console.log('Editar alumno:', this.selectedStudent);
-    alert('Función de edición de alumno');
+  editarEstudiante() {
+    console.log("La matricula es: "+this.matricula);
+    if (this.matricula) {
+      console.log("La matricula es esta: "+this.matricula);
+      this.router.navigate(['/se-ed-ed', this.matricula]);
+    }
   }
 
   formatoFecha(timestamp: number): string {
