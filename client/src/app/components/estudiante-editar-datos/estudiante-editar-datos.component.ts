@@ -57,7 +57,20 @@ export class EstudianteEditarDatosComponent implements OnInit {
   obtenerEstudiante() {
     this.estudianteService.buscarPorMatricula(this.matricula).subscribe(
       (data) => {
-        this.estudiante = data.estudiante;
+        if (data && data._id) { 
+          this.estudiante = {
+            ...data,
+            CorreosElectronicos: data.CorreosElectronicos || [],
+            Telefonos: data.Telefonos || [],
+            Tutor: {
+              ...data.Tutor,
+              CorreosElectronicos: data.Tutor.CorreosElectronicos || [],
+              Telefonos: data.Tutor.Telefonos || [],
+            }
+          };
+        } else {
+          console.error('No se encontró el estudiante o la respuesta no es válida:', data);
+        }
       },
       (error) => {
         console.error('Error al obtener el perfil del estudiante:', error);

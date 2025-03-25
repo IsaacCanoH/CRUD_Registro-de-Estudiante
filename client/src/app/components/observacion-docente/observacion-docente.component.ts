@@ -83,6 +83,7 @@ export class ObservacionDocenteComponent implements OnInit {
           this.notificacionService.showNotification(
             'Observacion registrada correctamente'
           );
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         (error) => {
           console.error('Error al registrar observacion', error);
@@ -122,6 +123,7 @@ export class ObservacionDocenteComponent implements OnInit {
           );
           this.archivo = null; 
           this.limpiarCampoArchivo();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         (error) => {
           console.error('Error al subir el archivo:', error);

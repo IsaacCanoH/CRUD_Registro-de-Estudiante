@@ -169,26 +169,25 @@ export class ServiciosEscolaresComponent implements OnInit {
   }  
 
   bajaTemporal(matricula: string) {
-    // Buscar el estudiante en la lista actual para verificar su estatus
     const estudiante = this.estudiantes.find(e => e.Matricula === matricula);
 
     if (estudiante && estudiante.Estatus === 'Inactivo') {
       this.cerrarBajaModal();
       this.isError = true;
       this.notificacionService.showNotification('El estudiante ya está inactivo.');
-      return; // No continuar con la baja si ya está inactivo
+      return; 
     }
 
     this.estudianteService.bajaTemporal(matricula).subscribe(
       (response) => {
         console.log('Estudiante dado de baja temporalmente:', response);
+        this.isError = false
         this.notificacionService.showNotification('El estudiante ha sido dado de baja temporalmente.');
-        // Si el estudiante dado de baja es el seleccionado, limpiarlo
         if (this.selectedStudent && this.selectedStudent.Matricula === matricula) {
           this.selectedStudent = null;
         }
-        this.obtenerEstudiantes(); // Actualizar lista
-        this.cerrarBajaModal(); // Cerrar modal después de actualizar
+        this.obtenerEstudiantes(); 
+        this.cerrarBajaModal(); 
       },
       (error) => {
         this.isError = true

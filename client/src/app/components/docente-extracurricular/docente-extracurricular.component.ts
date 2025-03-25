@@ -82,6 +82,7 @@ export class DocenteExtracurricularComponent implements OnInit {
           this.notificacionService.showNotification(
             'Actividad asignada correctamente'
           );
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         (error) => {
           console.error('Error al registrar actividad:', error);
@@ -162,6 +163,7 @@ export class DocenteExtracurricularComponent implements OnInit {
           // setTimeout(() => {
           //   window.location.reload();
           // }, 2000);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         (error) => {
           console.error('Error al subir el archivo:', error);
