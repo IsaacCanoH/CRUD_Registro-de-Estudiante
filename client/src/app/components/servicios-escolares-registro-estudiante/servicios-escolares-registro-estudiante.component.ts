@@ -5,7 +5,6 @@ import { EstudianteService } from '../../services/estudiante.service';
 import { NotificacionService } from '../../services/notificacion.service';
 
 interface EstudianteForm {
-  Matricula: string;
   Nombre: string;
   ApellidoPaterno: string;
   ApellidoMaterno: string;
@@ -57,7 +56,6 @@ interface EstudianteForm {
 })
 export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
   formData: EstudianteForm = {
-    Matricula: '',
     Nombre: '',
     ApellidoPaterno: '',
     ApellidoMaterno: '',
@@ -252,17 +250,31 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     ) {
       const year = String(this.formData.Anio).slice(-2);
       const semestre = this.formData.Semestre;
-      const inicialPaterno =
-        this.formData.ApellidoPaterno.charAt(0).toUpperCase();
-      const consecutivoStr = this.consecutivo.toString().padStart(4, '0');
+      const inicialPaterno = this.formData.ApellidoPaterno.charAt(0).toUpperCase();
 
-      this.formData.Matricula = `${year}${semestre}${inicialPaterno}${consecutivoStr}`;
+      // Obtener el contador de matrícula desde el servicio
+      const contadorResponse = this.estudianteService.obtenerContadorMatricula();
+
+      // Asegúrate de que el contadorResponse tenga la estructura esperada
+    if (contadorResponse && contadorResponse!= null) {
+      const consecutivoStr = (contadorResponse).toString().padStart(4, '0'); // Incrementar y formatear a 4 dígitos
+
+       // Construir la matrícula
+       let matricula = `${year}${semestre}${inicialPaterno}${consecutivoStr+1}`;
+       console.log("Matrícula generada:", matricula); // Para depuración
+       return matricula; // Retornar la matrícula generada
+    }else {
+        console.error("Error: La respuesta del contador no es válida.");
+        throw new Error("No se pudo obtener el contador de matrícula.");
+      }
+    } else {
+      console.error("Error: Datos de entrada no válidos.");
+      throw new Error("Los datos de entrada no son válidos.");
     }
-  }
+}
 
   onInputChange() {
     this.generarRFC();
-    this.generarMatricula();
   }
 
   submitForm(form: NgForm) {
@@ -284,9 +296,8 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
           ),
         },
       };
-
       this.estudianteService.registrarEstudiante(payload, foto).subscribe(
-        (response) => {
+        async (response) => {
           console.log('Estudiante registrado exitosamente:', response);
           const semestreActual = this.formData.Semestre;
           const anioActual = this.formData.Anio;
@@ -295,8 +306,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
           this.formData.Anio = anioActual;
           this.isError = false;
           this.notificacionService.showNotification(
-            'Estudiante registrado exitosamente'
-          );
+            'Estudiante registrado exitosamente');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         (error) => {
@@ -429,9 +439,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
   validarFormulario(): boolean {
     this.errorMensaje = {};
 
-    if (!this.formData.Matricula) {
-      this.errorMensaje['Matricula'] = 'La matrícula es obligatoria.';
-    }
+    
     if (!this.formData.Nombre) {
       this.errorMensaje['Nombre'] = 'Por favor, ingrese el nombre.';
     }

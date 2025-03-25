@@ -55,7 +55,7 @@ export class EstudianteEditarDatosComponent implements OnInit {
   }
 
   obtenerEstudiante() {
-    this.estudianteService.obtenerPerfilPorMatricula(this.matricula).subscribe(
+    this.estudianteService.buscarPorMatricula(this.matricula).subscribe(
       (data) => {
         this.estudiante = data.estudiante;
       },
@@ -85,7 +85,7 @@ export class EstudianteEditarDatosComponent implements OnInit {
       );
     }
   }
-
+ 
   cancelarEdicion(){
     this.router.navigate(['/ed']);
   }

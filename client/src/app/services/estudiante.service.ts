@@ -93,4 +93,8 @@ descargarPlantillaExcel(): Observable<Blob> {
     responseType: 'blob' // importante para descarga de archivo
   });
 }
+
+obtenerContadorMatricula(): Observable<any> {
+  return this.http.get<any[]>(`${this.apiUrl}/getContadorMatricula`);
+};
 }

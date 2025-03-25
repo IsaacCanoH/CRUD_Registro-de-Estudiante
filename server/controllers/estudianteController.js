@@ -5,7 +5,9 @@ const Observaciones = require("../models/ObservacionDocente");
 const Carrera = require("../models/Carrera");
 const Ciudad = require("../models/Ciudad")
 const EspecialidadBachilerrato = require("../models/EspecialidadBachillerato");
+const Contador = require('../models/Contador');
 const nodemailer = require("nodemailer");
+
 
 
 const transporter = nodemailer.createTransport({
@@ -47,11 +49,48 @@ const generarRFC = (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento) =
     return `${primerasDosApellidoPaterno}${primeraApellidoMaterno}${primeraLetraNombre}${anio}${mes}${dia}`;
 };
 
+exports.generarMatricula = async (apellidoPaterno) => {
+    try {
+      // Obtener los últimos 2 dígitos del año actual
+      const year = new Date().getFullYear().toString().slice(-2);
+      
+      // Determinar el semestre (1 = enero-junio, 2 = julio-diciembre)
+      const month = new Date().getMonth() + 1;
+      const semestre = month <= 6 ? '1' : '2';
+  
+      if (!apellidoPaterno || typeof apellidoPaterno !== 'string' || apellidoPaterno.length === 0) {
+        throw new Error("El apellido paterno es requerido y debe ser una cadena no vacía.");
+      }
+      // Obtener la primera letra del apellido paterno en mayúscula
+      const letraApellido = apellidoPaterno.charAt(0).toUpperCase();
+  
+      // Obtener el número consecutivo autoincremental
+      let contador = await Contador.findOneAndUpdate(
+        { nombre: 'matricula' }, // Buscamos el contador por nombre
+        { $inc: { valor: 1 } }, // Incrementamos el valor en 1
+        { new: true, upsert: true } // Si no existe, lo crea con el valor 1
+      );
+  
+      // Formatear el número consecutivo a 4 dígitos
+      const numeroConsecutivo = contador.valor.toString().padStart(4, '0');
+  
+      // Construir la matrícula
+      const matricula = `${year}${semestre}${letraApellido}${numeroConsecutivo}`;
+  
+      return matricula; // Retornamos la matrícula generada
+    } catch (error) {
+      console.error("Error al generar la matrícula:", error);
+      throw new Error("No se pudo generar la matrícula.");
+    }
+  };
+
 // Metodo para crear estudiante
 exports.crearEstudiante = async (req, res) => {
     try {
         const datosEstudiante = JSON.parse (req.body.estudiante);
-        
+        const ApellidoPaterno = datosEstudiante.ApellidoPaterno;
+        // Generar la matrículaApelleidoPaterno automáticamente
+        const matricula = await exports.generarMatricula(ApellidoPaterno);
         // Generar y validar RFC
         const rfcGenerado = generarRFC(datosEstudiante.Nombre, datosEstudiante.ApellidoPaterno, datosEstudiante.ApellidoMaterno, datosEstudiante.FechaNacimiento);
         if (!rfcGenerado) {
@@ -66,7 +105,7 @@ exports.crearEstudiante = async (req, res) => {
         const fotoRuta = req.file ? req.file.path : "";
 
         // Crear y guardar estudiante
-        const nuevoEstudiante = new Estudiante({ ...datosEstudiante, RFC: rfcGenerado, Foto: fotoRuta });
+        const nuevoEstudiante = new Estudiante({ ...datosEstudiante, Matricula: matricula, RFC: rfcGenerado, Foto: fotoRuta });
         await nuevoEstudiante.save();
 
         const mailOptions = {
@@ -621,5 +660,14 @@ exports.getCatalogoEspecialidadBachillerato = async (req, res) => {
         res.status(200).json(catalogo);
     } catch (error) {
         res.status(500).json({ message: "Error al obtener catálogo EspecialidadBachilerrato", error: error.message });
+    }
+}
+
+exports.getContadorMatricula = async (req, res) => {
+    try {
+        const contador = await Contador.find({},{valor:1});
+        res.status(200).json(contador);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener el contador de matriculas", error: error.message });
     }
 }

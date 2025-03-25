@@ -64,7 +64,7 @@ const TutorSchema = new Schema({
 
 // Esquema de estudiante
 const EstudianteSchema = new Schema({
-    Matricula: { type: String, unique: true },
+    Matricula: { type: String, unique: true, required: false },
     Nombre: { type: String, required: true },
     ApellidoPaterno: { type: String, required: true },
     ApellidoMaterno: { type: String, required: true },

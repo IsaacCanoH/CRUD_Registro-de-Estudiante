@@ -93,13 +93,6 @@
       <h2>Datos Generales del Alumno</h2>
       <div class="form-grid">
         <div class="form-group">
-          <label for="matricula">Matrícula</label>
-          <input type="text" id="matricula" name="Matricula" [(ngModel)]="formData.Matricula" required disabled/>
-          <div class="error-message" *ngIf="errorMensaje['Matricula']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Matricula'] }}
-          </div>
-        </div>
-        <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" id="nombre" name="Nombre" [(ngModel)]="formData.Nombre" (keyup)="onInputChange()" required #nombre="ngModel" />
           <div class="error-message" *ngIf="errorMensaje['Nombre']">

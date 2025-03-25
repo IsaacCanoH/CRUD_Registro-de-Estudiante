@@ -22,6 +22,7 @@ router.get("/catalogoCarreras", estudianteController.getCatalogoCarreras);
 router.get("/catalogoCiudades", estudianteController.getCatalogoCiudad);
 router.get("/catalogoEspecialidadBachillerato", estudianteController.getCatalogoEspecialidadBachillerato);
 router.get('/descargarPlantilla', estudianteController.descargarPlantillaExcel);
-
+router.get('/generarMatricula', estudianteController.generarMatricula);
+router.get('/getContadorMatricula', estudianteController.getContadorMatricula);
 
 module.exports = router;
