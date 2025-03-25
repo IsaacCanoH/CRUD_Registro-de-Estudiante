@@ -167,9 +167,11 @@
   border: 1px solid var(--border-color);
 }
 
-:host .action-buttons {
-  display: flex;
-  gap: 8px;
+.action-buttons {
+  display: flex; /* Utiliza flexbox para alinear los elementos */
+  justify-content: center; /* Centra los botones horizontalmente */
+  gap: 10px; /* Espacio entre los botones (opcional) */
+  margin-top: 20px; /* Espacio superior para separar de otros elementos */
 }
 
 :host .btn {
@@ -748,5 +750,27 @@ button[type="button"]:hover {
 
   .modal-content {
     margin: 1rem;
+  }
+
+  
+  .modal-buttons button {
+    flex: 1; /* Esto hará que los botones ocupen el mismo espacio */
+    padding: 10px; /* Ajusta el padding según sea necesario */
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .modal-buttons button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .modal-buttons button[type="button"] {
+    background-color: #dc3545;
+    color: white;
+    transition: background-color 0.3s;
   }
 }

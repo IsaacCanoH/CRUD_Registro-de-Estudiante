@@ -8,7 +8,7 @@ router.post("/crearEstudiante",  uploadImagen.single("foto"),estudianteControlle
 router.post("/crearEstudianteMasiva", upload.single("file"), uploadExcel);
 router.get("/getAllEstudiantes", estudianteController.getAllEstudiantes);
 router.delete("/deleteEstudiante/:matricula", estudianteController.eliminarEstudiante);
-router.put("/bajaTemporal/:matricula", estudianteController.bajaTemporal);
+router.patch("/bajaTemporal/:matricula", estudianteController.bajaTemporal);
 router.put("/updateEstudiante/:matricula", uploadImagen.single("foto"), estudianteController.updateEstudiante);
 router.get("/getPorMatricula/:matricula", estudianteController.buscarPorMatricula);
 router.get("/getPorNombre/:nombre", estudianteController.buscarPorNombre);
@@ -20,6 +20,7 @@ router.get("/getPorEspecialidad/:especialidad", estudianteController.filtroPorEs
 router.get("/perfil/:matricula", estudianteController.perfilPorMatricula);
 router.get("/catalogoCarreras", estudianteController.getCatalogoCarreras);
 router.get("/catalogoCiudades", estudianteController.getCatalogoCiudad);
+router.get("/catalogoEspecialidadBachillerato", estudianteController.getCatalogoEspecialidadBachillerato);
 router.get('/descargarPlantilla', estudianteController.descargarPlantillaExcel);
 
 

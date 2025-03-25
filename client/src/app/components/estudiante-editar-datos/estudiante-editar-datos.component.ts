@@ -17,22 +17,24 @@ export class EstudianteEditarDatosComponent implements OnInit {
       CodigoPostal: '',
       Ciudad: '',
       Colonia: '',
+      Calle: '',
       NumeroExterior: '',
       NumeroInterior: '',
     },
-    CorreosElectronicos: [''], 
-    Telefonos: [''], 
+    CorreosElectronicos: [{ id: 1, correo: '' }],
+    Telefonos: [{ id: 1, numero: '' }],
     Foto: null, 
     Tutor: {
       Domicilio: {
         CodigoPostal: '',
         Ciudad: '',
         Colonia: '',
+        Calle: '',
         NumeroExterior: '',
         NumeroInterior: '',
       },
-      CorreosElectronicos: [''], 
-      Telefonos: [''], 
+      CorreosElectronicos: [{ id: 1, correoT: '' }],
+      Telefonos: [{ id: 1, numeroT: '' }]
     }
   };  
   foto: File | undefined;
@@ -140,5 +142,70 @@ export class EstudianteEditarDatosComponent implements OnInit {
         console.log('Erroral obtener docentes', error);
       }
     )
+  }
+
+  telefonoIdCounter = 2; // empezamos en 2 porque el primero ya es id 1
+
+  agregarTelefono() {
+    this.estudiante.Telefonos.push({ id: this.telefonoIdCounter++, numero: '' });
+  }
+
+  eliminarTelefono(index: number) {
+    this.estudiante.Telefonos.splice(index, 1);
+  }
+
+  trackByTelefonoId(index: number, tel: any): number {
+    return tel.id;
+  }
+
+  correoIdCounter = 2;
+
+  agregarCorreo() {
+    this.estudiante.CorreosElectronicos.push({
+      id: this.correoIdCounter++,
+      correo: '',
+    });
+  }
+
+  eliminarCorreo(index: number) {
+    this.estudiante.CorreosElectronicos.splice(index, 1);
+  }
+
+  trackByCorreoId(index: number, correo: any): number {
+    return correo.id;
+  }
+
+  correoTIdCounter = 2;
+
+  agregarCorreoTutor() {
+    this.estudiante.Tutor.CorreosElectronicos.push({
+      id: this.correoIdCounter++,
+      correoT: '',
+    });
+  }
+
+  eliminarCorreoTutor(index: number) {
+    this.estudiante.Tutor.CorreosElectronicos.splice(index, 1);
+  }
+
+  trackByCorreoTutorId(index: number, correoT: any): number {
+    return correoT.id;
+  }
+
+  telefonoTutorIdCounter = 2; // empezamos en 2 porque el primero ya es id 1
+  
+  agregarTelefonoTutor() {
+    this.estudiante.Tutor.Telefonos.push({
+      id: this.telefonoIdCounter++,
+      numeroT: '',
+    });
+  }
+
+  eliminarTelefonoTutor(index: number) {
+    this.estudiante.Tutor.Telefonos.splice(index, 1);
+  }
+
+  trackByTelefonoTutorId(index: number, telT: any): number {
+    return telT.id;
   }
 }

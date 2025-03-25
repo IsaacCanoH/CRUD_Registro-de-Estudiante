@@ -1,4 +1,19 @@
 <div class="container">
+  <div class="header">
+    <h1>Perfil Estudiante</h1>
+    <p>Utiliza la matricula para ver tus datos</p>
+  </div>
+  <div
+    *ngIf="notificacionMensaje"
+    class="notification"
+    [ngClass]="{ error: isError, success: !isError }"
+  >
+    {{ notificacionMensaje }}
+    <i
+      class="fas"
+      [ngClass]="{ 'fa-times': isError, 'fa-check': !isError }"
+    ></i>
+  </div>
   <div class="register-button-container-new">
     <button class="cssbuttons-io-button-new" routerLink="/se-reg-est">
       Registrar Estudiante
@@ -48,11 +63,26 @@
       <button class="btn btn-outline" (click)="handleEdit()">
         <i class="fas fa-edit"></i>
       </button>
-      <button class="btn btn-danger" (click)="handleDelete()">
+      <button class="btn btn-danger" (click)="abrirBajaModal()">
         <i class="fas fa-trash-alt"></i>
       </button>
     </div>
   </div>
+  <!-- Modal para seleccionar tipo de baja -->
+<div class="modal" *ngIf="isBajaModalOpen">
+  <div class="modal-content">
+    <h3>Selecciona el tipo de baja</h3>
+    <p>¿Qué tipo de baja deseas aplicar al estudiante?</p>
+    <div class="action-buttons">
+      <button class="btn btn-warning" (click)="confirmarBajaTemporal()">Baja Temporal</button>
+      <button class="btn btn-danger" (click)="confirmarBajaDefinitiva()">Baja Definitiva</button>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-outline" (click)="cerrarBajaModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 
   <div class="card-content">
     <div class="tabs">

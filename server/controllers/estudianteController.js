@@ -4,6 +4,7 @@ const Actividades = require("../models/ActividadExtracurricular");
 const Observaciones = require("../models/ObservacionDocente");
 const Carrera = require("../models/Carrera");
 const Ciudad = require("../models/Ciudad")
+const EspecialidadBachilerrato = require("../models/EspecialidadBachillerato");
 const nodemailer = require("nodemailer");
 
 
@@ -368,6 +369,7 @@ exports.bajaTemporal = async (req, res) => {
 
 // Metodo para actualizar datos de un estudiante
 const fs = require("fs");
+const EspecialidadBachillerato = require("../models/EspecialidadBachillerato");
 
 exports.updateEstudiante = async (req, res) => {
     try {
@@ -610,5 +612,14 @@ exports.getCatalogoCiudad = async (req, res) => {
         res.status(200).json(catalogo);
     } catch (error){
         res.status(500).json({ message: "Error al obtener catálogo Ciudad", error: error.message });
+    }
+}
+
+exports.getCatalogoEspecialidadBachillerato = async (req, res) => {
+    try {
+        const catalogo = await EspecialidadBachilerrato.find();
+        res.status(200).json(catalogo);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener catálogo EspecialidadBachilerrato", error: error.message });
     }
 }

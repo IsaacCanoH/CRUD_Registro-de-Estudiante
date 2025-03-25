@@ -40,7 +40,12 @@
         </div>
         <div class="form-group">
           <label for="especialidadBachillerato">Especialidad de Bachillerato</label>
-          <input type="text" id="especialidadBachillerato" name="EspecialidadBachillerato" step="0.01" [(ngModel)]="formData.EspecialidadBachillerato" required />
+          <select id="especialidadBachillerato" name="EspecialidadBachillerato" [(ngModel)]="formData.EspecialidadBachillerato" required #especialidadBachillerato="ngModel">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let especialidadBachillerato of catalogoEspecialidadesBachillerato" [value]="especialidadBachillerato.EspecialidadBachillerato">
+              {{ especialidadBachillerato.EspecialidadBachillerato }}
+            </option>
+          </select>
           <div class="error-message" *ngIf="errorMensaje['EspecialidadBachillerato']">
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['EspecialidadBachillerato'] }}
           </div>

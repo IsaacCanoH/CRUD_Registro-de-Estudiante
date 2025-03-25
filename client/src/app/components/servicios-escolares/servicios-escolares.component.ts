@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EstudianteService } from '../../services/estudiante.service';
 import * as XLSX from 'xlsx';
+import { NotificacionService } from '../../services/notificacion.service';
 
 @Component({
   selector: 'app-servicios-escolares',
@@ -19,11 +20,17 @@ export class ServiciosEscolaresComponent implements OnInit {
   carrera: string = '';
   especialidad: string = '';
   estudiantesFiltrados: any[] = [];
+  notificacionMensaje: string | null = null;
+  isError: boolean = false;
 
-  constructor(private estudianteService: EstudianteService) {}
+  constructor(private estudianteService: EstudianteService, private notificacionService: NotificacionService) {}
 
   ngOnInit() {
+    this.notificacionService.notificacionMensaje$.subscribe(mensaje => {
+      this.notificacionMensaje = mensaje;
+    });
     this.obtenerEstudiantes();
+    
   }
 
   busqueda(): void {
@@ -69,14 +76,6 @@ export class ServiciosEscolaresComponent implements OnInit {
   handleEdit(): void {
     console.log('Editar alumno:', this.selectedStudent);
     alert('Función de edición de alumno');
-  }
-
-  handleDelete(): void {
-    console.log('Dar de baja alumno:', this.selectedStudent);
-    if (confirm('¿Está seguro que desea dar de baja a este alumno?')) {
-      alert('Alumno dado de baja');
-      this.selectedStudent = null;
-    }
   }
 
   formatoFecha(timestamp: number): string {
@@ -159,4 +158,81 @@ export class ServiciosEscolaresComponent implements OnInit {
   
     XLSX.writeFile(libro, 'Lista_Estudiantes.xlsx');
   }  
+
+  bajaTemporal(matricula: string) {
+    // Buscar el estudiante en la lista actual para verificar su estatus
+    const estudiante = this.estudiantes.find(e => e.Matricula === matricula);
+
+    if (estudiante && estudiante.Estatus === 'Inactivo') {
+      this.cerrarBajaModal();
+      this.isError = true;
+      this.notificacionService.showNotification('El estudiante ya está inactivo.');
+      return; // No continuar con la baja si ya está inactivo
+    }
+
+    this.estudianteService.bajaTemporal(matricula).subscribe(
+      (response) => {
+        console.log('Estudiante dado de baja temporalmente:', response);
+        this.notificacionService.showNotification('El estudiante ha sido dado de baja temporalmente.');
+        // Si el estudiante dado de baja es el seleccionado, limpiarlo
+        if (this.selectedStudent && this.selectedStudent.Matricula === matricula) {
+          this.selectedStudent = null;
+        }
+        this.obtenerEstudiantes(); // Actualizar lista
+        this.cerrarBajaModal(); // Cerrar modal después de actualizar
+      },
+      (error) => {
+        this.isError = true
+        this.notificacionService.showNotification('Error al intentar dar de baja al estudiante.');
+        console.error('Error al dar de baja temporalmente al estudiante:', error);
+      }
+    );
+  }
+
+  bajaDefinitiva(matricula: string) {
+    this.estudianteService.bajaDefinitiva(matricula).subscribe(
+      (response) => {
+        console.log('Estudiante dado de baja definitivamente:', response);
+        this.isError = false;
+        this.notificacionService.showNotification('El estudiante ha sido dado de baja definitivamente.');
+        if (this.selectedStudent && this.selectedStudent.Matricula === matricula) {
+          this.selectedStudent = null;
+        }
+        this.obtenerEstudiantes(); // Actualizar lista
+        this.cerrarBajaModal(); // Cerrar modal después de actualizar
+      },
+      (error) => {
+        this.isError = true;
+        this.notificacionService.showNotification('Error al intentar dar de baja al estudiante.');
+      }
+    );
+  }
+  
+
+  isBajaModalOpen: boolean = false;
+
+abrirBajaModal(): void {
+  this.isBajaModalOpen = true;
+}
+
+cerrarBajaModal(): void {
+  this.isBajaModalOpen = false;
+}
+
+confirmarBajaTemporal(): void {
+  if (this.selectedStudent) {
+    this.bajaTemporal(this.selectedStudent.Matricula);
+  } else {
+    alert('No se ha seleccionado un estudiante.');
+  }
+}
+
+confirmarBajaDefinitiva(): void {
+  if (this.selectedStudent) {
+    this.bajaDefinitiva(this.selectedStudent.Matricula);
+  } else {
+    alert('No se ha seleccionado un estudiante.');
+  }
+}
+
 }

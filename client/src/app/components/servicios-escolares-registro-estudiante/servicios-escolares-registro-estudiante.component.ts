@@ -102,6 +102,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
   catalogoCarreras: any[] = [];
   especialidadesDisponibles: string[] = [];
   catalogoCiudades: any[] = [];
+  catalogoEspecialidadesBachillerato: any[] = [];
   selectedFile: File | null = null;
   errorMensaje: { [key: string]: string } = {};
   notificacionMensaje: string | null = null;
@@ -115,6 +116,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
   ngOnInit() {
     this.obtenerCatalogoCarreras();
     this.obtenerCatalogoCiudades();
+    this.obtenerCatalogoEspecialidadesBachillerato();
     const currentYear = new Date().getFullYear();
     this.formData.Anio = currentYear;
     const currentMonth = new Date().getMonth() + 1; 
@@ -163,6 +165,17 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
     this.estudianteService.obtenerCatalogoCarreras().subscribe(
       (data) => {
         this.catalogoCarreras = data;
+      },
+      (error) => {
+        console.error('Error al cargar catálogo:', error);
+      }
+    );
+  }
+
+  obtenerCatalogoEspecialidadesBachillerato() {
+    this.estudianteService.obtenerCatalogoEspecialidadesBachillerato().subscribe(
+      (data) => {
+        this.catalogoEspecialidadesBachillerato = data;
       },
       (error) => {
         console.error('Error al cargar catálogo:', error);

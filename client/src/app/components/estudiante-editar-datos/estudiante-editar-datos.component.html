@@ -26,16 +26,14 @@
 
         <div class="form-group">
           <label for="ciudad">Ciudad</label>
-          <input
-            type="text"
-            id="ciudad"
-            [(ngModel)]="estudiante.Domicilio.Ciudad"
-            name="ciudad"
-            placeholder="Ingrese ciudad"
-            required
-          />
-          <div class="error-message" *ngIf="errorMensaje['ciudad']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ciudad'] }}
+          <select id="ciudad" name="Ciudad" [(ngModel)]="estudiante.Domicilio.Ciudad" required #ciudad="ngModel" >
+            <option value="">Seleccione...</option>
+            <option *ngFor="let ciudad of ciudades" [value]="ciudad.Ciudad">
+              {{ ciudad.Ciudad }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="errorMensaje['Ciudad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
           </div>
         </div>
       </div>
@@ -142,16 +140,14 @@
 
         <div class="form-group">
           <label for="ciudadTutor">Ciudad</label>
-          <input
-            type="text"
-            id="ciudadTutor"
-            [(ngModel)]="estudiante.Tutor.Domicilio.Ciudad"
-            name="ciudadTutor"
-            placeholder="Ingrese ciudad"
-            required
-          />
-          <div class="error-message" *ngIf="errorMensaje['ciudadTutor']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['ciudadTutor'] }}
+          <select id="ciudadciudadTutor" name="CiudadTutor" [(ngModel)]="estudiante.Tutor.Domicilio.Ciudad" required #ciudad="ngModel" >
+            <option value="">Seleccione...</option>
+            <option *ngFor="let ciudad of ciudades" [value]="ciudad.Ciudad">
+              {{ ciudad.Ciudad }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="errorMensaje['Ciudad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
           </div>
         </div>
       </div>
@@ -216,6 +212,7 @@
         </div>
       </div>
 
+
       <div class="form-row">
         <div class="form-group">
           <label for="telefonoTutor">Teléfono</label>
@@ -231,6 +228,38 @@
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefonoTutor'] }}
           </div>
         </div>
+
+
+        <div class="form-group">
+          <label>Correo Electronico del Tutor</label>
+          <div *ngIf="estudiante.Tutor.CorreosElectronicos.length === 0">
+            No hay correos registrados.
+          </div>
+          <div *ngFor="let correoT of estudiante.Tutor.CorreosElectronicos; let i = index; trackBy: trackByCorreoTutorId">
+            <label for="correo{{correoT.id}}">Correo Electronico {{ i + 1 }}</label>
+            <div class="input-dynamic">
+              <input
+                type="text"
+                class="camp-input"
+                [(ngModel)]="correoT.correoT"
+                name="CorreoT{{correoT.id}}"
+                id="correoT{{correoT.id}}"
+                required
+              />
+              <button type="button" (click)="eliminarCorreoTutor(i)" class="animated-button">
+                <span><i class="fa fa-trash"></i></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="errorMensaje['CorreoT']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CorreoT'] }}
+          </div>
+          <button type="button" (click)="agregarCorreoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus-circle"></i></span>
+            <span></span>
+          </button>
+        </div>        
       </div>
 
       <div class="form-row">

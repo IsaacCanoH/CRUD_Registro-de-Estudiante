@@ -68,6 +68,18 @@ export class EstudianteService {
     return this.http.get<any[]>(`${this.apiUrl}/catalogoCiudades`);
   }  
 
+  obtenerCatalogoEspecialidadesBachillerato(): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/catalogoEspecialidadBachillerato`);
+  }
+
+  bajaTemporal(matricula: string) {
+    return this.http.patch(`${this.apiUrl}/bajaTemporal/${matricula}`, null);
+  }  
+
+  bajaDefinitiva(matricula: string) {
+    return this.http.delete(`${this.apiUrl}/deleteEstudiante/${matricula}`);
+  }
+
   // estudiante.service.ts
 subirEstudiantesExcel(file: File): Observable<any> {
   const formData = new FormData();
