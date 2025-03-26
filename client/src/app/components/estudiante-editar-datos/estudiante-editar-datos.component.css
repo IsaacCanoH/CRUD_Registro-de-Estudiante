@@ -168,6 +168,12 @@
   opacity: 1;
 }
 
+.narrow-button {
+  font-size: 14px;
+  max-width: 90px; 
+  margin-top: 10px;
+}
+
 .notification {
   position: fixed;
   top: 100px;

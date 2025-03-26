@@ -58,16 +58,42 @@ export class EstudianteEditarDatosComponent implements OnInit {
     this.estudianteService.buscarPorMatricula(this.matricula).subscribe(
       (data) => {
         if (data && data._id) { 
-          this.estudiante = {
-            ...data,
-            CorreosElectronicos: data.CorreosElectronicos || [],
-            Telefonos: data.Telefonos || [],
-            Tutor: {
-              ...data.Tutor,
-              CorreosElectronicos: data.Tutor.CorreosElectronicos || [],
-              Telefonos: data.Tutor.Telefonos || [],
-            }
-          };
+          this.estudiante = data;
+  
+          // Normalizar teléfonos del estudiante
+          if (Array.isArray(this.estudiante.Telefonos)) {
+            this.estudiante.Telefonos = this.estudiante.Telefonos.map((tel, index) =>
+              typeof tel === 'string' ? { id: index + 1, numero: tel } : tel?.numero ? tel : { id: index + 1, numero: '' }
+            );
+          }
+  
+          // Normalizar correos electrónicos del estudiante
+          if (Array.isArray(this.estudiante.CorreosElectronicos)) {
+            this.estudiante.CorreosElectronicos = this.estudiante.CorreosElectronicos.map((correo, index) =>
+              typeof correo === 'string' ? { id: index + 1, correo: correo } : correo?.correo ? correo : { id: index + 1, correo: '' }
+            );
+          } else {
+            this.estudiante.CorreosElectronicos = [{ id: 1, correo: '' }];
+          }
+  
+          // Normalizar teléfonos del tutor
+          if (Array.isArray(this.estudiante.Tutor.Telefonos)) {
+            this.estudiante.Tutor.Telefonos = this.estudiante.Tutor.Telefonos.map((tel, index) =>
+              typeof tel === 'string' ? { id: index + 1, numeroT: tel } : tel?.numeroT ? tel : { id: index + 1, numeroT: '' }
+            );
+          } else {
+            this.estudiante.Tutor.Telefonos = [{ id: 1, numeroT: '' }];
+          }
+  
+          // Normalizar correos electrónicos del tutor
+          if (Array.isArray(this.estudiante.Tutor.CorreosElectronicos)) {
+            this.estudiante.Tutor.CorreosElectronicos = this.estudiante.Tutor.CorreosElectronicos.map((correo, index) =>
+              typeof correo === 'string' ? { id: index + 1, correoT: correo } : correo?.correoT ? correo : { id: index + 1, correoT: '' }
+            );
+          } else {
+            this.estudiante.Tutor.CorreosElectronicos = [{ id: 1, correoT: '' }];
+          }
+  
         } else {
           console.error('No se encontró el estudiante o la respuesta no es válida:', data);
         }
@@ -77,19 +103,30 @@ export class EstudianteEditarDatosComponent implements OnInit {
       }
     );
   }
+  
 
   onFileSelected(event: any) {
     this.foto = event.target.files[0]; 
   }
 
   actualizarEstudiante() {
-    if(this.validarFormulario()) {
-    this.estudianteService
-      .actualizarEstudiante(this.matricula, this.estudiante, this.foto)
-      .subscribe(
+    if (this.validarFormulario()) {
+      // Transformar los arrays de objetos en arrays de strings
+      const estudianteActualizado = {
+        ...this.estudiante,
+        Telefonos: this.estudiante.Telefonos.map(tel => tel.numero), 
+        CorreosElectronicos: this.estudiante.CorreosElectronicos.map(correo => correo.correo),
+        Tutor: {
+          ...this.estudiante.Tutor,
+          Telefonos: this.estudiante.Tutor.Telefonos.map(tel => tel.numeroT),
+          CorreosElectronicos: this.estudiante.Tutor.CorreosElectronicos.map(correo => correo.correoT)
+        }
+      };
+  
+      this.estudianteService.actualizarEstudiante(this.matricula, estudianteActualizado, this.foto).subscribe(
         (response) => {
           console.log('Estudiante actualizado:', response);
-          this.notificacionService.showNotification('Datos actualizados correctamente'); 
+          this.notificacionService.showNotification('Datos actualizados correctamente');
           this.router.navigate(['/ed']);
         },
         (error) => {
@@ -98,6 +135,8 @@ export class EstudianteEditarDatosComponent implements OnInit {
       );
     }
   }
+  
+  
  
   cancelarEdicion(){
     this.router.navigate(['/ed']);

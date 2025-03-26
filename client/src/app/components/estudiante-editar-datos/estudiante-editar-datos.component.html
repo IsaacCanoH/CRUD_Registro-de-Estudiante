@@ -83,93 +83,58 @@
         </div>
 
         <div class="form-group">
-
-          <label>Correos Electrónicos</label>
-      
-          <div *ngFor="let correo of estudiante.CorreosElectronicos; let i = index; trackBy: trackByCorreoId">
-      
-            <label for="correo{{correo.id}}">Correo Electrónico {{ i + 1 }}</label>
-      
+          <label for="correoElectronico">Correos Electrónicos</label>
+          <div *ngFor="let correo of estudiante.CorreosElectronicos; let i = index">
             <input
-      
               type="email"
-      
+              id="correoElectronico{{i}}"
               [(ngModel)]="correo.correo"
-      
-              name="correo{{correo.id}}"
-      
-              id="correo{{correo.id}}"
-      
+              name="correoElectronico{{i}}"
+              placeholder="Ingrese correo electrónico"
               required
-      
             />
-      
-            <button type="button" (click)="eliminarCorreo(i)" class="animated-button">
-      
+            <div class="error-message" *ngIf="errorMensaje['correoElectronico']">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronico'] }}
+            </div>
+            <button type="button" (click)="eliminarCorreo(i)" *ngIf="estudiante.CorreosElectronicos.length > 1" class="animated-button">
               <span><i class="fa fa-trash"></i></span>
-      
               <span></span>
-      
             </button>
-      
           </div>
-      
           <button type="button" (click)="agregarCorreo()" class="animated-button narrow-button">
-      
-            <span><i class="fa fa-plus-circle"></i></span>
-      
+            <span><i class="fa fa-plus"></i></span>
             <span></span>
-      
           </button>
-      
-        
-      
-      </div>
-      
+        </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-
-          <label>Teléfonos</label>
-      
-          <div *ngFor="let telefono of estudiante.Telefonos; let i = index; trackBy: trackByTelefonoId">
-      
-            <label for="telefono{{telefono.id}}">Teléfono {{ i + 1 }}</label>
-      
+          <label for="telefono">Teléfonos</label>
+          <div *ngFor="let telefono of estudiante.Telefonos; let i = index">
             <input
-      
               type="tel"
-      
+              id="telefono{{i}}"
               [(ngModel)]="telefono.numero"
-      
-              name="telefono{{telefono.id}}"
-      
-              id="telefono{{telefono.id}}"
-      
+              name="telefono{{i}}"
+              placeholder="Ingrese teléfono"
               required
-      
             />
-      
-            <button type="button" (click)="eliminarTelefono(i)" class="animated-button">
-      
+            <div class="error-message" *ngIf="errorMensaje['telefono']">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefono'] }}
+            </div>
+            <button type="button" (click)="eliminarTelefono(i)" *ngIf="estudiante.Telefonos.length > 1" class="animated-button">
               <span><i class="fa fa-trash"></i></span>
-      
               <span></span>
-      
             </button>
-      
           </div>
-      
           <button type="button" (click)="agregarTelefono()" class="animated-button narrow-button">
-      
-            <span><i class="fa fa-plus-circle"></i></span>
-      
+            <span><i class="fa fa-plus"></i></span>
             <span></span>
-      
           </button>
-      
+          
         </div>
+        
 
         <div class="form-group">
           <label for="foto">Foto</label>
@@ -254,69 +219,57 @@
         </div>
 
         <div class="form-group">
-          <label for="correoElectronicoTutor">Correo Electrónico</label>
-          <input
-            type="email"
-            id="correoElectronicoTutor"
-            [(ngModel)]="estudiante.Tutor.CorreosElectronicos[0]"
-            name="correoElectronicoTutor"
-            placeholder="Ingrese correo electrónico"
-            required
-          />
-          <div class="error-message" *ngIf="errorMensaje['correoElectronicoTutor']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronicoTutor'] }}
+          <label for="correoElectronicoTutor">Correos Electrónicos del Tutor</label>
+          <div *ngFor="let correo of estudiante.Tutor.CorreosElectronicos; let i = index">
+            <input
+              type="email"
+              id="correoElectronicoTutor{{i}}"
+              [(ngModel)]="correo.correoT"
+              name="correoElectronicoTutor{{i}}"
+              placeholder="Ingrese correo electrónico"
+              required
+            />
+            <div class="error-message" *ngIf="errorMensaje['correoElectronicoTutor']">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronicoTutor'] }}
+            </div>
+            <button type="button" (click)="eliminarCorreoTutor(i)" *ngIf="estudiante.Tutor.CorreosElectronicos.length > 1" class="animated-button">
+              <span><i class="fa fa-trash"></i></span>
+              <span></span>
+            </button>
           </div>
+          <button type="button" (click)="agregarCorreoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus"></i></span>
+            <span></span>
+          </button>
         </div>
       </div>
 
 
       <div class="form-row">
         <div class="form-group">
-          <label for="telefonoTutor">Teléfono</label>
-          <input
-            type="tel"
-            id="telefonoTutor"
-            [(ngModel)]="estudiante.Tutor.Telefonos[0]"
-            name="telefonoTutor"
-            placeholder="Ingrese teléfono"
-            required
-          />
-          <div class="error-message" *ngIf="errorMensaje['telefonoTutor']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefonoTutor'] }}
-          </div>
-        </div>
-
-
-        <div class="form-group">
-          <label>Correo Electronico del Tutor</label>
-          <div *ngIf="estudiante.Tutor.CorreosElectronicos.length === 0">
-            No hay correos registrados.
-          </div>
-          <div *ngFor="let correoT of estudiante.Tutor.CorreosElectronicos; let i = index; trackBy: trackByCorreoTutorId">
-            <label for="correo{{correoT.id}}">Correo Electronico {{ i + 1 }}</label>
-            <div class="input-dynamic">
-              <input
-                type="text"
-                class="camp-input"
-                [(ngModel)]="correoT.correoT"
-                name="CorreoT{{correoT.id}}"
-                id="correoT{{correoT.id}}"
-                required
-              />
-              <button type="button" (click)="eliminarCorreoTutor(i)" class="animated-button">
-                <span><i class="fa fa-trash"></i></span>
-                <span></span>
-              </button>
+          <label for="telefonoTutor">Teléfonos del Tutor</label>
+          <div *ngFor="let telefono of estudiante.Tutor.Telefonos; let i = index">
+            <input
+              type="tel"
+              id="telefonoTutor{{i}}"
+              [(ngModel)]="telefono.numeroT"
+              name="telefonoTutor{{i}}"
+              placeholder="Ingrese teléfono"
+              required
+            />
+            <div class="error-message" *ngIf="errorMensaje['telefonoTutor']">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefonoTutor'] }}
             </div>
+            <button type="button" (click)="eliminarTelefonoTutor(i)" *ngIf="estudiante.Tutor.Telefonos.length > 1" class="animated-button">
+              <span><i class="fa fa-trash"></i></span>
+              <span></span>
+            </button>
           </div>
-          <div class="error-message" *ngIf="errorMensaje['CorreoT']">
-            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CorreoT'] }}
-          </div>
-          <button type="button" (click)="agregarCorreoTutor()" class="animated-button narrow-button">
-            <span><i class="fa fa-plus-circle"></i></span>
+          <button type="button" (click)="agregarTelefonoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus"></i></span>
             <span></span>
           </button>
-        </div>        
+        </div>                
       </div>
 
       <div class="form-row">
