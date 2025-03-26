@@ -1,283 +1,292 @@
 <div class="container">
-    <div class="header">
-      <h1>Editar Datos</h1>
-      <p>Complete el formulario para editar los datos</p>
-    </div>
-  
-    <div class="form-container">
-      <form id="registro-form" (ngSubmit)="actualizarEstudiante()">
-        <!-- Información Personal -->
-        <h2>Información Personal</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="codigoPostal">Código Postal</label>
-            <input
-              type="text"
-              id="codigoPostal"
-              [(ngModel)]="estudiante.Domicilio.CodigoPostal"
-              name="codigoPostal"
-              placeholder="Ingrese código postal"
-              required 
-            />
-            <div class="error-message" *ngIf="errorMensaje['codigoPostal']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostal'] }}
-            </div>
-          </div>
-  
-          <div class="form-group">
-            <label for="ciudad">Ciudad</label>
-            <select id="ciudad" name="Ciudad" [(ngModel)]="estudiante.Domicilio.Ciudad" required #ciudad="ngModel" >
-              <option value="">Seleccione...</option>
-              <option *ngFor="let ciudad of ciudades" [value]="ciudad.Ciudad">
-                {{ ciudad.Ciudad }}
-              </option>
-            </select>
-            <div class="error-message" *ngIf="errorMensaje['Ciudad']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
-            </div>
+  <div class="header">
+    <h1>Editar Datos</h1>
+    <p>Complete el formulario para editar los datos</p>
+  </div>
+
+  <div class="form-container">
+    <form id="registro-form" (ngSubmit)="actualizarEstudiante()">
+      <!-- Información Personal -->
+      <h2>Información Personal</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="codigoPostal">Código Postal</label>
+          <input
+            type="text"
+            id="codigoPostal"
+            [(ngModel)]="estudiante.Domicilio.CodigoPostal"
+            name="codigoPostal"
+            placeholder="Ingrese código postal"
+            required 
+          />
+          <div class="error-message" *ngIf="errorMensaje['codigoPostal']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostal'] }}
           </div>
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="colonia">Colonia</label>
-            <input
-              type="text"
-              id="colonia"
-              [(ngModel)]="estudiante.Domicilio.Colonia"
-              name="colonia"
-              placeholder="Ingrese colonia"
-              required
-            />
-            <div class="error-message" *ngIf="errorMensaje['colonia']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['colonia'] }}
-            </div>
-          </div>
-  
-          <div class="form-group">
-            <label for="numeroExterior">Número Exterior</label>
-            <input
-              type="text"
-              id="numeroExterior"
-              [(ngModel)]="estudiante.Domicilio.NumeroExterior"
-              name="numeroExterior"
-              placeholder="Ingrese número exterior"
-              required
-            />
-            <div class="error-message" *ngIf="errorMensaje['numeroExterior']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExterior']}}
-            </div>
+
+        <div class="form-group">
+          <label for="ciudad">Ciudad</label>
+          <select id="ciudad" name="Ciudad" [(ngModel)]="estudiante.Domicilio.Ciudad" required #ciudad="ngModel" >
+            <option value="">Seleccione...</option>
+            <option *ngFor="let ciudad of ciudades" [value]="ciudad.Ciudad">
+              {{ ciudad.Ciudad }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="errorMensaje['Ciudad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
           </div>
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="numeroInterior">Número Interior</label>
-            <input
-              type="text"
-              id="numeroInterior"
-              [(ngModel)]="estudiante.Domicilio.NumeroInterior"
-              name="numeroInterior"
-              placeholder="Ingrese número interior"
-            />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="colonia">Colonia</label>
+          <input
+            type="text"
+            id="colonia"
+            [(ngModel)]="estudiante.Domicilio.Colonia"
+            name="colonia"
+            placeholder="Ingrese colonia"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['colonia']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['colonia'] }}
           </div>
-  
-          <div class="form-group">
-            <label for="correoElectronico">Correo Electrónico</label>
+        </div>
+
+        <div class="form-group">
+          <label for="numeroExterior">Número Exterior</label>
+          <input
+            type="text"
+            id="numeroExterior"
+            [(ngModel)]="estudiante.Domicilio.NumeroExterior"
+            name="numeroExterior"
+            placeholder="Ingrese número exterior"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['numeroExterior']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExterior']}}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="numeroInterior">Número Interior</label>
+          <input
+            type="text"
+            id="numeroInterior"
+            [(ngModel)]="estudiante.Domicilio.NumeroInterior"
+            name="numeroInterior"
+            placeholder="Ingrese número interior"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="correoElectronico">Correos Electrónicos</label>
+          <div *ngFor="let correo of estudiante.CorreosElectronicos; let i = index">
             <input
               type="email"
-              id="correoElectronico"
-              [(ngModel)]="estudiante.CorreosElectronicos[0]"
-              name="correoElectronico"
+              id="correoElectronico{{i}}"
+              [(ngModel)]="correo.correo"
+              name="correoElectronico{{i}}"
               placeholder="Ingrese correo electrónico"
               required
             />
             <div class="error-message" *ngIf="errorMensaje['correoElectronico']">
               <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronico'] }}
             </div>
+            <button type="button" (click)="eliminarCorreo(i)" *ngIf="estudiante.CorreosElectronicos.length > 1" class="animated-button">
+              <span><i class="fa fa-trash"></i></span>
+              <span></span>
+            </button>
           </div>
+          <button type="button" (click)="agregarCorreo()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus"></i></span>
+            <span></span>
+          </button>
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="telefono">Teléfono</label>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="telefono">Teléfonos</label>
+          <div *ngFor="let telefono of estudiante.Telefonos; let i = index">
             <input
               type="tel"
-              id="telefono"
-              [(ngModel)]="estudiante.Telefonos[0]"
-              name="telefono"
+              id="telefono{{i}}"
+              [(ngModel)]="telefono.numero"
+              name="telefono{{i}}"
               placeholder="Ingrese teléfono"
               required
             />
             <div class="error-message" *ngIf="errorMensaje['telefono']">
               <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefono'] }}
             </div>
+            <button type="button" (click)="eliminarTelefono(i)" *ngIf="estudiante.Telefonos.length > 1" class="animated-button">
+              <span><i class="fa fa-trash"></i></span>
+              <span></span>
+            </button>
           </div>
-  
-          <div class="form-group">
-            <label for="foto">Foto</label>
-            <input type="file" id="foto" accept="image/*" (change)="onFileSelected($event)" /> <!-- Vincula el evento -->
+          <button type="button" (click)="agregarTelefono()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus"></i></span>
+            <span></span>
+          </button>
+          
+        </div>
+        
+
+        <div class="form-group">
+          <label for="foto">Foto</label>
+          <input type="file" id="foto" accept="image/*" (change)="onFileSelected($event)" /> <!-- Vincula el evento -->
+        </div>
+      </div>
+
+      <!-- Información Tutor -->
+      <h2>Información Tutor</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="codigoPostalTutor">Código Postal</label>
+          <input
+            type="text"
+            id="codigoPostalTutor"
+            [(ngModel)]="estudiante.Tutor.Domicilio.CodigoPostal"
+            name="codigoPostalTutor"
+            placeholder="Ingrese código postal"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['codigoPostalTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostalTutor'] }}
           </div>
         </div>
-  
-        <!-- Información Tutor -->
-        <h2>Información Tutor</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="codigoPostalTutor">Código Postal</label>
-            <input
-              type="text"
-              id="codigoPostalTutor"
-              [(ngModel)]="estudiante.Tutor.Domicilio.CodigoPostal"
-              name="codigoPostalTutor"
-              placeholder="Ingrese código postal"
-              required
-            />
-            <div class="error-message" *ngIf="errorMensaje['codigoPostalTutor']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['codigoPostalTutor'] }}
-            </div>
-          </div>
-  
-          <div class="form-group">
-            <label for="ciudadTutor">Ciudad</label>
-            <select id="ciudadciudadTutor" name="CiudadTutor" [(ngModel)]="estudiante.Tutor.Domicilio.Ciudad" required #ciudad="ngModel" >
-              <option value="">Seleccione...</option>
-              <option *ngFor="let ciudad of ciudades" [value]="ciudad.Ciudad">
-                {{ ciudad.Ciudad }}
-              </option>
-            </select>
-            <div class="error-message" *ngIf="errorMensaje['Ciudad']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
-            </div>
+
+        <div class="form-group">
+          <label for="ciudadTutor">Ciudad</label>
+          <select id="ciudadciudadTutor" name="CiudadTutor" [(ngModel)]="estudiante.Tutor.Domicilio.Ciudad" required #ciudad="ngModel" >
+            <option value="">Seleccione...</option>
+            <option *ngFor="let ciudad of ciudades" [value]="ciudad.Ciudad">
+              {{ ciudad.Ciudad }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="errorMensaje['Ciudad']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['Ciudad'] }}
           </div>
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="coloniaTutor">Colonia</label>
-            <input
-              type="text"
-              id="coloniaTutor"
-              [(ngModel)]="estudiante.Tutor.Domicilio.Colonia"
-              name="coloniaTutor"
-              placeholder="Ingrese colonia"
-              required
-            />
-            <div class="error-message" *ngIf="errorMensaje['coloniaTutor']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['coloniaTutor'] }}
-            </div>
-          </div>
-  
-          <div class="form-group">
-            <label for="numeroExteriorTutor">Número Exterior</label>
-            <input
-              type="text"
-              id="numeroExteriorTutor"
-              [(ngModel)]="estudiante.Tutor.Domicilio.NumeroExterior"
-              name="numeroExteriorTutor"
-              placeholder="Ingrese número exterior"
-              required
-            />
-            <div class="error-message" *ngIf="errorMensaje['numeroExteriorTutor']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExteriorTutor'] }}
-            </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coloniaTutor">Colonia</label>
+          <input
+            type="text"
+            id="coloniaTutor"
+            [(ngModel)]="estudiante.Tutor.Domicilio.Colonia"
+            name="coloniaTutor"
+            placeholder="Ingrese colonia"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['coloniaTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['coloniaTutor'] }}
           </div>
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="numeroInteriorTutor">Número Interior</label>
-            <input
-              type="text"
-              id="numeroInteriorTutor"
-              [(ngModel)]="estudiante.Tutor.Domicilio.NumeroInterior"
-              name="numeroInteriorTutor"
-              placeholder="Ingrese número interior"
-            />
+
+        <div class="form-group">
+          <label for="numeroExteriorTutor">Número Exterior</label>
+          <input
+            type="text"
+            id="numeroExteriorTutor"
+            [(ngModel)]="estudiante.Tutor.Domicilio.NumeroExterior"
+            name="numeroExteriorTutor"
+            placeholder="Ingrese número exterior"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['numeroExteriorTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExteriorTutor'] }}
           </div>
-  
-          <div class="form-group">
-            <label for="correoElectronicoTutor">Correo Electrónico</label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="numeroInteriorTutor">Número Interior</label>
+          <input
+            type="text"
+            id="numeroInteriorTutor"
+            [(ngModel)]="estudiante.Tutor.Domicilio.NumeroInterior"
+            name="numeroInteriorTutor"
+            placeholder="Ingrese número interior"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="correoElectronicoTutor">Correos Electrónicos del Tutor</label>
+          <div *ngFor="let correo of estudiante.Tutor.CorreosElectronicos; let i = index">
             <input
               type="email"
-              id="correoElectronicoTutor"
-              [(ngModel)]="estudiante.Tutor.CorreosElectronicos[0]"
-              name="correoElectronicoTutor"
+              id="correoElectronicoTutor{{i}}"
+              [(ngModel)]="correo.correoT"
+              name="correoElectronicoTutor{{i}}"
               placeholder="Ingrese correo electrónico"
               required
             />
             <div class="error-message" *ngIf="errorMensaje['correoElectronicoTutor']">
               <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['correoElectronicoTutor'] }}
             </div>
+            <button type="button" (click)="eliminarCorreoTutor(i)" *ngIf="estudiante.Tutor.CorreosElectronicos.length > 1" class="animated-button">
+              <span><i class="fa fa-trash"></i></span>
+              <span></span>
+            </button>
           </div>
+          <button type="button" (click)="agregarCorreoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus"></i></span>
+            <span></span>
+          </button>
         </div>
-  
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="telefonoTutor">Teléfono</label>
+      </div>
+
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="telefonoTutor">Teléfonos del Tutor</label>
+          <div *ngFor="let telefono of estudiante.Tutor.Telefonos; let i = index">
             <input
               type="tel"
-              id="telefonoTutor"
-              [(ngModel)]="estudiante.Tutor.Telefonos[0]"
-              name="telefonoTutor"
+              id="telefonoTutor{{i}}"
+              [(ngModel)]="telefono.numeroT"
+              name="telefonoTutor{{i}}"
               placeholder="Ingrese teléfono"
               required
             />
             <div class="error-message" *ngIf="errorMensaje['telefonoTutor']">
               <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['telefonoTutor'] }}
             </div>
-          </div>
-  
-  
-          <div class="form-group">
-            <label>Correo Electronico del Tutor</label>
-            <div *ngIf="estudiante.Tutor.CorreosElectronicos.length === 0">
-              No hay correos registrados.
-            </div>
-            <div *ngFor="let correoT of estudiante.Tutor.CorreosElectronicos; let i = index; trackBy: trackByCorreoTutorId">
-              <label for="correo{{correoT.id}}">Correo Electronico {{ i + 1 }}</label>
-              <div class="input-dynamic">
-                <input
-                  type="text"
-                  class="camp-input"
-                  [(ngModel)]="correoT.correoT"
-                  name="CorreoT{{correoT.id}}"
-                  id="correoT{{correoT.id}}"
-                  required
-                />
-                <button type="button" (click)="eliminarCorreoTutor(i)" class="animated-button">
-                  <span><i class="fa fa-trash"></i></span>
-                  <span></span>
-                </button>
-              </div>
-            </div>
-            <div class="error-message" *ngIf="errorMensaje['CorreoT']">
-              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['CorreoT'] }}
-            </div>
-            <button type="button" (click)="agregarCorreoTutor()" class="animated-button narrow-button">
-              <span><i class="fa fa-plus-circle"></i></span>
+            <button type="button" (click)="eliminarTelefonoTutor(i)" *ngIf="estudiante.Tutor.Telefonos.length > 1" class="animated-button">
+              <span><i class="fa fa-trash"></i></span>
               <span></span>
             </button>
-          </div>        
-        </div>
-  
-        <div class="form-row">
-        <div class="form-buttons">
-          <button type="submit" class="animated-button" (click)="cancelarEdicion()">
-            <span>Cancerlar</span>
+          </div>
+          <button type="button" (click)="agregarTelefonoTutor()" class="animated-button narrow-button">
+            <span><i class="fa fa-plus"></i></span>
             <span></span>
           </button>
-        </div>
-  
-        <div class="form-buttons">
-          <button type="submit" class="animated-button">
-            <span>Actualizar Datos</span>
-            <span></span>
-          </button>
-        </div>
+        </div>                
       </div>
-      </form>
+
+      <div class="form-row">
+      <div class="form-buttons">
+        <button type="submit" class="animated-button" (click)="cancelarEdicion()">
+          <span>Cancerlar</span>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="animated-button">
+          <span>Actualizar Datos</span>
+          <span></span>
+        </button>
+      </div>
     </div>
+    </form>
   </div>
-  
+</div>
