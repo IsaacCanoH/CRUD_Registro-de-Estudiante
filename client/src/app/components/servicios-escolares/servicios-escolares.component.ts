@@ -20,10 +20,14 @@ export class ServiciosEscolaresComponent implements OnInit {
   estatus: string = '';
   carrera: string = '';
   especialidad: string = '';
+  semestre: number | null = null;
+  anio: number | null = null;
   estudiantesFiltrados: any[] = [];
   notificacionMensaje: string | null = null;
   isError: boolean = false;
   matricula: string = '';
+  catalogoCarreras: any[] = [];
+  especialidadesDisponibles: string[] = [];
 
   constructor(
     private estudianteService: EstudianteService, 
@@ -36,7 +40,7 @@ export class ServiciosEscolaresComponent implements OnInit {
       this.notificacionMensaje = mensaje;
     });
     this.obtenerEstudiantes();
-    
+    this.obtenerCatalogoCarreras();
   }
 
   busqueda(): void {
@@ -74,6 +78,28 @@ export class ServiciosEscolaresComponent implements OnInit {
     }
   }
 
+  obtenerCatalogoCarreras() {
+    this.estudianteService.obtenerCatalogoCarreras().subscribe(
+      (data) => {
+        this.catalogoCarreras = data;
+      },
+      (error) => {
+        console.error('Error al cargar catálogo:', error);
+      }
+    );
+  }
+
+  onCarreraChange() {
+    const carreraSeleccionada = this.catalogoCarreras.find(
+      (carrera) => carrera.NombreCarrera == this.carrera
+    );
+
+    if (carreraSeleccionada) {
+      this.especialidadesDisponibles = carreraSeleccionada.Especialidades;
+    } else {
+      this.especialidadesDisponibles = [];
+    }
+  }
 
   activaTab(tab: string): void {
     this.activeTab = tab;
@@ -138,6 +164,18 @@ export class ServiciosEscolaresComponent implements OnInit {
         estudiante.Especialidad.toLowerCase().includes(this.especialidad.toLowerCase())
       );
     }
+
+    if (this.semestre != null) {
+      estudiantesFiltrados = estudiantesFiltrados.filter(estudiante => 
+        estudiante.Semestre === this.semestre   
+      )
+    }
+
+    if (this.anio != null) {
+      estudiantesFiltrados = estudiantesFiltrados.filter(estudiante => 
+        estudiante.Anio === this.anio   
+      )
+    }
   
     this.estudiantesFiltrados = estudiantesFiltrados; 
     this.cerrarModal();
@@ -147,6 +185,8 @@ export class ServiciosEscolaresComponent implements OnInit {
     this.estatus = '';
     this.carrera = '';
     this.especialidad = '';
+    this.semestre = null;
+    this.anio = null;
     this.estudiantesFiltrados = [...this.estudiantes]; 
     this.cerrarModal();
   }
@@ -216,7 +256,6 @@ export class ServiciosEscolaresComponent implements OnInit {
     );
   }
   
-
   isBajaModalOpen: boolean = false;
 
 abrirBajaModal(): void {

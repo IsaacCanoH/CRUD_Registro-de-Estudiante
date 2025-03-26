@@ -204,15 +204,41 @@
           <div class="filter-form">
             <div class="form-group">
               <label for="filter1">Estatus</label>
-              <input type="text" id="filter1" [(ngModel)]="estatus" name="estatus" />
+              <select name="estatus" id="estatus" [(ngModel)]="estatus">
+                <option value="" disabled selected>Seleccione...</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="filter2">Carrera</label>
-              <input type="text" id="filter2" [(ngModel)]="carrera" name="carrera" />
-            </div>
+              <select id="carrera" name="carrera" [(ngModel)]="carrera" (change)="onCarreraChange()">
+                <option value="">Seleccione...</option>
+                <option *ngFor="let carrera of catalogoCarreras" [value]="carrera.NombreCarrera">
+                  {{ carrera.NombreCarrera }}
+                </option>
+              </select>
+            </div> 
             <div class="form-group">
               <label for="filter3">Especialidad</label>
-              <input type="text" id="filter3" [(ngModel)]="especialidad" name="especialidad" />
+              <select id="especialidad" name="especialidad" [(ngModel)]="especialidad">
+                <option value="">Seleccione...</option>
+                <option *ngFor="let especialidad of especialidadesDisponibles" [value]="especialidad">
+                  {{ especialidad }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="filter4">Semestre</label>
+              <select id="semestre" name="semestre" [(ngModel)]="semestre">
+                <option value="" disabled selected>Seleccione...</option>
+                <option [ngValue]="1">1</option>
+                <option [ngValue]="2">2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="filter5">Año</label>
+              <input type="number" id="filter5" [(ngModel)]="anio" name="anio" />
             </div>
           </div>
           <button type="submit">Aplicar Filtros</button>

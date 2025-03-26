@@ -60,6 +60,14 @@ export class EstudianteService {
     return this.http.get<any[]>(`${this.apiUrl}/getPorEspecialidad/${especialidad}`);
   }
 
+  filtroPorSemestre(semestre: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/getPorSemestre/${semestre}`);
+  }
+
+  filtroPorAnio(anio: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/getPorAnio/${anio}`);
+  }
+
   obtenerCatalogoCarreras(): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}/catalogoCarreras`);
   }  

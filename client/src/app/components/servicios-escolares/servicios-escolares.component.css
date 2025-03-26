@@ -389,6 +389,29 @@ th {
   font-size: 0.875rem;
 }
 
+:host select {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+:host input:focus,
+:host select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+:host input:focus,
+:host select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
 .cssbuttons-io-button-new {
   margin-bottom: 2rem;
   background: #a370f0;
