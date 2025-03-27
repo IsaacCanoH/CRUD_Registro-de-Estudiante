@@ -55,6 +55,23 @@
         </div>
 
         <div class="form-group">
+          <label for="calle">Calle</label>
+          <input
+            type="text"
+            id="calle"
+            [(ngModel)]="estudiante.Domicilio.Calle"
+            name="calle"
+            placeholder="Ingrese calle"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['calle']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['calle'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
           <label for="numeroExterior">Número Exterior</label>
           <input
             type="text"
@@ -68,9 +85,7 @@
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExterior']}}
           </div>
         </div>
-      </div>
-
-      <div class="form-row">
+    
         <div class="form-group">
           <label for="numeroInterior">Número Interior</label>
           <input
@@ -81,7 +96,9 @@
             placeholder="Ingrese número interior"
           />
         </div>
-
+      </div>
+    
+      <div class="form-row">
         <div class="form-group">
           <label for="correoElectronico">Correos Electrónicos</label>
           <div *ngFor="let correo of estudiante.CorreosElectronicos; let i = index">
@@ -106,10 +123,8 @@
             <span></span>
           </button>
         </div>
-      </div>
 
-      <div class="form-row">
-        <div class="form-group">
+        <div class="form-group">  
           <label for="telefono">Teléfonos</label>
           <div *ngFor="let telefono of estudiante.Telefonos; let i = index">
             <input
@@ -132,13 +147,84 @@
             <span><i class="fa fa-plus"></i></span>
             <span></span>
           </button>
-          
         </div>
-        
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            [(ngModel)]="estudiante.Nombre"
+            name="nombre"
+            placeholder="Ingrese nombre"
+            required
+            >
+            <div class="errorMensaje" *ngIf="errorMensaje['nombre']">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['nombre'] }}
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="apellidoPaterno">Apellido Paterno</label>
+          <input 
+            type="text"
+            id="apellidoPaterno"
+            [(ngModel)]="estudiante.ApellidoPaterno"
+            name="apellidoPaterno"
+            placeholder="Ingrese apellido paterno"
+            required
+          >
+          <div class="errorMensaje" *ngIf="errorMensaje['apellidoPaterno']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['apellidoPaterno'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="apellidoMaterno">Apellido Materno</label>
+          <input 
+            type="text"
+            id="apellidoMaterno"
+            [(ngModel)]="estudiante.ApellidoMaterno"
+            name="apellidoMaterno"
+            placeholder="Ingrese apellido materno"
+            required
+          >
+          <div class="errorMensaje" *ngIf="errorMensaje['apellidoMaterno']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['apellidoMaterno'] }}
+          </div>
+        </div>
 
         <div class="form-group">
           <label for="foto">Foto</label>
           <input type="file" id="foto" accept="image/*" (change)="onFileSelected($event)" /> <!-- Vincula el evento -->
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="carrera">Carrera</label>
+            <select id="carrera" name="carrera" [(ngModel)]="estudiante.NombreCarrera" (change)="onCarreraChange()">
+              <option value="">Seleccione...</option>
+              <option *ngFor="let carrera of catalogoCarreras" [value]="carrera.NombreCarrera">
+                {{ carrera.NombreCarrera }}
+              </option>
+            </select>
+          </div> 
+          
+          <div class="form-group">
+            <label for="especialidad">Especialidad</label>
+            <select id="especialidad" name="especialidad" [(ngModel)]="estudiante.Especialidad">
+              <option value="">Seleccione...</option>
+              <option *ngFor="let especialidad of especialidadesDisponibles" [value]="especialidad">
+                {{ especialidad }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -191,6 +277,23 @@
         </div>
 
         <div class="form-group">
+          <label for="calleTutor">Calle</label>
+          <input
+            type="text"
+            id="calleTutor"
+            [(ngModel)]="estudiante.Tutor.Domicilio.Calle"
+            name="calleTutor"
+            placeholder="Ingrese calle"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['calleTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['calleTutor'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
           <label for="numeroExteriorTutor">Número Exterior</label>
           <input
             type="text"
@@ -204,9 +307,7 @@
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExteriorTutor'] }}
           </div>
         </div>
-      </div>
 
-      <div class="form-row">
         <div class="form-group">
           <label for="numeroInteriorTutor">Número Interior</label>
           <input
@@ -217,7 +318,9 @@
             placeholder="Ingrese número interior"
           />
         </div>
+      </div>
 
+      <div class="form-row">
         <div class="form-group">
           <label for="correoElectronicoTutor">Correos Electrónicos del Tutor</label>
           <div *ngFor="let correo of estudiante.Tutor.CorreosElectronicos; let i = index">
@@ -242,10 +345,7 @@
             <span></span>
           </button>
         </div>
-      </div>
 
-
-      <div class="form-row">
         <div class="form-group">
           <label for="telefonoTutor">Teléfonos del Tutor</label>
           <div *ngFor="let telefono of estudiante.Tutor.Telefonos; let i = index">
@@ -269,7 +369,59 @@
             <span><i class="fa fa-plus"></i></span>
             <span></span>
           </button>
-        </div>                
+        </div>                  
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombreTutor">Nombre</label>
+          <input 
+            type="text" 
+            id="nombreTutor" 
+            [(ngModel)]="estudiante.Tutor.Nombre"
+            name="nombreTutor"
+            placeholder="Ingrese nombre"
+            required
+            >
+            <div class="errorMensaje" *ngIf="errorMensaje['nombreTutor']">
+              <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['nombreTutor'] }}
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="apellidoPaternoTutor">Apellido Paterno</label>
+          <input 
+            type="text"
+            id="apellidoPaternoTutor"
+            [(ngModel)]="estudiante.Tutor.ApellidoPaterno"
+            name="apellidoPaternoTutor"
+            placeholder="Ingrese apellido paterno"
+            required
+          >
+          <div class="errorMensaje" *ngIf="errorMensaje['apellidoPaternoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['apellidoPaternoTutor'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="apellidoMaternoTutor">Apellido Materno</label>
+          <input 
+            type="text"
+            id="apellidoMaternoTutor"
+            [(ngModel)]="estudiante.Tutor.ApellidoMaterno"
+            name="apellidoMaternoTutor"
+            placeholder="Ingrese apellido materno"
+            required
+          >
+          <div class="errorMensaje" *ngIf="errorMensaje['apellidoMaternoTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['apellidoMaternoTutor'] }}
+          </div>
+        </div>
+        <div class="form-group">
+          <!--Este estara basio para que no se vea alargado el "input" ya que lo toma como su hubiera dos elementos dentro del "form-row"-->
+        </div>
       </div>
 
       <div class="form-row">

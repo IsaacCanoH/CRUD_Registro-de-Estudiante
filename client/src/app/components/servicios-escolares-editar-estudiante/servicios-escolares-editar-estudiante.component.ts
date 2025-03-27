@@ -13,6 +13,9 @@ import { NotificacionService } from '../../services/notificacion.service';
 export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
   matricula: string = '';
   estudiante = {
+    Nombre: '',
+    ApellidoPaterno: '',
+    ApellidoMaterno: '',
     Domicilio: {
       CodigoPostal: '',
       Ciudad: '',
@@ -24,7 +27,12 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
     CorreosElectronicos: [{ id: 1, correo: '' }],
     Telefonos: [{ id: 1, numero: '' }],
     Foto: null, 
+    NombreCarrera: '',
+    Especialidad: '',
     Tutor: {
+      Nombre: '',
+      ApellidoPaterno: '',
+      ApellidoMaterno: '',
       Domicilio: {
         CodigoPostal: '',
         Ciudad: '',
@@ -40,6 +48,8 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
   foto: File | undefined;
   errorMensaje: { [key: string]: string } = {};
   ciudades: any[] = [];
+  catalogoCarreras: any[] = [];
+  especialidadesDisponibles: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -49,9 +59,10 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.matricula = this.route.snapshot.paramMap.get('matricula') || '';
-    this.obtenerEstudiante();
+    this.matricula = this.route.snapshot.paramMap.get('matricula') || ''; 
     this.cargarCiudades();
+    this.obtenerCatalogoCarreras();
+    this.obtenerEstudiante();
   }
 
   obtenerEstudiante() {
@@ -94,6 +105,7 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
             this.estudiante.Tutor.CorreosElectronicos = [{ id: 1, correoT: '' }];
           }
   
+          this.onCarreraChange();
         } else {
           console.error('No se encontró el estudiante o la respuesta no es válida:', data);
         }
@@ -123,6 +135,7 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
         }
       };
   
+
       this.estudianteService.actualizarEstudiante(this.matricula, estudianteActualizado, this.foto).subscribe(
         (response) => {
           console.log('Estudiante actualizado:', response);
@@ -136,10 +149,8 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
     }
   }
   
-  
- 
   cancelarEdicion(){
-    this.router.navigate(['/ed']);
+    this.router.navigate(['/se']);
   }
 
   validarFormulario(): boolean {
@@ -154,6 +165,9 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
     if(!this.estudiante.Domicilio.Colonia) {
       this.errorMensaje['colonia'] = 'Por favor, ingrese la colonia.'
     }
+    if(!this.estudiante.Domicilio.Calle) {
+      this.errorMensaje['calle'] = 'Por favor, ingrese la calle.'
+    }
     if(!this.estudiante.Domicilio.NumeroExterior) {
       this.errorMensaje['numeroExterior'] = 'Por favor, ingrese el número exterior.'
     }
@@ -162,6 +176,21 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
     }
     if(!this.estudiante.Telefonos[0]) {
       this.errorMensaje['telefono'] = 'Por favor, ingrese un teléfono.'
+    }
+    if(!this.estudiante.Nombre){
+      this.errorMensaje['nombre'] = 'Por favor, ingrese el nombre.'
+    }
+    if(!this.estudiante.ApellidoPaterno){
+      this.errorMensaje['apellidoPaterno'] = 'Por favor, ingrese el apellido paterno.'
+    }
+    if(!this.estudiante.ApellidoMaterno){
+      this.errorMensaje['apellidoMaterno'] = 'Por favor, ingrese el apellido materno.'
+    }
+    if(!this.estudiante.NombreCarrera){
+      this.errorMensaje['nombreCarrera'] = 'Por favor, ingrese una carrera.'
+    }
+    if(!this.estudiante.Especialidad){
+      this.errorMensaje['especilidad'] = 'Por favor, ingrese una especialidad.'
     }
     if(!this.estudiante.Tutor.Domicilio.CodigoPostal) {
       this.errorMensaje['codigoPostalTutor'] = 'Por favor, ingrese el código postal.'
@@ -172,6 +201,9 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
     if (!this.estudiante.Tutor.Domicilio.Colonia) {
       this.errorMensaje['coloniaTutor'] = 'Por favor, ingrese la colonia.'
     }
+    if (!this.estudiante.Tutor.Domicilio.Calle) {
+      this.errorMensaje['calleTutor'] = 'Por favor, ingrese la calle.'
+    }
     if (!this.estudiante.Tutor.Domicilio.NumeroExterior) {
       this.errorMensaje['numeroExteriorTutor'] = 'Por favor, ingrese el número exterior.'
     }
@@ -180,6 +212,15 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
     }
     if (!this.estudiante.Tutor.Telefonos[0]) {
       this.errorMensaje['telefonoTutor'] = 'Por favor, ingrese un teléfono.'
+    }
+    if(!this.estudiante.Tutor.Nombre){
+      this.errorMensaje['nombre'] = 'Por favor, ingrese el nombre.'
+    }
+    if(!this.estudiante.Tutor.ApellidoPaterno){
+      this.errorMensaje['apellidoPaterno'] = 'Por favor, ingrese el apellido paterno.'
+    }
+    if(!this.estudiante.Tutor.ApellidoMaterno){
+      this.errorMensaje['apellidoMaterno'] = 'Por favor, ingrese el apellido materno.'
     }
  
     return Object.keys(this.errorMensaje).length === 0;
@@ -194,6 +235,29 @@ export class ServiciosEscolaresEditarEstudianteComponent implements OnInit {
         console.log('Erroral obtener docentes', error);
       }
     )
+  }
+
+  obtenerCatalogoCarreras() {
+    this.estudianteService.obtenerCatalogoCarreras().subscribe(
+      (data) => {
+        this.catalogoCarreras = data;
+      },
+      (error) => {
+        console.error('Error al cargar catálogo:', error);
+      }
+    );
+  }
+
+  onCarreraChange() {
+    const carreraSeleccionada = this.catalogoCarreras.find(
+      (carrera) => carrera.NombreCarrera == this.estudiante.NombreCarrera
+    );
+
+    if (carreraSeleccionada) {
+      this.especialidadesDisponibles = carreraSeleccionada.Especialidades;
+    } else {
+      this.especialidadesDisponibles = [];
+    }
   }
 
   telefonoIdCounter = 2; // empezamos en 2 porque el primero ya es id 1
