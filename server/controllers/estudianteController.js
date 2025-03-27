@@ -680,3 +680,39 @@ exports.getContadorMatricula = async (req, res) => {
         res.status(500).json({ message: "Error al obtener el contador de matriculas", error: error.message });
     }
 }
+
+exports.reactivarEstudiante = async (req, res) => {
+    try {
+        const matricula = req.params;
+        const estudiante = await Estudiante.findOne( matricula );
+        if (!estudiante) return res.status(404).json({ message: "Estudiante no encontrado" });
+        
+
+        if(estudiante.Estatus == "Activo"){
+            return res.status(400).json({ message: "El estudiante ya esta activo."});
+        }
+        const estudianteActualizado = await Estudiante.findOneAndUpdate(
+            matricula,
+            { Estatus: "Activo"},
+            { new: true }
+        );
+        
+        res.status(200).json(estudianteActualizado);
+    } catch(error) {
+        return res.status(500).json({ message: "Error al reactivar al usuario", error: error.message });
+    }
+}
+
+exports.getEstatus = async (req, res) => {
+    try {
+        const matricula = req.params;
+
+        const estatus = await Estudiante.findOne( matricula, {_id:0,Estatus:1});
+        
+        console.log(estatus);
+        res.status(200).json(estatus);
+    } catch(error) {
+        return res.status(500).json({ message: "Error al reactivar al usuario", error: error.message });
+    }
+
+}

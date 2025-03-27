@@ -24,5 +24,7 @@ router.get("/catalogoEspecialidadBachillerato", estudianteController.getCatalogo
 router.get('/descargarPlantilla', estudianteController.descargarPlantillaExcel);
 router.get('/generarMatricula', estudianteController.generarMatricula);
 router.get('/getContadorMatricula', estudianteController.getContadorMatricula);
+router.patch('/reactivarEstudiante/:Matricula', estudianteController.reactivarEstudiante);
+router.get('/getEstatus/:Matricula', estudianteController.getEstatus);
 
 module.exports = router;

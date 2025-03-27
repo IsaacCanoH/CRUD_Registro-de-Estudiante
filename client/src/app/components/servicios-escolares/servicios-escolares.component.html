@@ -60,29 +60,55 @@
       </div>
     </div>
     <div class="action-buttons">
-      <button class="btn btn-outline" (click)="editarEstudiante()">
-        <i class="fas fa-edit"></i>
+      <button class="button button-reactivar" (click)="abrirReactivacionModal()">
+        <div class="button-wrapper">
+          <div class="text">Reactivar</div>
+          <span class="icon">
+            <i class="fa-solid fa-trash-arrow-up"></i>
+          </span>
+        </div>
       </button>
-      <button class="btn btn-danger" (click)="abrirBajaModal()">
-        <i class="fas fa-trash-alt"></i>
+      <button class="button button-editar" (click)="editarEstudiante()">
+        <div class="button-wrapper">
+          <div class="text">Editar</div>
+          <span class="icon">
+            <i class="fas fa-edit"></i>
+          </span>
+        </div>
+      </button>
+      <button class="button button-eliminar" (click)="abrirBajaModal()">
+        <div class="button-wrapper">
+          <div class="text">Eliminar</div>
+          <span class="icon">
+            <i class="fas fa-trash-alt"></i>
+          </span>
+        </div>        
       </button>
     </div>
   </div>
   <!-- Modal para seleccionar tipo de baja -->
 <div class="modal" *ngIf="isBajaModalOpen">
   <div class="modal-content">
-    <h3>Selecciona el tipo de baja</h3>
-    <p>¿Qué tipo de baja deseas aplicar al estudiante?</p>
+    <h3>Seleccione el tipo de baja</h3>
     <div class="action-buttons">
-      <button class="btn btn-warning" (click)="confirmarBajaTemporal()">Baja Temporal</button>
+      <button class="btn btn-success" (click)="confirmarBajaTemporal()">Baja Temporal</button>
       <button class="btn btn-danger" (click)="confirmarBajaDefinitiva()">Baja Definitiva</button>
     </div>
     <div class="action-buttons">
-      <button class="btn btn-outline" (click)="cerrarBajaModal()">Cancelar</button>
+      <button class="btn btn-cancel" (click)="cerrarBajaModal()">Cancelar</button>
     </div>
   </div>
 </div>
-
+<!--Modal para confirmar reactivacion de estudiante-->
+<div class="modal" *ngIf="isReactivacionModalOpen">
+  <div class="modal-content">
+    <p>¿Seguro que desea reactivar al estudiante?</p>
+    <div class="action-buttons">
+      <button class="btn btn-success" (click)="confirmarReactivacion()">Aceptar</button>
+      <button class="btn btn-cancel" (click)="cerrarReactivacionModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
 
   <div class="card-content">
     <div class="tabs">

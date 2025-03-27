@@ -3,6 +3,7 @@ import { EstudianteService } from '../../services/estudiante.service';
 import * as XLSX from 'xlsx';
 import { NotificacionService } from '../../services/notificacion.service';
 import { Router } from '@angular/router';
+import { response } from 'express';
 
 @Component({
   selector: 'app-servicios-escolares',
@@ -227,6 +228,7 @@ export class ServiciosEscolaresComponent implements OnInit {
           this.selectedStudent = null;
         }
         this.obtenerEstudiantes(); 
+        this.busqueda();
         this.cerrarBajaModal(); 
       },
       (error) => {
@@ -236,6 +238,42 @@ export class ServiciosEscolaresComponent implements OnInit {
       }
     );
   }
+
+  reactivarEstudiante(matricula: string) {
+    this.estudianteService.getEstatus(matricula).subscribe(
+      (estatus) => {
+        if (estatus && estatus.Estatus === "Activo") {
+          this.isError = true;
+          this.notificacionService.showNotification('El estudiante ya está activo.');
+          this.cerrarReactivacionModal();
+          return; 
+        }
+  
+        this.estudianteService.reactivarEstudiante(matricula).subscribe(
+          (response) => {
+            console.log('Estudiante reactivado exitosamente:', response);
+            this.isError = false;
+            this.notificacionService.showNotification('El estudiante ha sido reactivado.');
+            
+            this.obtenerEstudiantes(); 
+            this.busqueda();
+            this.cerrarReactivacionModal();
+          },
+          (error) => {
+            this.isError = true;
+            this.notificacionService.showNotification('Error al intentar reactivar al estudiante.');
+            console.error('Error al reactivar al estudiante:', error);
+          }
+        )
+      },
+      (error) => {
+        console.error('Error al obtener estatus del estudiante:', error);
+        this.isError = true;
+        this.notificacionService.showNotification('Error al obtener el estatus del estudiante.');
+      }
+    );
+  }
+  
 
   bajaDefinitiva(matricula: string) {
     this.estudianteService.bajaDefinitiva(matricula).subscribe(
@@ -266,6 +304,17 @@ cerrarBajaModal(): void {
   this.isBajaModalOpen = false;
 }
 
+isReactivacionModalOpen: boolean = false;
+
+abrirReactivacionModal(): void {
+  this.isReactivacionModalOpen = true;
+}
+
+cerrarReactivacionModal(): void {
+  this.isReactivacionModalOpen = false;
+}
+
+
 confirmarBajaTemporal(): void {
   if (this.selectedStudent) {
     this.bajaTemporal(this.selectedStudent.Matricula);
@@ -282,4 +331,11 @@ confirmarBajaDefinitiva(): void {
   }
 }
 
+confirmarReactivacion(): void {
+  if (this.selectedStudent) {
+    this.reactivarEstudiante(this.selectedStudent.Matricula);
+  } else {
+    alert('No se ha seleccionado un estudiante.');
+  }
+}
 }

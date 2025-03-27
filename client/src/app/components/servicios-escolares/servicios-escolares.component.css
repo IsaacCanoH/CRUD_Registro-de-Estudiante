@@ -196,6 +196,29 @@
   color: white;
 }
 
+:host .btn-success {
+  background-color: #0d69fc;
+  color: white;
+}
+
+:host .btn-cancel {
+  background-color: #d5d5d5;
+  color: black;
+}
+
+:host .btn-cancel,
+:host .btn-danger,
+:host .btn-success {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+:host .btn-cancel:hover,
+:host .btn-danger:hover,
+:host .btn-success:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 :host .card-content {
   padding: 16px;
 }
@@ -571,6 +594,32 @@ th {
 }
 
 .button-pdf:hover {
+  background: #c82333; 
+}
+
+.button-reactivar {
+  background-color: #28a745;
+}
+
+.button-reactivar:hover {
+  background: #218838; 
+}
+
+.button-editar {
+  background-color: #007bff;
+  color: white;
+}
+
+.button-editar:hover {
+  background: #0056b3;
+}
+
+.button-eliminar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.button-eliminar:hover {
   background: #c82333; 
 }
 

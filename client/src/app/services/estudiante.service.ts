@@ -26,6 +26,10 @@ export class EstudianteService {
     return this.http.get<any>(`${this.apiUrl}/getPorMatricula/${matricula}`);
   }
 
+  getEstatus(matricula: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getEstatus/${matricula}`);
+  }
+
   buscarPorNombre(nombre: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/getPorNombre/${nombre}`);
   }
@@ -86,6 +90,10 @@ export class EstudianteService {
 
   bajaDefinitiva(matricula: string) {
     return this.http.delete(`${this.apiUrl}/deleteEstudiante/${matricula}`);
+  }
+
+  reactivarEstudiante(matricula: string) {
+    return this.http.patch(`${this.apiUrl}/reactivarEstudiante/${matricula}`, null);
   }
 
   // estudiante.service.ts
