@@ -182,9 +182,6 @@ exports.uploadExcel = async (req, res) => {
 
         console.log("Archivo recibido:", req.file.originalname);
 
-        console.log(req.file);
-
-
         // Leer el archivo Excel
         const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
         const sheetName = workbook.SheetNames[0];
@@ -194,69 +191,82 @@ exports.uploadExcel = async (req, res) => {
         const data = xlsx.utils.sheet_to_json(sheet);
         console.log("Datos procesados del Excel:", data);
 
-        // Validar que haya datos
         if (data.length === 0) {
             return res.status(400).json({ message: "El archivo Excel está vacío o tiene un formato incorrecto" });
         }
 
-        // Mapear datos y almacenarlos en MongoDB
-        const estudiantes = data.map(row => ({
-            Matricula: row.Matrícula,
-            Nombre: row.Nombre,
-            ApellidoPaterno: row.ApellidoPaterno,
-            ApellidoMaterno: row.ApellidoMaterno,
-            FechaNacimiento: row.FechaNacimiento
-                ? new Date((row.FechaNacimiento - 25569) * 86400000)
-                : null,
-            Sexo: row.Sexo,
-            Telefonos: row.Teléfonos ? String(row.Teléfonos) : "",
-            CorreosElectronicos: row.CorreosElectrónicos
-                ? String(row.CorreosElectrónicos).split(",").map(email => email.trim())
-                : [],
-            RFC: row.RFC,
-            Semestre: row.Semestre,
-            Anio: row["Año"],
-            Domicilio: {
-                Calle: row["Domicilio.Calle"],
-                NumeroInterior: row["Domicilio.NumeroInterior"],
-                NumeroExterior: row["Domicilio.NumeroExterior"],
-                Colonia: row["Domicilio.Colonia"],
-                CodigoPostal: row["Domicilio.CodigoPostal"],
-                Ciudad: row["Domicilio.Ciudad"]
-            },
-            PromedioBachillerato: row.PromedioBachillerato,
-            EspecialidadBachillerato: row.EspecialidadBachillerato,
-            CertificadoBachillerato: row.CertificadoBachillerato,
-            NombreCarrera: row.NombreCarrera,
-            Especialidad: row.Especialidad,
-            Tutor: {
-                Nombre: row["Tutor.Nombre"],
-                ApellidoPaterno: row["Tutor.ApellidoPaterno"],
-                ApellidoMaterno: row["Tutor.ApellidoMaterno"],
-                Telefonos: row["Tutor.Teléfonos"] ? String(row["Tutor.Teléfonos"]) : "",
-                CorreosElectronicos: row["Tutor.CorreosElectrónicos"]
-                    ? String(row["Tutor.CorreosElectrónicos"]).split(",").map(email => email.trim())
-                    : [],
-                Domicilio: {
-                    Calle: row["Tutor.Domicilio.Calle"],
-                    NumeroInterior: row["Tutor.Domicilio.NumeroInterior"],
-                    NumeroExterior: row["Tutor.Domicilio.NumeroExterior"],
-                    Colonia: row["Tutor.Domicilio.Colonia"],
-                    CodigoPostal: row["Tutor.Domicilio.CodigoPostal"],
-                    Ciudad: row["Tutor.Domicilio.Ciudad"]
-                }
-            }
-        }));
+        const estudiantes = [];
 
-        // Insertar estudiantes en la base de datos
+        for (const row of data) {
+            const fechaNacimiento = row.FechaNacimiento
+                ? new Date((row.FechaNacimiento - 25569) * 86400000)
+                : null;
+
+            const estudiante = {
+                Nombre: row.Nombre,
+                ApellidoPaterno: row.ApellidoPaterno,
+                ApellidoMaterno: row.ApellidoMaterno,
+                FechaNacimiento: fechaNacimiento,
+                Sexo: row.Sexo,
+                Telefonos: row.Teléfonos ? String(row.Teléfonos) : "",
+                CorreosElectronicos: row.CorreosElectrónicos
+                    ? String(row.CorreosElectrónicos).split(",").map(email => email.trim())
+                    : [],
+                Semestre: row.Semestre,
+                Anio: row["Año"],
+                Domicilio: {
+                    Calle: row["Domicilio.Calle"],
+                    NumeroInterior: row["Domicilio.NumeroInterior"],
+                    NumeroExterior: row["Domicilio.NumeroExterior"],
+                    Colonia: row["Domicilio.Colonia"],
+                    CodigoPostal: row["Domicilio.CodigoPostal"],
+                    Ciudad: row["Domicilio.Ciudad"]
+                },
+                PromedioBachillerato: row.PromedioBachillerato,
+                EspecialidadBachillerato: row.EspecialidadBachillerato,
+                CertificadoBachillerato: row.CertificadoBachillerato,
+                NombreCarrera: row.NombreCarrera,
+                Especialidad: row.Especialidad,
+                Tutor: {
+                    Nombre: row["Tutor.Nombre"],
+                    ApellidoPaterno: row["Tutor.ApellidoPaterno"],
+                    ApellidoMaterno: row["Tutor.ApellidoMaterno"],
+                    Telefonos: row["Tutor.Teléfonos"] ? String(row["Tutor.Teléfonos"]) : "",
+                    CorreosElectronicos: row["Tutor.CorreosElectrónicos"]
+                        ? String(row["Tutor.CorreosElectrónicos"]).split(",").map(email => email.trim())
+                        : [],
+                    Domicilio: {
+                        Calle: row["Tutor.Domicilio.Calle"],
+                        NumeroInterior: row["Tutor.Domicilio.NumeroInterior"],
+                        NumeroExterior: row["Tutor.Domicilio.NumeroExterior"],
+                        Colonia: row["Tutor.Domicilio.Colonia"],
+                        CodigoPostal: row["Tutor.Domicilio.CodigoPostal"],
+                        Ciudad: row["Tutor.Domicilio.Ciudad"]
+                    }
+                }
+            };
+
+            estudiante.Matricula = await exports.generarMatricula(estudiante.ApellidoPaterno);
+            estudiante.RFC = generarRFC(estudiante.Nombre, estudiante.ApellidoPaterno, estudiante.ApellidoMaterno, estudiante.FechaNacimiento);
+
+            const existeRFC = await Estudiante.findOne({ RFC: estudiante.RFC });
+            if (existeRFC) {
+                console.error(`El estudiante con RFC ${estudiante.RFC} ya está registrado.`);
+                continue; 
+            }
+
+            estudiantes.push(estudiante);
+        }
+
         await Estudiante.insertMany(estudiantes);
 
+        // Enviar correos electrónicos a los estudiantes
         for (const estudiante of estudiantes) {
             if (estudiante.CorreosElectronicos.length > 0) {
                 const mailOptions = {
                     from: 'universidadindependencia@gmail.com',
-                    to: estudiante.CorreosElectronicos[0], 
-                    subject: 'Bienvenido a la Universidad Independencia',
+                    to: estudiante.CorreosElectronicos[0],
+                    subject: 'Bienvenido Estudiante - Universidad Independencia',
                     html: `
                         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
                             <div style="background-color:rgb(6, 110, 214); color: white; text-align: center; padding: 15px; font-size: 20px; font-weight: bold;">
@@ -265,7 +275,7 @@ exports.uploadExcel = async (req, res) => {
                             
                             <div style="padding: 20px; text-align: center;">
                                 <p style="font-size: 18px; color: #003366;">Hola <strong>${estudiante.Nombre} ${estudiante.ApellidoPaterno} ${estudiante.ApellidoMaterno}</strong></p>
-                                <p style="font-size: 16px; color: #333;">Tu registro ha sido exitoso. Bienvenido a nuestra institución.</p>
+                                <p style="font-size: 16px; color: #333;">Tu alta como estudiante ha sido exitosa. Bienvenido a nuestra institución.</p>
                                 <p style="font-size: 14px; color: #555; font-style: italic;">"Formando líderes para el futuro"</p>
                             </div>
 
@@ -285,7 +295,6 @@ exports.uploadExcel = async (req, res) => {
                 });
             }
         }
-
 
         return res.status(200).json({ message: "Datos importados correctamente" });
 
