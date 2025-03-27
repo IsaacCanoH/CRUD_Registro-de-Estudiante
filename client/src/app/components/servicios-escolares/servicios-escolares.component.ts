@@ -150,7 +150,7 @@ export class ServiciosEscolaresComponent implements OnInit {
   
     if (this.estatus.trim()) {
       estudiantesFiltrados = estudiantesFiltrados.filter(estudiante =>
-        estudiante.Estatus.toLowerCase().includes(this.estatus.toLowerCase())
+        estudiante.Estatus.toLowerCase() === this.estatus.toLowerCase()
       );
     }
   
