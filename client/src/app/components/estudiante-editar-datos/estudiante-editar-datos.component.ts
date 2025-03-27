@@ -154,6 +154,9 @@ export class EstudianteEditarDatosComponent implements OnInit {
     if(!this.estudiante.Domicilio.Colonia) {
       this.errorMensaje['colonia'] = 'Por favor, ingrese la colonia.'
     }
+    if(!this.estudiante.Domicilio.Calle) {
+      this.errorMensaje['calle'] = 'Por favor, ingrese la calle.'
+    }
     if(!this.estudiante.Domicilio.NumeroExterior) {
       this.errorMensaje['numeroExterior'] = 'Por favor, ingrese el número exterior.'
     }
@@ -171,6 +174,9 @@ export class EstudianteEditarDatosComponent implements OnInit {
     }
     if (!this.estudiante.Tutor.Domicilio.Colonia) {
       this.errorMensaje['coloniaTutor'] = 'Por favor, ingrese la colonia.'
+    }
+    if (!this.estudiante.Tutor.Domicilio.Calle) {
+      this.errorMensaje['calleTutor'] = 'Por favor, ingrese la calle.'
     }
     if (!this.estudiante.Tutor.Domicilio.NumeroExterior) {
       this.errorMensaje['numeroExteriorTutor'] = 'Por favor, ingrese el número exterior.'

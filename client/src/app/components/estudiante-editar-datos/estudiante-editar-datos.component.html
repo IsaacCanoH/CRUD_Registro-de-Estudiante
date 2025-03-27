@@ -55,6 +55,23 @@
         </div>
 
         <div class="form-group">
+          <label for="calle">Calle</label>
+          <input
+            type="text"
+            id="calle"
+            [(ngModel)]="estudiante.Domicilio.Calle"
+            name="calle"
+            placeholder="Ingrese calle"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['calle']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['calle'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
           <label for="numeroExterior">Número Exterior</label>
           <input
             type="text"
@@ -68,9 +85,7 @@
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExterior']}}
           </div>
         </div>
-      </div>
-
-      <div class="form-row">
+    
         <div class="form-group">
           <label for="numeroInterior">Número Interior</label>
           <input
@@ -81,7 +96,9 @@
             placeholder="Ingrese número interior"
           />
         </div>
-
+      </div>
+    
+      <div class="form-row">
         <div class="form-group">
           <label for="correoElectronico">Correos Electrónicos</label>
           <div *ngFor="let correo of estudiante.CorreosElectronicos; let i = index">
@@ -106,9 +123,7 @@
             <span></span>
           </button>
         </div>
-      </div>
 
-      <div class="form-row">
         <div class="form-group">
           <label for="telefono">Teléfonos</label>
           <div *ngFor="let telefono of estudiante.Telefonos; let i = index">
@@ -132,10 +147,10 @@
             <span><i class="fa fa-plus"></i></span>
             <span></span>
           </button>
-          
         </div>
-        
-
+      </div>
+      
+      <div clasa="form-row">
         <div class="form-group">
           <label for="foto">Foto</label>
           <input type="file" id="foto" accept="image/*" (change)="onFileSelected($event)" /> <!-- Vincula el evento -->
@@ -191,6 +206,23 @@
         </div>
 
         <div class="form-group">
+          <label for="calleTutor">Calle</label>
+          <input
+            type="text"
+            id="calleTutor"
+            [(ngModel)]="estudiante.Tutor.Domicilio.Calle"
+            name="calleTutor"
+            placeholder="Ingrese calle"
+            required
+          />
+          <div class="error-message" *ngIf="errorMensaje['calleTutor']">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['calleTutor'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
           <label for="numeroExteriorTutor">Número Exterior</label>
           <input
             type="text"
@@ -204,9 +236,7 @@
             <i class="fas fa-exclamation-circle"></i> {{ errorMensaje['numeroExteriorTutor'] }}
           </div>
         </div>
-      </div>
 
-      <div class="form-row">
         <div class="form-group">
           <label for="numeroInteriorTutor">Número Interior</label>
           <input
@@ -217,7 +247,9 @@
             placeholder="Ingrese número interior"
           />
         </div>
+      </div>
 
+      <div class="form-row">
         <div class="form-group">
           <label for="correoElectronicoTutor">Correos Electrónicos del Tutor</label>
           <div *ngFor="let correo of estudiante.Tutor.CorreosElectronicos; let i = index">
@@ -242,10 +274,7 @@
             <span></span>
           </button>
         </div>
-      </div>
 
-
-      <div class="form-row">
         <div class="form-group">
           <label for="telefonoTutor">Teléfonos del Tutor</label>
           <div *ngFor="let telefono of estudiante.Tutor.Telefonos; let i = index">
@@ -269,7 +298,7 @@
             <span><i class="fa fa-plus"></i></span>
             <span></span>
           </button>
-        </div>                
+        </div>                  
       </div>
 
       <div class="form-row">
