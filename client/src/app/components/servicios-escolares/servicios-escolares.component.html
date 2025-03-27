@@ -181,7 +181,12 @@
               <h3>Estado</h3>
               <p>{{ selectedStudent.Estatus }}</p>
             </div>
+            <div class="info-item">
+              <h3>Semestre</h3>
+              <p>{{ selectedStudent.Semestre }}</p>
+            </div>
         </div>
+        <br>
         <div class="info-grid">
           <div class="info-item">
             <h3>Especialidad Bachillerato</h3>
@@ -190,6 +195,10 @@
           <div class="info-item">
             <h3>Promedio Bachillerato</h3>
             <p>{{ selectedStudent.PromedioBachillerato }}</p>
+          </div>
+          <div class="info-item">
+            <h3>Certificado de Bachillerato</h3>
+            <p>{{ selectedStudent.CertificadoBachillerato === 1 ? 'Sí' : 'No' }}</p>
           </div>
         </div>
       </div>
