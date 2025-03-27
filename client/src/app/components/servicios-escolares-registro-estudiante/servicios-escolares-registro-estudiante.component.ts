@@ -23,7 +23,7 @@ interface EstudianteForm {
     Ciudad: string;
   };
   CertificadoBachillerato: number;
-  EspecialidadBachillerato: string | null;
+  EspecialidadBachillerato: string;
   PromedioBachillerato: number | null;
   Anio: number | null;
   Semestre: number | null;
@@ -74,7 +74,7 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
       Ciudad: '',
     },
     CertificadoBachillerato: 0,
-    EspecialidadBachillerato: null,
+    EspecialidadBachillerato: '',
     PromedioBachillerato: null,
     Anio: null,
     Semestre: null,
@@ -173,7 +173,10 @@ export class ServiciosEscolaresRegistroEstudianteComponent implements OnInit {
   obtenerCatalogoEspecialidadesBachillerato() {
     this.estudianteService.obtenerCatalogoEspecialidadesBachillerato().subscribe(
       (data) => {
+        console.log("Especialidades recibidas:", data);
         this.catalogoEspecialidadesBachillerato = data;
+        console.log(this.catalogoEspecialidadesBachillerato);
+
       },
       (error) => {
         console.error('Error al cargar catálogo:', error);

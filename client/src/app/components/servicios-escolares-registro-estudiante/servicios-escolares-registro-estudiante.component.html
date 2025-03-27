@@ -42,8 +42,8 @@
           <label for="especialidadBachillerato">Especialidad de Bachillerato</label>
           <select id="especialidadBachillerato" name="EspecialidadBachillerato" [(ngModel)]="formData.EspecialidadBachillerato" required #especialidadBachillerato="ngModel">
             <option value="">Seleccione...</option>
-            <option *ngFor="let especialidadBachillerato of catalogoEspecialidadesBachillerato" [value]="especialidadBachillerato.EspecialidadBachillerato">
-              {{ especialidadBachillerato.EspecialidadBachillerato }}
+            <option *ngFor="let especialidad of catalogoEspecialidadesBachillerato" [value]="especialidad.NombreEspecialidadBachillerato">
+              {{ especialidad.NombreEspecialidadBachillerato }}
             </option>
           </select>
           <div class="error-message" *ngIf="errorMensaje['EspecialidadBachillerato']">
